@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About | Anchorage 2026</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+    --cyan:#00f2ff;--cyan-glass:rgba(0,242,255,0.07);--cyan-dim:rgba(0,242,255,0.5);
+    --ocean:#00050a;--ocean-card:#000d1a;
+    --border:rgba(0,242,255,0.2);--border-bright:rgba(0,242,255,0.5);
+    --gold:#ffd166;--green:#06d6a0;--error:#ff4466;
+    --expo:cubic-bezier(0.19,1,0.22,1);--nav-h:60px;
+}
+html{scroll-behavior:smooth}
+body{background:var(--ocean);color:#fff;font-family:'Rajdhani',sans-serif;overflow-x:hidden;min-height:100vh}
+
+#bg{position:fixed;inset:0;z-index:-1;overflow:hidden;background:#000810}
+.grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(0,242,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,242,255,0.03) 1px,transparent 1px);background-size:60px 60px}
+.glow-orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none}
+.glow-1{width:500px;height:500px;background:rgba(0,100,150,0.18);top:-200px;left:-200px}
+.glow-2{width:400px;height:400px;background:rgba(0,60,100,0.15);bottom:-150px;right:-100px}
+.scan-line{position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,242,255,0.4),transparent);animation:scan 6s ease-in-out infinite}
+@keyframes scan{0%{top:-5%;opacity:0}10%{opacity:1}90%{opacity:.4}100%{top:105%;opacity:0}}
+
+nav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);z-index:100;background:rgba(0,5,10,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 16px;gap:10px}
+.nav-brand{font-family:'Orbitron';font-size:clamp(0.5rem,2.2vw,0.7rem);letter-spacing:clamp(2px,1vw,4px);color:var(--cyan);text-decoration:none;text-shadow:0 0 14px rgba(0,242,255,0.4);white-space:nowrap;flex-shrink:0;display:flex;align-items:center;gap:8px}
+.nav-brand img{height:28px;width:auto;filter:drop-shadow(0 0 5px var(--cyan))}
+.nav-right{display:flex;align-items:center;gap:6px;flex-wrap:nowrap}
+.nav-right a{font-family:'Orbitron';font-size:clamp(0.38rem,1.1vw,0.52rem);letter-spacing:clamp(1px,0.5vw,3px);color:rgba(255,255,255,0.45);text-decoration:none;transition:color .3s;white-space:nowrap;padding:4px 6px}
+.nav-right a:hover,.nav-right a.active{color:var(--cyan)}
+.nav-cta{border:1px solid var(--cyan);padding:6px 14px!important;color:var(--cyan)!important;clip-path:polygon(8% 0,100% 0,92% 100%,0 100%);transition:background .3s!important}
+.nav-cta:hover{background:var(--cyan)!important;color:#000!important}
+@media(max-width:480px){
+    .nav-right a:not(.nav-cta){display:none}
+    .nav-right{gap:4px}
+}
+
+.wrap{max-width:1100px;margin:0 auto;padding:0 clamp(16px,4vw,40px)}
+.wrap--narrow{max-width:820px;margin:0 auto;padding:0 clamp(16px,4vw,40px)}
+
+.hero{padding:calc(var(--nav-h) + clamp(44px,8vw,80px)) 0 clamp(32px,6vw,56px);text-align:center}
+.hero-tag{font-family:'Share Tech Mono';font-size:clamp(0.55rem,1.6vw,0.7rem);letter-spacing:clamp(2px,1vw,5px);color:var(--cyan);opacity:.9;display:block;margin-bottom:14px}
+.hero h1{font-family:'Orbitron';font-size:clamp(2rem,9vw,7rem);font-weight:900;letter-spacing:clamp(0px,1.5vw,8px);color:var(--cyan);text-shadow:0 0 30px rgba(0,242,255,.8),0 0 70px rgba(0,242,255,.4);animation:hpulse 3s ease-in-out infinite;line-height:1;text-align:center;width:100%;word-break:break-word}
+@keyframes hpulse{0%,100%{text-shadow:0 0 30px rgba(0,242,255,.8),0 0 70px rgba(0,242,255,.4)}50%{text-shadow:0 0 50px rgba(0,242,255,1),0 0 100px rgba(0,242,255,.6)}}
+.hero-year{font-family:'Orbitron';font-size:clamp(0.9rem,3vw,1.6rem);letter-spacing:10px;color:rgba(255,255,255,.55);display:block;margin-top:4px}
+.hero-sub{font-family:'Share Tech Mono';font-size:clamp(0.6rem,1.6vw,0.78rem);letter-spacing:clamp(2px,1vw,4px);color:rgba(255,255,255,.7);margin-top:12px;display:block}
+.hero-date-strip{display:inline-flex;align-items:center;margin-top:20px;border:1px solid var(--border)}
+.hero-date-item{font-family:'Orbitron';font-size:clamp(0.42rem,1.5vw,0.55rem);letter-spacing:clamp(1px,0.5vw,3px);padding:8px clamp(12px,3vw,18px);color:var(--cyan)}
+.hero-date-sep{width:1px;background:var(--border);align-self:stretch}
+
+.sec{padding:clamp(40px,6vw,72px) 0}
+
+.sec-label{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.sec-label-text{font-family:'Share Tech Mono';font-size:clamp(0.6rem,1.4vw,0.72rem);letter-spacing:clamp(2px,1vw,5px);color:var(--cyan);opacity:.85;white-space:nowrap}
+.sec-label-line{flex:1;height:1px;background:linear-gradient(to right,rgba(0,242,255,.25),transparent)}
+.sec-title{font-family:'Orbitron';font-size:clamp(1.1rem,3vw,2rem);font-weight:700;letter-spacing:4px;color:var(--cyan);text-shadow:0 0 20px rgba(0,242,255,.5);margin-bottom:22px}
+
+.corner{position:absolute;width:12px;height:12px}
+.c-tl{top:0;left:0;border-top:1px solid var(--cyan);border-left:1px solid var(--cyan)}
+.c-tr{top:0;right:0;border-top:1px solid var(--cyan);border-right:1px solid var(--cyan)}
+.c-bl{bottom:0;left:0;border-bottom:1px solid var(--cyan);border-left:1px solid var(--cyan)}
+.c-br{bottom:0;right:0;border-bottom:1px solid var(--cyan);border-right:1px solid var(--cyan)}
+
+.panel{background:rgba(0,13,26,0.9);border:1px solid var(--border);position:relative;overflow:hidden}
+.panel::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent)}
+
+.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:clamp(28px,5vw,48px) 0}
+@media(min-width:600px){.stats-grid{grid-template-columns:repeat(4,1fr)}}
+.stat-card{background:rgba(0,13,26,0.9);border:1px solid var(--border);padding:clamp(18px,4vw,30px) 12px;text-align:center;position:relative;overflow:hidden;transition:border-color .3s,transform .3s}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);opacity:0;transition:opacity .3s}
+.stat-card:hover{border-color:var(--border-bright);transform:translateY(-4px)}
+.stat-card:hover::before{opacity:1}
+.stat-num{font-family:'Orbitron';font-size:clamp(1.6rem,5vw,3rem);font-weight:900;color:var(--cyan);line-height:1;text-shadow:0 0 20px rgba(0,242,255,.4)}
+.stat-label{font-family:'Share Tech Mono';font-size:clamp(0.7rem,1.4vw,0.85rem);letter-spacing:clamp(1px,0.5vw,3px);color:rgba(255,255,255,.85);margin-top:6px;line-height:1.5}
+
+.about-text-block{padding:clamp(22px,4vw,44px);position:relative}
+.about-text{font-size:clamp(1rem,2vw,1.15rem);line-height:2;color:rgba(255,255,255,.92)}
+.about-text b{color:var(--cyan);font-weight:600}
+.about-highlight{margin-top:20px;padding:14px 18px;border-left:3px solid var(--cyan);background:rgba(0,242,255,.06);font-size:clamp(1rem,2vw,1.1rem);line-height:1.85;color:rgba(255,255,255,.95)}
+.about-highlight b{color:var(--cyan)}
+
+.dost-text{font-size:clamp(1rem,2vw,1.1rem);line-height:1.9;color:rgba(255,255,255,.92)}
+.dost-text b{color:var(--cyan);font-weight:600}
+.dost-accreditation-grid{display:grid;grid-template-columns:1fr;gap:10px;margin-top:20px}
+@media(min-width:500px){.dost-accreditation-grid{grid-template-columns:repeat(2,1fr)}}
+.dost-badge{background:rgba(0,242,255,.04);border:1px solid var(--border);padding:12px 14px;display:flex;align-items:flex-start;gap:10px}
+.dost-badge-icon{font-size:1.2rem;flex-shrink:0;margin-top:2px}
+.dost-badge-text{font-family:'Orbitron';font-size:clamp(0.6rem,1.2vw,0.72rem);letter-spacing:clamp(1px,0.5vw,2px);color:var(--cyan);opacity:1;line-height:1.7}
+
+.ev-grid{display:grid;grid-template-columns:1fr;gap:14px;margin-top:24px}
+@media(min-width:540px){.ev-grid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:900px){.ev-grid{grid-template-columns:repeat(3,1fr)}}
+.ev-card{background:rgba(0,13,26,.9);border:1px solid var(--border);padding:clamp(18px,3vw,24px) clamp(16px,3vw,22px);position:relative;overflow:hidden;transition:border-color .3s,transform .3s}
+.ev-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--cyan-dim),transparent);opacity:0;transition:opacity .3s}
+.ev-card:hover{border-color:var(--border-bright);transform:translateY(-4px)}
+.ev-card:hover::before{opacity:1}
+.ev-icon{font-size:1.8rem;margin-bottom:12px;display:block}
+.ev-name{font-family:'Orbitron';font-size:clamp(0.65rem,1.5vw,0.78rem);letter-spacing:clamp(1px,0.5vw,3px);color:var(--cyan);margin-bottom:8px}
+.ev-desc{font-size:clamp(.92rem,2vw,1rem);color:rgba(255,255,255,.88);line-height:1.7}
+
+.timeline{position:relative;padding-left:28px;border-left:1px solid rgba(0,242,255,.18);margin-top:24px}
+.tl-item{position:relative;margin-bottom:32px}
+.tl-item:last-child{margin-bottom:0}
+.tl-dot{position:absolute;left:-35px;top:5px;width:14px;height:14px;border-radius:50%;background:var(--cyan);box-shadow:0 0 16px var(--cyan);border:2px solid var(--ocean)}
+.tl-year{font-family:'Share Tech Mono';font-size:clamp(0.6rem,1.3vw,0.7rem);letter-spacing:clamp(1px,0.5vw,3px);color:var(--cyan);opacity:.9;margin-bottom:5px}
+.tl-title{font-family:'Orbitron';font-size:clamp(0.7rem,1.6vw,0.82rem);letter-spacing:2px;margin-bottom:7px;color:#fff}
+.tl-text{font-size:clamp(.95rem,2vw,1rem);color:rgba(255,255,255,.88);line-height:1.8}
+
+.team-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+@media(min-width:700px){.team-grid{grid-template-columns:repeat(4,1fr)}}
+.team-card{background:rgba(0,13,26,.9);border:1px solid var(--border);overflow:hidden;position:relative;transition:border-color .3s,transform .4s}
+.team-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);opacity:0;transition:opacity .3s;z-index:1}
+.team-card:hover{border-color:var(--border-bright);transform:translateY(-4px)}
+.team-card:hover::before{opacity:1}
+.team-photo-wrap{width:100%;padding-top:100%;position:relative;overflow:hidden;background:rgba(0,8,18,.9)}
+.team-photo-wrap img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top;transition:transform .5s var(--expo)}
+.team-card:hover .team-photo-wrap img{transform:scale(1.05)}
+.tba-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:linear-gradient(to top,rgba(0,5,15,0.92) 0%,rgba(0,5,15,0.55) 60%,rgba(0,5,15,0.2) 100%);z-index:2}
+.tba-icon{width:56px;height:56px;border-radius:50%;border:2px solid rgba(0,242,255,0.6);display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-family:'Orbitron';font-weight:700;color:var(--cyan);background:rgba(0,242,255,.08);box-shadow:0 0 16px rgba(0,242,255,.25);animation:tbapulse 3s ease-in-out infinite}
+@keyframes tbapulse{0%,100%{box-shadow:0 0 10px rgba(0,242,255,0.2)}50%{box-shadow:0 0 28px rgba(0,242,255,.5)}}
+.tba-scan{position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,242,255,.6),transparent);animation:vscan 5s linear infinite;z-index:3}
+@keyframes vscan{0%{top:0;opacity:1}80%{opacity:.3}100%{top:100%;opacity:0}}
+.tba-label{font-family:'Orbitron';font-size:clamp(0.45rem,1.3vw,0.58rem);letter-spacing:3px;color:var(--cyan);text-shadow:0 0 10px rgba(0,242,255,.7);font-weight:700;opacity:1}
+.tba-soon{font-family:'Share Tech Mono';font-size:clamp(0.38rem,1vw,0.46rem);letter-spacing:2px;color:rgba(255,255,255,.75);border:1px solid rgba(0,242,255,.4);padding:4px 12px;background:rgba(0,242,255,.06)}
+.team-info{padding:clamp(14px,3vw,18px) clamp(12px,3vw,16px) clamp(16px,3vw,20px)}
+.team-role{font-family:'Share Tech Mono';font-size:clamp(0.42rem,1.1vw,0.52rem);letter-spacing:3px;color:var(--cyan);opacity:1;margin-bottom:6px;text-shadow:0 0 8px rgba(0,242,255,.4)}
+.team-name{font-family:'Orbitron';font-size:clamp(0.5rem,1.3vw,0.62rem);letter-spacing:2px;line-height:1.3;color:#fff}
+.team-name.tba{color:rgba(255,255,255,.55);font-size:clamp(.44rem,1vw,.52rem);letter-spacing:3px}
+.team-dept{font-size:clamp(.7rem,1.8vw,.78rem);color:rgba(255,255,255,.55);margin-top:4px}
+
+.btn-primary{display:inline-block;padding:clamp(12px,2.5vw,14px) clamp(24px,4vw,36px);color:var(--cyan);text-decoration:none;font-family:'Orbitron';font-weight:700;letter-spacing:3px;font-size:clamp(.55rem,1.5vw,.65rem);border:1px solid var(--cyan);background:rgba(0,242,255,.07);clip-path:polygon(8% 0,100% 0,92% 100%,0 100%);transition:all .4s var(--expo);cursor:pointer}
+.btn-primary:hover{background:var(--cyan);color:#000;box-shadow:0 0 36px rgba(0,242,255,.4);transform:translateY(-2px)}
+
+footer{padding:clamp(36px,6vw,60px) 0 clamp(20px,4vw,32px);border-top:1px solid var(--border);background:linear-gradient(to bottom,transparent,rgba(0,242,255,.03))}
+.footer-grid{display:grid;grid-template-columns:1fr;gap:28px;margin-bottom:36px}
+@media(min-width:520px){.footer-grid{grid-template-columns:1fr 1fr}}
+@media(min-width:860px){.footer-grid{grid-template-columns:1.5fr 1fr 1fr 1.2fr}}
+.footer-brand{font-family:'Orbitron';font-size:clamp(.8rem,2vw,1rem);letter-spacing:4px;color:var(--cyan);margin-bottom:10px;text-shadow:0 0 10px rgba(0,242,255,.3)}
+.footer-desc{font-size:clamp(.85rem,1.8vw,.95rem);color:rgba(255,255,255,.72);line-height:1.8}
+.footer-heading{font-family:'Share Tech Mono';font-size:clamp(0.55rem,1vw,.65rem);letter-spacing:4px;color:rgba(255,255,255,.7);margin-bottom:14px}
+.footer-links{list-style:none}
+.footer-links li a{display:block;text-decoration:none;color:rgba(255,255,255,.72);font-size:clamp(.85rem,1.8vw,.92rem);margin-bottom:10px;transition:all .3s}
+.footer-links li a:hover{color:var(--cyan);padding-left:6px}
+.footer-addr{font-size:clamp(.85rem,1.8vw,.92rem);color:rgba(255,255,255,.72);line-height:1.85}
+.footer-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;border-top:1px solid rgba(255,255,255,.05);padding-top:14px;font-family:'Share Tech Mono';font-size:clamp(0.35rem,1vw,.44rem);letter-spacing:2px;color:rgba(255,255,255,.22)}
+
+.team-photo-wrap {
+    background-image: url('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAIqAioDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD4yooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiig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25IsrGNspCD1JP8AE54y35YFc+IxEaMfM9zJskq5jO70prd/ovP8hvxq+JWrfEvxW2qXoNvYwAx2NmGyIU9z3Y9z/QCuEoorw5zlOXNLc/UqFCnh6ap01aKCiiipNQooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigCW0ubizuo7q0nlt54mDRyxOVdCOhBHINfUvwR/abURxaH8R2OVCpDq0aZz0H75R/wChj8R3r5VorajXnRd4nBmGWYfHw5Ky9H1XofqXpl/Y6nYxX2nXkF5azDdHNBIHRx7EcGrFfm18PPiR4w8BXLS+G9Xkgif/AFltIPMhfp1Q8Z46jB96+mvh1+1T4b1JI7Xxpp0ui3XCm5twZrdvUkffT6fN9a9aljKdTfRn5/mHDGLwzcqS54+W/wB3+Vz6LorN8O6/oniKwW/0LVbPUrZv+WltMHA9jjofY1pV1HzkouLs1ZhRRRQIKKKKACiiigAoqK8uraytZLq8uIba3jG55ZXCIo9STwK8c+IX7SPw/wDDRktdKmk8R36kr5dmdsKn/amb5ce6hqmU4wV5Ox04bB18VLlowcn5f1oe0EgAkkADkk14d8aP2ifDfg+KbS/DTwa7ro+X5GzbW59XcfeI/ur+JFfOHxP+O3jvx0r2kl4ukaWx/wCPOxJQN/vv95vpkD2ryyvPrY9bU/vPsss4Ss1Uxj/7dX6v/L7za8Z+Kde8Ya5LrXiLUZb68k43NgKi9lVRwoHoKxaKK8yUnJ3Z9tCEacVGCskFFFFIoKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAuaTqmpaReLeaVqF3YXK9JraZo3H4qQa9S8M/tHfFTRXHnaxbaxCBgRahaqw+u5Nrn8WryGitIVZw+F2ObEYLD4n+NBS9UfU+h/tdyARR654JRj/AMtZrO+x/wB8xsh/V66m1/ay8Byf8fGh+IofpFC3/tQV8X0V0Rx9Vb6nj1OF8um7qLXo3+tz7eH7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');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+</style>
+</head>
+<body>
+
+<div id="bg">
+    <div class="grid-bg"></div>
+    <div class="glow-orb glow-1"></div>
+    <div class="glow-orb glow-2"></div>
+    <div class="scan-line"></div>
+</div>
+
+<nav>
+    <a href="{{ url_for('home') }}" class="nav-brand">
+        <img src="{{ url_for('static', filename='logo1.png') }}" alt="" onerror="this.style.display='none'">
+         ANCHORAGE 2026
+    </a>
+    <div class="nav-right">
+        <a href="{{ url_for('home') }}" title="Home" style="font-size:1.1rem;padding:4px 8px;line-height:1;"></a>
+        <a href="{{ url_for('events') }}">EVENTS</a>
+        <a href="{{ url_for('about') }}" class="active">ABOUT</a>
+    </div>
+</nav>
+
+<div class="hero">
+    <div class="wrap">
+        <span class="hero-tag"> DEPT OF SHIP TECHNOLOGY · CUSAT · KOCHI </span>
+        <h1>ANCHORAGE</h1>
+        <span class="hero-year">2 0 2 6</span>
+        <span class="hero-sub">REIMAGINING THE POSSIBILITIES</span>
+        <div class="hero-date-strip">
+            <span class="hero-date-item">10 OCT</span>
+            <div class="hero-date-sep"></div>
+            <span class="hero-date-item">11 OCT</span>
+            <div class="hero-date-sep"></div>
+            <span class="hero-date-item">12 OCT</span>
+        </div>
+    </div>
+</div>
+
+<div class="sec" style="padding-top:0">
+    <div class="wrap">
+        <div class="stats-grid">
+            <div class="stat-card"><div class="corner c-tl"></div><div class="corner c-br"></div><div class="stat-num">10K+</div><div class="stat-label">FOOTFALLS</div></div>
+            <div class="stat-card"><div class="corner c-tl"></div><div class="corner c-br"></div><div class="stat-num">100K+</div><div class="stat-label">DIGITAL REACH NATIONWIDE</div></div>
+            <div class="stat-card"><div class="corner c-tl"></div><div class="corner c-br"></div><div class="stat-num">3000+</div><div class="stat-label">PARTICIPANTS</div></div>
+            <div class="stat-card"><div class="corner c-tl"></div><div class="corner c-br"></div><div class="stat-num">100+</div><div class="stat-label">ELITE INSTITUTIONS</div></div>
+        </div>
+    </div>
+</div>
+
+<div class="sec" style="padding-top:0">
+    <div class="wrap--narrow">
+        <div class="sec-label"><span class="sec-label-text"> ABOUT ANCHORAGE</span><div class="sec-label-line"></div></div>
+        <div class="panel about-text-block">
+            <div class="corner c-tl"></div><div class="corner c-tr"></div><div class="corner c-bl"></div><div class="corner c-br"></div>
+            <p class="about-text">
+                <b>Anchorage 2026</b> is the premier <b>National Level Techno-Cultural Fest</b> of the <b>Department of Ship Technology</b>, Cochin University of Science and Technology (CUSAT), held on <b>October 10–12, 2026</b> in Kochi.
+                <br><br>
+                India is entering a historic era of maritime growth. Driven by national initiatives like <b>Maritime India Vision 2030 (MIV 2030)</b> and <b>Maritime Amrit Kaal Vision 2047 (MAKV 2047)</b>, the future of shipbuilding, offshore engineering, and marine technology depends on one vital resource: elite young talent. Anchorage 2026 is the definitive bridge between today's industry giants and the brightest minds from across the country.
+                <br><br>
+                Under the theme <b>"Reimagining the Possibilities,"</b> this landmark event bridges fifty years of engineering excellence with transformative maritime innovations. It invites maritime organizations to engage with future professionals, strengthen their presence among the next generation, and contribute meaningfully to the advancement of an industry they continue to lead.
+                <br><br>
+                Supported by <b>DOSTAS</b>, the <b>Institution of Naval Architects</b>, and the <b>India Ship Technology Centre (ISTC)</b>, Anchorage 2026 is backed by some of the most influential names in India's maritime ecosystem.
+            </p>
+            <div class="about-highlight">Anchorage 2026 reflects the goals of Maritime India Vision 2030 and Maritime Amrit Kaal Vision 2047 — fostering <b>innovation</b>, <b>indigenous capability</b>, and the skilled talent that will shape India's maritime future.</div>
+        </div>
+    </div>
+</div>
+
+<div class="sec" style="padding-top:0">
+    <div class="wrap">
+        <div class="sec-label"><span class="sec-label-text"> DEPT OF SHIP TECHNOLOGY</span><div class="sec-label-line"></div></div>
+        <div class="sec-title">PIONEERS IN NAVAL ARCHITECTURE</div>
+        <p class="dost-text">
+            The Department of Ship Technology, established in 1974, is a pioneer in Naval Architecture education in India. It aims to develop skilled professionals to meet the needs of the shipbuilding industry, classification societies, R&D organizations, and the Indian Navy.
+            <br><br>
+            The department maintains strong collaborations with IITs, foreign universities, shipyards, and industries, enhancing student training and research exposure. Its long-standing partnership with <b>Rostock University, Germany</b> dates back to 1978.
+            <br><br>
+            Recognized as a <b>Centre of Excellence by the Indian Navy</b>, the department hosts around 30 Navy cadets in its B.Tech programme. The course is accredited by the <b>National Board of Accreditation (NBA)</b> under the Tier-I system.
+            <br><br>
+            With experienced faculty, over 300 research publications, and programmes including M.Tech (CASAD) and PhD, the department is actively involved in projects with organisations like Cochin Shipyard Ltd., ClassNK, NSTL, and NPOL.
+        </p>
+        <div class="dost-accreditation-grid">
+            <div class="dost-badge"><span class="dost-badge-text">NBA ACCREDITED · TIER-I SYSTEM</span></div>
+            <div class="dost-badge"><span class="dost-badge-text">INDIAN NAVY CENTRE OF EXCELLENCE</span></div>
+            <div class="dost-badge"><span class="dost-badge-text">ROSTOCK UNIVERSITY PARTNERSHIP · SINCE 1978</span></div>
+            <div class="dost-badge"><span class="dost-badge-text">30 NAVY CADETS · B.TECH PROGRAMME</span></div>
+        </div>
+    </div>
+</div>
+
+<div class="sec" style="padding-top:0">
+    <div class="wrap">
+        <div class="sec-label"><span class="sec-label-text"> ANCHORAGE EVENTS</span><div class="sec-label-line"></div></div>
+        <div class="sec-title">WHAT WE OFFER</div>
+        <div class="ev-grid">
+            <div class="ev-card"><div class="corner c-tl"></div><div class="corner c-br"></div>
+                <span class="ev-icon">◈</span>
+                <div class="ev-name">NATIONAL CONFERENCES</div>
+                <p class="ev-desc">Panel discussions and talks focusing on emerging maritime trends, innovations, career opportunities, and policy changes.</p>
+            </div>
+            <div class="ev-card"><div class="corner c-tl"></div><div class="corner c-br"></div>
+                <span class="ev-icon">◈</span>
+                <div class="ev-name">MARITIME ARENA</div>
+                <p class="ev-desc">High-octane challenges featuring ship model making and marine quizzes that unite diverse talents from across the entire maritime spectrum.</p>
+            </div>
+            <div class="ev-card"><div class="corner c-tl"></div><div class="corner c-br"></div>
+                <span class="ev-icon">◈</span>
+                <div class="ev-name">TECHNICAL & MANAGEMENT EVENTS</div>
+                <p class="ev-desc">Rigorous challenges in CAD drawings, Robowars, Boatwars, and strategic management simulations.</p>
+            </div>
+            <div class="ev-card"><div class="corner c-tl"></div><div class="corner c-br"></div>
+                <span class="ev-icon">◈</span>
+                <div class="ev-name">MARITIME EXPO</div>
+                <p class="ev-desc">A dynamic platform highlighting standard-setting industrial advancements, groundbreaking commercial ventures, and the future of global seafaring technology.</p>
+            </div>
+            <div class="ev-card"><div class="corner c-tl"></div><div class="corner c-br"></div>
+                <span class="ev-icon">◈</span>
+                <div class="ev-name">CAPTAIN'S TABLE — CEO EDITION</div>
+                <p class="ev-desc">A high stakes leadership arena where participants tackle dynamic business scenarios under the eyes of maritime giants.</p>
+            </div>
+            <div class="ev-card"><div class="corner c-tl"></div><div class="corner c-br"></div>
+                <span class="ev-icon">◈</span>
+                <div class="ev-name">THE IMO CHAMBER</div>
+                <p class="ev-desc">Step into the world of maritime negotiations and policymaking in a realistic IMO-style committee session guided by experienced Indian maritime representatives.</p>
+            </div>
+            <div class="ev-card"><div class="corner c-tl"></div><div class="corner c-br"></div>
+                <span class="ev-icon">◈</span>
+                <div class="ev-name">VOYAGE OF VISIONARIES</div>
+                <p class="ev-desc">Cruise through Kochi's waterways with the key figures behind the Water Metro and discover the innovation driving this landmark maritime initiative.</p>
+            </div>
+            <div class="ev-card"><div class="corner c-tl"></div><div class="corner c-br"></div>
+                <span class="ev-icon">◈</span>
+                <div class="ev-name">THE INNOVATION HUB</div>
+                <p class="ev-desc">Immersive, practical training sessions covering ANSYS & computational software, Python, EV Design via VR, Machine Learning, and Engine Management Systems.</p>
+            </div>
+            <div class="ev-card"><div class="corner c-tl"></div><div class="corner c-br"></div>
+                <span class="ev-icon">◈</span>
+                <div class="ev-name">MENTALISM & TECH TALKS</div>
+                <p class="ev-desc">Accredited sessions exploring the science of perception alongside insights from prominent industrial leaders.</p>
+            </div>
+            <div class="ev-card"><div class="corner c-tl"></div><div class="corner c-br"></div>
+                <span class="ev-icon">◈</span>
+                <div class="ev-name">LENS & LATITUDE</div>
+                <p class="ev-desc">A creative photo and video contest for visual storytellers — capture amazing shots showcasing marine life, ships, and maritime technology.</p>
+            </div>
+            <div class="ev-card"><div class="corner c-tl"></div><div class="corner c-br"></div>
+                <span class="ev-icon">◈</span>
+                <div class="ev-name">CULTURAL PRO-SHOWS</div>
+                <p class="ev-desc">High-energy evening manifestations featuring live music bands and captivating stage performances.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="sec" style="padding-top:0">
+    <div class="wrap--narrow">
+        <div class="sec-label"><span class="sec-label-text"> HISTORY LOG</span><div class="sec-label-line"></div></div>
+        <div class="sec-title">OUR JOURNEY</div>
+        <div class="timeline">
+            <div class="tl-item">
+                <div class="tl-dot"></div>
+                <div class="tl-year">1974 — FOUNDATION</div>
+                <div class="tl-title">Department of Ship Technology Established</div>
+                <p class="tl-text">The Department of Ship Technology, CUSAT, was established as a pioneer in Naval Architecture education in India — building skilled professionals for shipyards, classification societies, R&D organisations, and the Indian Navy.</p>
+            </div>
+            <div class="tl-item">
+                <div class="tl-dot"></div>
+                <div class="tl-year">1989 — GENESIS</div>
+                <div class="tl-title">Anchorage Is Born</div>
+                <p class="tl-text">The Society of Naval Architecture Students (SNAS) launched Anchorage — bringing together engineering talent under one roof for the first time. A tradition that would span decades and become one of the oldest festivals of its kind in India.</p>
+            </div>
+            <div class="tl-item">
+                <div class="tl-dot"></div>
+                <div class="tl-year">2000s — EXPANSION</div>
+                <div class="tl-title">State-Level Recognition</div>
+                <p class="tl-text">Anchorage grew beyond campus, attracting participants from premier institutions across Kerala and India. It cemented its identity as a techno-cultural and management powerhouse.</p>
+            </div>
+            <div class="tl-item">
+                <div class="tl-dot"></div>
+                <div class="tl-year">2015 — LANDMARK EDITION</div>
+                <div class="tl-title">Largest Pro Show in Cochin</div>
+                <p class="tl-text">A landmark edition held on the 9th, 10th and 11th of January 2015. Anchorage hosted the largest Pro Show Cochin had ever seen — a spectacle of music, light and maritime spirit that set an entirely new standard.</p>
+            </div>
+            <div class="tl-item">
+                <div class="tl-dot"></div>
+                <div class="tl-year">2020–2022 — RESILIENCE</div>
+                <div class="tl-title">Navigating the Storm</div>
+                <p class="tl-text">The global pandemic tested every institution. Anchorage adapted — embracing hybrid formats, digital workshops and online competitions while keeping the spirit of innovation alive.</p>
+            </div>
+            <div class="tl-item">
+                <div class="tl-dot"></div>
+                <div class="tl-year">2026 — NEW HORIZONS</div>
+                <div class="tl-title">The Resurrection</div>
+                <p class="tl-text">Anchorage 2026 returns with the most ambitious programme yet. Scaled-up events, global participants, industry partnerships, the spectacular Navy Expo, and a legendary Pro Show — bridging our 50-year heritage with the future of maritime innovation.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="sec" style="padding-bottom:clamp(48px,8vw,80px);padding-top:0">
+    <div class="wrap">
+        <div class="panel" style="padding:clamp(28px,5vw,52px);text-align:center;position:relative">
+            <div class="corner c-tl"></div><div class="corner c-tr"></div><div class="corner c-bl"></div><div class="corner c-br"></div>
+            
+            <p style="font-size:clamp(1rem,2vw,1.1rem);line-height:2;color:rgba(255,255,255,.92);max-width:680px;margin:0 auto">
+                Anchorage 2026 unites the brightest minds from elite national institutions to exchange ideas and drive the future of maritime innovation. A platform where <b style="color:var(--cyan)">industry meets academia</b>, where cutting-edge maritime technology meets the <b style="color:var(--cyan)">next generation of decision-makers</b> — an event like no other, a legacy reimagined.
+            </p>
+            <a href="{{ url_for('events') }}" class="btn-primary" style="margin-top:28px;display:inline-block">JOIN ANCHORAGE 2026</a>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="wrap">
+        <div class="footer-grid">
+            <div>
+                <div class="footer-brand"> ANCHORAGE '26</div>
+                <p class="footer-desc">The premier maritime techno-cultural and management symposium of CUSAT. Since 1989.</p>
+            </div>
+            <div>
+                <div class="footer-heading">QUICK LINKS</div>
+                <ul class="footer-links">
+                    <li><a href="{{ url_for('home') }}">Home</a></li>
+                    <li><a href="{{ url_for('events') }}">Events</a></li>
+                    <li><a href="{{ url_for('about') }}">About</a></li>
+                    <li><a href="{{ url_for('events') }}">Register</a></li>
+                </ul>
+            </div>
+            <div>
+                <div class="footer-heading">CONNECT</div>
+                <ul class="footer-links">
+                    <li><a href="mailto:info@anchoragecusat.com">info@anchoragecusat.com</a></li>
+                    <li><a href="https://www.instagram.com/anchorage_cusat" target="_blank">Instagram</a></li>
+                    <li><a href="https://snas.in" target="_blank">SNAS</a></li>
+                    <li><a href="https://www.linkedin.com/company/anchorage-cusat/" target="_blank">LinkedIn</a></li>
+                    <li><a href="https://youtube.com/@societyofnavalarchitecture1487" target="_blank">YouTube</a></li>
+                </ul>
+            </div>
+            <div>
+                <div class="footer-heading">COORDINATES</div>
+                <p class="footer-addr">Society of Naval Architecture Students<br>Dept. of Ship Technology<br>CUSAT, Kalamassery<br>Kochi — 682 022</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>© 2026 ANCHORAGE · SOCIETY OF NAVAL ARCHITECTURE STUDENTS · CUSAT</span>
+            <span>ALL SYSTEMS OPERATIONAL</span>
+        </div>
+    </div>
+</footer>
+
+<script>
+const revealEls = document.querySelectorAll('.stat-card,.ev-card,.tl-item,.panel,.dost-badge');
+const ro = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+        if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)';ro.unobserve(e.target)}
+    });
+},{threshold:0.08});
+revealEls.forEach(el => {el.style.opacity='0';el.style.transform='translateY(20px)';el.style.transition='opacity 0.6s ease,transform 0.6s ease';ro.observe(el)});
+
+
+</script>
+</body>
+</html>

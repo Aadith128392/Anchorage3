@@ -1,0 +1,2384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Registration | Anchorage 2026</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap');
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --cyan: #00f2ff;
+            --cyan-glass: rgba(0,242,255,0.06);
+            --ocean: #00050a;
+            --ocean-card: #00111e;
+            --border: rgba(0,242,255,0.15);
+            --border-hi: rgba(0,242,255,0.4);
+            --gold: #ffd166;
+            --green: #06d6a0;
+            --coral: #ff6b6b;
+            --error: #ff4466;
+            --expo: cubic-bezier(0.19,1,0.22,1);
+            --nav-h: 57.6px;
+            --radius: 1.8px;
+        }
+        html { scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--ocean); color: #fff; font-family: 'Rajdhani', sans-serif; min-height: 100vh; overflow-x: hidden; font-size: 14.4px; }
+
+        /* BG */
+        #bg { position: fixed; inset: 0; z-index: -1; background: #000810; overflow: hidden; }
+        .grid-bg { position: absolute; inset: 0; background-image: linear-gradient(rgba(0,242,255,0.022) 1px,transparent 1px),linear-gradient(90deg,rgba(0,242,255,0.022) 1px,transparent 1px); background-size: 60px 60px; }
+        .glow { position: absolute; border-radius: 50%; filter: blur(110px); pointer-events: none; }
+        .g1 { width: 495px; height: 495px; background: rgba(0,80,120,0.13); top: -108px; right: -108px; }
+        .g2 { width: 378px; height: 378px; background: rgba(0,50,100,0.1); bottom: 0; left: -90px; }
+        .scan-line { position: absolute; left: 0; right: 0; height: 0.9px; background: linear-gradient(90deg,transparent,rgba(0,242,255,0.3),transparent); animation: scan 9s ease-in-out infinite; }
+        @keyframes scan { 0%{top:-5%;opacity:0} 10%{opacity:1} 90%{opacity:.3} 100%{top:105%;opacity:0} }
+
+        /* ─── NAV ─────────────────────────────────────────────── */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h); z-index: 999;
+            background: rgba(0,5,10,0.97); backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 16.2px;
+        }
+        .nav-brand {
+            font-family: 'Orbitron'; font-size: clamp(0.585rem, 2.5vw, 0.738rem);
+            letter-spacing: 2.7px; color: var(--cyan); text-decoration: none;
+            text-shadow: 0 0 14px rgba(0,242,255,0.4);
+            display: flex; align-items: center; gap: 5.4px;
+        }
+        .nav-right { display: flex; gap: 3.6px; align-items: center; }
+        .nav-link {
+            font-family: 'Orbitron'; font-size: clamp(0.585rem, 1.8vw, 0.684rem);
+            letter-spacing: 1.8px; text-decoration: none;
+            color: rgba(255,255,255,0.75); padding: 7.2px 10.8px;
+            border: 1px solid transparent; border-radius: var(--radius);
+            transition: all 0.3s; white-space: nowrap;
+        }
+        .nav-link:hover { color: var(--cyan); border-color: var(--border); background: rgba(0,242,255,0.04); }
+        .nav-link.danger { color: var(--coral); }
+        .nav-link.danger:hover { border-color: rgba(255,107,107,0.3); background: rgba(255,107,107,0.05); }
+
+        /* ─── STEPPER ─────────────────────────────────────────── */
+        .stepper-wrap {
+            position: sticky; top: var(--nav-h); z-index: 80;
+            background: rgba(0,5,10,0.97); backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(0,242,255,0.1);
+            padding: 14.4px 18px;
+        }
+        .stepper { max-width: 504px; margin: 0 auto; display: flex; align-items: center; }
+        .step { display: flex; flex-direction: column; align-items: center; gap: 5.4px; flex: 1; position: relative; }
+        .step::after {
+            content: ''; position: absolute; top: 14.4px;
+            left: calc(50% + 18px); right: calc(-50% + 18px);
+            height: 0.9px; background: rgba(0,242,255,0.1); transition: background 0.5s;
+        }
+        .step:last-child::after { display: none; }
+        .step.done::after { background: rgba(0,242,255,0.45); }
+        .step-dot {
+            width: 28.8px; height: 28.8px; border-radius: 50%;
+            border: 1.5px solid rgba(0,242,255,0.4);
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Share Tech Mono'; font-size: 0.765rem; font-weight: 600;
+            color: rgba(255,255,255,0.62); background: rgba(0,0,0,0.5);
+            transition: all 0.4s;
+        }
+        .step.active .step-dot { border-color: var(--cyan); color: var(--cyan); box-shadow: 0 0 12px rgba(0,242,255,0.3), 0 0 0 3px rgba(0,242,255,0.06); }
+        .step.done .step-dot { background: var(--cyan); color: #000; border-color: var(--cyan); font-weight: 700; }
+        .step-lbl {
+            font-family: 'Orbitron'; font-size: clamp(0.558rem, 1.5vw, 0.63rem);
+            letter-spacing: 1.35px; color: rgba(255,255,255,0.6);
+            transition: color 0.4s; white-space: nowrap; font-weight: 600;
+        }
+        .step.active .step-lbl { color: var(--cyan); }
+        .step.done .step-lbl { color: rgba(0,242,255,0.8); }
+
+        /* ─── LAYOUT ──────────────────────────────────────────── */
+        .page-wrap {
+            max-width: 702px; margin: 0 auto;
+            padding: calc(var(--nav-h) + 50.4px) 14.4px 90px;
+        }
+        @media (min-width: 600px) { .page-wrap { padding: calc(var(--nav-h) + 57.6px) 25.2px 90px; } }
+
+        /* ─── HERO ────────────────────────────────────────────── */
+        .page-hero { text-align: center; margin-bottom: 36px; }
+        .page-tag {
+            font-family: 'Share Tech Mono'; font-size: clamp(0.612rem, 2vw, 0.72rem);
+            letter-spacing: 2.7px; color: var(--cyan); opacity: 0.85;
+            display: block; margin-bottom: 10.8px;
+        }
+        .page-title {
+            font-family: 'Orbitron'; font-size: clamp(1.44rem, 6vw, 2.25rem);
+            font-weight: 900; letter-spacing: 4.5px;
+            background: linear-gradient(135deg, #fff 30%, var(--cyan) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            line-height: 1.15;
+        }
+        .page-sub {
+            font-size: clamp(0.774rem, 2.5vw, 0.882rem);
+            color: rgba(255,255,255,0.65); letter-spacing: 0.9px;
+            margin-top: 7.2px; font-family: 'Share Tech Mono';
+        }
+
+        /* ─── SECTIONS ────────────────────────────────────────── */
+        .reg-section { display: none; }
+        .reg-section.active { display: block; animation: fadeUp 0.45s var(--expo); }
+        @keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:none} }
+
+        /* ─── CARD ────────────────────────────────────────────── */
+        .card {
+            background: var(--ocean-card); border: 1px solid var(--border);
+            padding: 19.8px 18px; margin-bottom: 16.2px;
+            position: relative; overflow: hidden; border-radius: var(--radius);
+            box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+        }
+        .card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1.8px;
+            background: linear-gradient(90deg,transparent,var(--cyan),transparent);
+        }
+        @media (min-width: 500px) { .card { padding: 25.2px 27px; } }
+        .card-title {
+            font-family: 'Orbitron'; font-size: clamp(0.63rem, 2vw, 0.756rem);
+            letter-spacing: 2.7px; color: var(--cyan); opacity: 0.95;
+            margin-bottom: 19.8px; display: flex; align-items: center; gap: 7.2px;
+        }
+        .card-title::before { content: '◈'; }
+
+        /* ─── CART PREVIEW ────────────────────────────────────── */
+        .events-list { display: flex; flex-direction: column; gap: 9px; }
+        .event-row {
+            display: flex; align-items: center; gap: 12.6px;
+            background: rgba(0,242,255,0.03); border: 1px solid rgba(0,242,255,0.1);
+            padding: 12.6px 14.4px; border-radius: var(--radius);
+            transition: border-color 0.25s, background 0.25s;
+        }
+        .event-row:hover { border-color: rgba(0,242,255,0.2); background: rgba(0,242,255,0.05); }
+        .ev-icon { font-size: 1.53rem; flex-shrink: 0; width: 36px; text-align: center; }
+        .ev-info { flex: 1; min-width: 0; }
+        .ev-name {
+            font-family: 'Orbitron'; font-size: clamp(0.684rem, 2vw, 0.81rem);
+            letter-spacing: 1.35px; color: #fff; margin-bottom: 3.6px;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .ev-meta {
+            font-family: 'Share Tech Mono'; font-size: clamp(0.612rem, 1.8vw, 0.72rem);
+            letter-spacing: 0.9px; color: rgba(255,255,255,0.68);
+        }
+        .ev-price {
+            font-family: 'Orbitron'; font-size: clamp(0.774rem, 2.5vw, 0.882rem);
+            letter-spacing: 0.9px; flex-shrink: 0; font-weight: 700;
+        }
+        .ev-price.free { color: var(--green); }
+        .ev-price.paid { color: var(--gold); }
+        .ev-badge {
+            font-family: 'Share Tech Mono'; font-size: clamp(0.576rem, 1.5vw, 0.648rem);
+            letter-spacing: 1.35px; padding: 3.6px 8.1px; border: 1px solid;
+            border-radius: 1.8px; flex-shrink: 0;
+        }
+        .ev-badge.ind { color: var(--green); border-color: rgba(6,214,160,0.35); background: rgba(6,214,160,0.08); }
+        .ev-badge.grp { color: var(--gold); border-color: rgba(255,209,102,0.35); background: rgba(255,209,102,0.08); }
+
+        /* ─── FIELDS ──────────────────────────────────────────── */
+        .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14.4px; margin-bottom: 14.4px; }
+        .row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14.4px; margin-bottom: 14.4px; }
+        @media (max-width: 540px) {
+            .row-2 { grid-template-columns: 1fr; gap: 12.6px; }
+            .row-3 { grid-template-columns: 1fr 1fr; gap: 12.6px; }
+        }
+        @media (max-width: 380px) { .row-3 { grid-template-columns: 1fr; } }
+        .row-2:last-child, .row-3:last-child { margin-bottom: 0; }
+
+        .field { display: flex; flex-direction: column; gap: 6.3px; }
+        .field label {
+            font-family: 'Orbitron'; font-size: clamp(0.684rem, 1.8vw, 0.792rem);
+            letter-spacing: 1.8px; color: var(--cyan); opacity: 0.95;
+        }
+        .field input, .field select {
+            width: 100%; background: rgba(0,242,255,0.06);
+            border: 1px solid var(--border-hi); color: #fff;
+            font-family: 'Rajdhani'; font-size: 0.945rem; font-weight: 500; letter-spacing: 0.45px;
+            padding: 11.7px 13.5px; outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s, background 0.3s;
+            -webkit-appearance: none; border-radius: var(--radius);
+        }
+        .field select { cursor: pointer; }
+        .field select option { background: #000d1a; color: #fff; }
+        .field input:focus, .field select:focus {
+            border-color: var(--cyan); background: rgba(0,242,255,0.06);
+            box-shadow: 0 0 0 2px rgba(0,242,255,0.1);
+        }
+        .field input::placeholder { color: rgba(255,255,255,0.6); }
+        .field-err {
+            font-family: 'Share Tech Mono'; font-size: 0.648rem; font-weight: 600;
+            letter-spacing: 0.45px; color: var(--error); display: none;
+        }
+        .field.has-error input, .field.has-error select { border-color: var(--error); box-shadow: 0 0 0 2px rgba(255,68,102,0.1); }
+        .field.has-error .field-err { display: block; }
+
+        .field-solo { margin-bottom: 14.4px; }
+        .field-solo:last-child { margin-bottom: 0; }
+
+        /* ─── EVENT PARTICIPANT BLOCKS ────────────────────────── */
+        .event-participant-block {
+            margin-bottom: 21.6px; border: 1px solid rgba(0,242,255,0.14);
+            background: rgba(0,10,20,0.65); position: relative; overflow: hidden;
+            border-radius: var(--radius);
+        }
+        .event-participant-block::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1.8px;
+            background: linear-gradient(90deg,transparent,rgba(0,242,255,0.45),transparent);
+        }
+        .event-participant-block.group-block::before { background: linear-gradient(90deg,transparent,rgba(255,209,102,0.55),transparent); }
+        .event-participant-block:last-child { margin-bottom: 0; }
+
+        .ep-header {
+            padding: 16.2px 18px; display: flex; align-items: center; gap: 12.6px;
+            border-bottom: 1px solid rgba(0,242,255,0.09); background: rgba(0,242,255,0.025);
+        }
+        .group-block .ep-header { background: rgba(255,209,102,0.03); border-bottom-color: rgba(255,209,102,0.1); }
+        .ep-icon { font-size: 1.44rem; flex-shrink: 0; }
+        .ep-title {
+            font-family: 'Orbitron'; font-size: clamp(0.666rem, 2vw, 0.774rem);
+            letter-spacing: 1.8px; color: #fff; margin-bottom: 3.6px;
+        }
+        .ep-subtitle {
+            font-family: 'Share Tech Mono'; font-size: clamp(0.612rem, 1.8vw, 0.72rem);
+            letter-spacing: 1.8px; color: rgba(255,255,255,0.68);
+        }
+        .ep-body { padding: 19.8px 18px; }
+
+        /* ─── TEAM SIZE PICKER ────────────────────────────────── */
+        .team-size-row {
+            display: flex; align-items: center; gap: 12.6px; margin-bottom: 18px;
+            padding: 12.6px 14.4px; background: rgba(255,209,102,0.04);
+            border: 1px solid rgba(255,209,102,0.16); border-radius: var(--radius);
+        }
+        .team-size-label {
+            font-family: 'Orbitron'; font-size: clamp(0.612rem, 1.8vw, 0.72rem);
+            letter-spacing: 1.8px; color: rgba(255,209,102,0.8); flex: 1;
+        }
+        .team-size-ctrl { display: flex; align-items: center; }
+        .ts-btn {
+            width: 34.2px; height: 34.2px; background: rgba(255,209,102,0.08);
+            border: 1px solid rgba(255,209,102,0.28); color: var(--gold);
+            font-size: 1.08rem; cursor: pointer; display: flex; align-items: center;
+            justify-content: center; transition: all 0.2s;
+        }
+        .ts-btn:hover { background: rgba(255,209,102,0.2); }
+        .ts-val {
+            width: 41.4px; height: 34.2px; background: rgba(0,0,0,0.4);
+            border-top: 1px solid rgba(255,209,102,0.25);
+            border-bottom: 1px solid rgba(255,209,102,0.25);
+            border-left: none; border-right: none; text-align: center;
+            font-family: 'Orbitron'; font-size: 0.81rem; color: var(--gold);
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        /* ─── COPY TEAM BANNER ────────────────────────────────── */
+        .copy-team-banner {
+            display: flex; align-items: center; gap: 10.8px; margin-bottom: 16.2px;
+            padding: 12.6px 14.4px; background: rgba(6,214,160,0.05);
+            border: 1px solid rgba(6,214,160,0.24); cursor: pointer;
+            transition: all 0.25s; border-radius: var(--radius);
+        }
+        .copy-team-banner:hover { background: rgba(6,214,160,0.1); border-color: rgba(6,214,160,0.4); }
+        .copy-team-icon { font-size: 1.08rem; flex-shrink: 0; }
+        .copy-team-text { flex: 1; }
+        .copy-team-title {
+            font-family: 'Orbitron'; font-size: clamp(0.612rem, 1.8vw, 0.72rem);
+            letter-spacing: 1.8px; color: var(--green); margin-bottom: 2.7px;
+        }
+        .copy-team-sub {
+            font-family: 'Share Tech Mono'; font-size: clamp(0.576rem, 1.5vw, 0.648rem);
+            letter-spacing: 0.9px; color: rgba(6,214,160,0.5);
+        }
+        .copy-team-btn {
+            font-family: 'Orbitron'; font-size: clamp(0.576rem, 1.5vw, 0.648rem);
+            letter-spacing: 1.8px; padding: 7.2px 14.4px;
+            border: 1px solid rgba(6,214,160,0.4); color: var(--green);
+            background: rgba(6,214,160,0.1); cursor: pointer; transition: all 0.2s;
+            white-space: nowrap; border-radius: var(--radius);
+        }
+        .copy-team-btn:hover { background: rgba(6,214,160,0.2); }
+
+        /* ─── MEMBER BLOCK ────────────────────────────────────── */
+        .member-wrap { display: flex; flex-direction: column; gap: 14.4px; }
+        .member-card {
+            border: 1px solid rgba(0,242,255,0.12); padding: 16.2px;
+            background: rgba(0,242,255,0.02); position: relative;
+            border-radius: var(--radius);
+        }
+        .member-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 0.9px;
+            background: linear-gradient(90deg,transparent,rgba(0,242,255,0.28),transparent);
+        }
+        .member-card.gold-card { border-color: rgba(255,209,102,0.16); background: rgba(255,209,102,0.02); }
+        .member-card.gold-card::before { background: linear-gradient(90deg,transparent,rgba(255,209,102,0.32),transparent); }
+        .member-label {
+            font-family: 'Share Tech Mono'; font-size: clamp(0.63rem, 1.8vw, 0.738rem);
+            letter-spacing: 2.7px; color: rgba(0,242,255,0.5); margin-bottom: 12.6px;
+        }
+        .gold-card .member-label { color: rgba(255,209,102,0.55); }
+
+        /* ─── INFO BOX ────────────────────────────────────────── */
+        .info-box {
+            background: rgba(0,242,255,0.04); border-left: 3px solid rgba(0,242,255,0.4);
+            padding: 12.6px 16.2px; margin-bottom: 16.2px; border-radius: 0 var(--radius) var(--radius) 0;
+        }
+        .info-box p { font-size: clamp(0.792rem, 2.5vw, 0.855rem); color: rgba(255,255,255,0.5); line-height: 1.7; }
+        .info-box p strong { color: var(--cyan); }
+        .info-box.gold { border-left-color: rgba(255,209,102,0.5); background: rgba(255,209,102,0.04); }
+        .info-box.gold p strong { color: var(--gold); }
+
+        /* ─── REVIEW TABLE ────────────────────────────────────── */
+        .review-table { width: 100%; border-collapse: collapse; }
+        .review-table td {
+            padding: 10.8px 0; border-bottom: 1px solid rgba(0,242,255,0.07);
+            font-size: clamp(0.792rem, 2.5vw, 0.855rem); vertical-align: top;
+        }
+        .review-table tr:last-child td { border-bottom: none; }
+        .review-table td:first-child {
+            font-family: 'Share Tech Mono'; font-size: clamp(0.612rem, 1.8vw, 0.72rem);
+            letter-spacing: 2.25px; color: rgba(0,242,255,0.55); width: 126px;
+            padding-right: 14.4px; padding-top: 13.5px; white-space: nowrap;
+        }
+        .review-table td:last-child { color: rgba(255,255,255,0.8); word-break: break-word; }
+        @media (max-width: 440px) {
+            .review-table td:first-child { width: 99px; font-size: 0.585rem; letter-spacing: 0.9px; }
+        }
+
+        /* ─── REVIEW EVENT ENTRY ──────────────────────────────── */
+        .review-event-block {
+            margin-bottom: 14.4px; border: 1px solid rgba(0,242,255,0.12);
+            padding: 16.2px; background: rgba(0,242,255,0.025);
+            border-radius: var(--radius);
+        }
+        .review-event-block:last-child { margin-bottom: 0; }
+        .review-event-header {
+            display: flex; align-items: center; gap: 10.8px; margin-bottom: 12.6px;
+            padding-bottom: 10.8px; border-bottom: 1px solid rgba(0,242,255,0.08);
+        }
+        .review-event-name {
+            font-family: 'Orbitron'; font-size: clamp(0.666rem, 2vw, 0.774rem);
+            letter-spacing: 1.35px; color: #fff;
+        }
+        .review-members-list { display: flex; flex-direction: column; gap: 7.2px; }
+        .review-member-row {
+            font-family: 'Share Tech Mono'; font-size: clamp(0.648rem, 1.8vw, 0.765rem);
+            letter-spacing: 0.9px; color: rgba(255,255,255,0.75);
+            display: flex; align-items: center; gap: 9px;
+        }
+        .review-member-row .rm-idx { color: rgba(0,242,255,0.72); width: 18px; flex-shrink: 0; }
+        .review-member-row .rm-name { color: rgba(255,255,255,0.8); }
+
+        /* ─── TOTAL BOX ───────────────────────────────────────── */
+        .total-box {
+            background: rgba(0,242,255,0.03); border: 1px solid rgba(0,242,255,0.2);
+            padding: 18px 19.8px; position: relative; overflow: hidden;
+            margin-bottom: 19.8px; border-radius: var(--radius);
+        }
+        .total-box::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1.8px;
+            background: linear-gradient(90deg,transparent,var(--cyan),transparent);
+        }
+        .total-row {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 9px 0; border-bottom: 1px solid rgba(0,242,255,0.06);
+            font-size: clamp(0.792rem, 2.5vw, 0.855rem); color: rgba(255,255,255,0.75);
+        }
+        .total-row:last-of-type { border-bottom: none; }
+        .total-row span:last-child {
+            font-family: 'Orbitron'; font-size: clamp(0.585rem, 2vw, 0.675rem);
+            letter-spacing: 0.9px; color: rgba(255,255,255,0.7);
+        }
+        .total-grand {
+            display: flex; justify-content: space-between; align-items: center;
+            padding-top: 14.4px; margin-top: 9px;
+            border-top: 1px solid rgba(0,242,255,0.25);
+        }
+        .total-grand-label {
+            font-family: 'Orbitron'; font-size: clamp(0.648rem, 1.8vw, 0.765rem);
+            letter-spacing: 2.25px; color: rgba(255,255,255,0.72);
+        }
+        .total-grand-val {
+            font-family: 'Orbitron'; font-size: clamp(1.17rem, 4vw, 1.44rem);
+            letter-spacing: 2.7px; color: var(--cyan);
+            text-shadow: 0 0 20px rgba(0,242,255,0.28);
+        }
+        .total-grand-val.is-free { color: var(--green); text-shadow: 0 0 20px rgba(6,214,160,0.28); }
+
+        /* ─── TERMS ───────────────────────────────────────────── */
+        .terms-row {
+            display: flex; align-items: flex-start; gap: 12.6px;
+            margin-bottom: 12.6px; cursor: pointer; padding: 3.6px 0;
+        }
+        .terms-row:last-child { margin-bottom: 0; }
+        .terms-row input[type="checkbox"] { display: none; }
+        .check-box {
+            width: 19.8px; height: 19.8px; border: 1.5px solid rgba(0,242,255,0.35);
+            flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+            transition: all 0.3s; margin-top: 0.9px; border-radius: 1.8px;
+        }
+        .terms-row input:checked ~ .check-box { background: var(--cyan); border-color: var(--cyan); }
+        .check-box::after { content: '✓'; font-size: 0.765rem; color: #000; opacity: 0; transition: opacity 0.2s; }
+        .terms-row input:checked ~ .check-box::after { opacity: 1; }
+        .terms-text {
+            font-size: clamp(0.792rem, 2.5vw, 0.855rem);
+            color: rgba(255,255,255,0.75); line-height: 1.7;
+        }
+        .terms-text a { color: var(--cyan); text-decoration: none; border-bottom: 1px solid rgba(0,242,255,0.3); }
+        .terms-text a:hover { border-bottom-color: var(--cyan); }
+
+        /* ─── SECURITY BADGES ─────────────────────────────────── */
+        .sec-badges {
+            display: flex; align-items: center; justify-content: center;
+            gap: 18px; flex-wrap: wrap; margin-top: 18px;
+        }
+        .sec-badge {
+            font-family: 'Share Tech Mono'; font-size: clamp(0.612rem, 1.8vw, 0.72rem);
+            letter-spacing: 1.35px; color: rgba(255,255,255,0.6);
+            display: flex; align-items: center; gap: 5.4px;
+        }
+
+        /* ─── BUTTONS ─────────────────────────────────────────── */
+        .btn-row { display: flex; gap: 10.8px; margin-top: 21.6px; }
+        .btn-back {
+            flex-shrink: 0; background: none;
+            border: 1px solid rgba(255,255,255,0.14); color: rgba(255,255,255,0.7);
+            font-family: 'Orbitron'; font-size: clamp(0.612rem, 1.8vw, 0.72rem);
+            letter-spacing: 1.8px; padding: 12.6px 16.2px; cursor: pointer;
+            transition: all 0.3s; white-space: nowrap; border-radius: var(--radius);
+            min-width: 39.6px;
+        }
+        .btn-back:hover { border-color: rgba(255,255,255,0.3); color: rgba(255,255,255,0.7); background: rgba(255,255,255,0.04); }
+        .btn-primary {
+            flex: 1; background: transparent; border: 1.5px solid var(--cyan);
+            color: var(--cyan); font-family: 'Orbitron';
+            font-size: clamp(0.63rem, 2vw, 0.756rem); letter-spacing: 2.25px;
+            padding: 13.5px 14.4px; cursor: pointer;
+            clip-path: polygon(5% 0, 100% 0, 95% 100%, 0 100%);
+            position: relative; overflow: hidden; transition: color 0.4s;
+            display: flex; align-items: center; justify-content: center; gap: 7.2px;
+            min-height: 45px;
+        }
+        .btn-primary::before {
+            content: ''; position: absolute; inset: 0; background: var(--cyan);
+            transform: scaleX(0); transform-origin: left;
+            transition: transform 0.4s var(--expo); z-index: 0;
+        }
+        .btn-primary:hover { color: #000; }
+        .btn-primary:hover::before { transform: scaleX(1); }
+        .btn-primary:disabled { opacity: 0.3; cursor: not-allowed; }
+        .btn-primary:disabled::before { display: none; }
+        .btn-txt { position: relative; z-index: 1; }
+        @media (max-width: 420px) {
+            .btn-row { flex-direction: column; }
+            .btn-back { text-align: center; }
+            .btn-primary { clip-path: none; }
+        }
+
+        /* ─── SPINNER ─────────────────────────────────────────── */
+        @keyframes spin { to{transform:rotate(360deg)} }
+        .spinner {
+            display: none; width: 13.5px; height: 13.5px;
+            border: 2px solid rgba(0,242,255,0.2); border-top-color: var(--cyan);
+            border-radius: 50%; animation: spin 0.7s linear infinite;
+            position: relative; z-index: 1; flex-shrink: 0;
+        }
+        .btn-primary:hover .spinner { border-top-color: #000; border-color: rgba(0,0,0,0.2); }
+
+        /* ─── SUCCESS ─────────────────────────────────────────── */
+        .success-panel { text-align: center; padding: 54px 18px 36px; }
+        .success-icon {
+            font-size: clamp(2.7rem, 10vw, 4.05rem); display: block; margin-bottom: 18px;
+            animation: bob 2.2s ease-in-out infinite;
+        }
+        @keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+        .success-title {
+            font-family: 'Orbitron'; font-size: clamp(1.08rem, 5vw, 1.8rem);
+            letter-spacing: 4.5px; color: var(--green); margin-bottom: 12.6px;
+        }
+        .success-ref {
+            font-family: 'Share Tech Mono'; font-size: clamp(0.738rem, 2.2vw, 0.855rem);
+            letter-spacing: 3.6px; color: rgba(0,242,255,0.6); margin-bottom: 16.2px;
+        }
+        .success-sub {
+            font-size: clamp(0.81rem, 2.5vw, 0.9rem); color: rgba(255,255,255,0.72);
+            line-height: 1.75; max-width: 396px; margin: 0 auto 30.6px;
+        }
+        .success-btn {
+            display: inline-block; font-family: 'Orbitron';
+            font-size: clamp(0.648rem, 2vw, 0.774rem); letter-spacing: 2.7px;
+            color: #000; background: var(--cyan); padding: 14.4px 32.4px;
+            border: none; clip-path: polygon(5% 0,100% 0,95% 100%,0 100%);
+            text-decoration: none; transition: opacity 0.3s, transform 0.2s; cursor: pointer;
+        }
+        .success-btn:hover { opacity: 0.88; transform: translateY(-2px); }
+        .success-home {
+            display: block; margin-top: 18px; font-family: 'Orbitron';
+            font-size: clamp(0.612rem, 1.8vw, 0.72rem); letter-spacing: 2.25px;
+            color: rgba(255,255,255,0.62); text-decoration: none; transition: color 0.3s;
+        }
+        .success-home:hover { color: rgba(255,255,255,0.55); }
+
+        /* ─── OFFICIAL TICKET DISCLAIMER ──────────────────────── */
+        .ticket-disclaimer {
+            max-width: 540px; margin: 0 auto 27px; text-align: left;
+            border: 1.5px solid var(--gold); background: rgba(255,209,102,0.06);
+            padding: 16.2px 18px; border-radius: var(--radius); position: relative;
+            box-shadow: 0 0 28px rgba(255,209,102,0.09);
+        }
+        .ticket-disclaimer::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1.8px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        }
+        .ticket-disclaimer-head {
+            display: flex; align-items: center; gap: 8px; font-family: 'Orbitron';
+            font-size: clamp(0.63rem, 1.8vw, 0.72rem); letter-spacing: 2.25px;
+            color: var(--gold); margin-bottom: 9px; font-weight: 700;
+        }
+        .ticket-disclaimer-body {
+            font-family: 'Share Tech Mono'; font-size: clamp(0.702rem, 2vw, 0.792rem);
+            letter-spacing: 0.45px; color: rgba(255,255,255,0.82); line-height: 1.7;
+        }
+        .ticket-disclaimer-body strong { color: var(--gold); }
+        .ticket-disclaimer-body .warn-word { color: var(--coral); font-weight: 700; }
+
+        /* ─── TOAST ───────────────────────────────────────────── */
+        .toast {
+            position: fixed; bottom: 25.2px; left: 50%;
+            transform: translateX(-50%) translateY(80px);
+            background: rgba(0,13,26,0.97); border: 1px solid var(--border-hi);
+            padding: 12.6px 25.2px; font-family: 'Orbitron';
+            font-size: clamp(0.63rem, 2vw, 0.756rem); letter-spacing: 2.25px;
+            color: var(--cyan); z-index: 9999; pointer-events: none;
+            transition: transform 0.5s var(--expo), opacity 0.5s;
+            opacity: 0; white-space: nowrap; max-width: 92vw; text-align: center;
+            border-radius: var(--radius);
+            box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+        }
+        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+        .toast.error   { border-color: var(--error); color: var(--error); }
+        .toast.success { border-color: var(--green); color: var(--green); }
+
+        /* ─── CONFETTI ────────────────────────────────────────── */
+        .confetti-dot {
+            position: fixed; pointer-events: none; border-radius: 50%;
+            z-index: 8000; animation: fall 1.8s ease-out forwards;
+        }
+        @keyframes fall {
+            0%   { transform: translateY(-20px) rotate(0deg);   opacity: 1; }
+            100% { transform: translateY(100vh)  rotate(720deg); opacity: 0; }
+        }
+
+        /* ─── TICKET SECTION ──────────────────────────────────── */
+        .ticket-mail-notice {
+            display: flex; align-items: center; justify-content: center; gap: 9px;
+            padding: 12.6px 18px; margin: 0 auto 21.6px; max-width: 504px;
+            border: 1px solid rgba(0,242,255,0.22); background: rgba(0,242,255,0.04);
+            font-family: 'Share Tech Mono'; font-size: clamp(0.648rem, 1.8vw, 0.765rem);
+            letter-spacing: 1.8px; color: rgba(0,242,255,0.75);
+            border-radius: var(--radius);
+        }
+        .mail-notice-warn {
+            border-color: rgba(255,180,0,0.3); background: rgba(255,180,0,0.04);
+            color: rgba(255,200,80,0.85);
+        }
+        .ticket-section { margin: 0 auto 25.2px; max-width: 630px; width: 100%; text-align: left; }
+        .ticket-section-label {
+            font-family: 'Orbitron'; font-size: clamp(0.612rem, 1.8vw, 0.72rem);
+            letter-spacing: 3.6px; color: rgba(0,242,255,0.5); margin-bottom: 14.4px;
+        }
+
+        /* single ticket preview */
+        .ticket-img-wrap {
+            position: relative; border: 1px solid rgba(0,242,255,0.22);
+            background: #000; min-height: 108px;
+            box-shadow: 0 0 40px rgba(0,242,255,0.07);
+            border-radius: var(--radius); overflow: hidden;
+        }
+        .ticket-img { width: 100%; display: block; opacity: 0; transition: opacity 0.6s; }
+        .ticket-img.loaded { opacity: 1; }
+        .ticket-loading {
+            position: absolute; inset: 0; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; gap: 12.6px;
+            font-family: 'Share Tech Mono'; font-size: clamp(0.63rem, 1.8vw, 0.738rem);
+            letter-spacing: 2.7px; color: rgba(0,242,255,0.7);
+        }
+        .ticket-spinner {
+            width: 25.2px; height: 25.2px; border: 2px solid rgba(0,242,255,0.15);
+            border-top-color: var(--cyan); border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        /* ─── DOWNLOAD HERO BANNER ────────────────────────────── */
+        .dl-hero-banner {
+            margin: 0 auto 18px; max-width: 540px;
+            border: 2px solid var(--cyan);
+            background: linear-gradient(135deg, rgba(0,242,255,0.08) 0%, rgba(0,242,255,0.03) 100%);
+            box-shadow: 0 0 40px rgba(0,242,255,0.1), inset 0 0 24px rgba(0,242,255,0.03);
+            padding: 25.2px 21.6px; position: relative; overflow: hidden;
+            border-radius: var(--radius);
+        }
+        .dl-hero-banner::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1.8px;
+            background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+        }
+        .dl-hero-banner::after {
+            content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1.8px;
+            background: linear-gradient(90deg, transparent, rgba(0,242,255,0.5), transparent);
+        }
+        .dl-hero-title {
+            font-family: 'Orbitron'; font-size: clamp(0.648rem, 2vw, 0.774rem);
+            letter-spacing: 3.6px; color: var(--cyan); opacity: 0.8; margin-bottom: 7.2px;
+        }
+        .dl-hero-sub {
+            font-family: 'Share Tech Mono'; font-size: clamp(0.774rem, 2.2vw, 0.855rem);
+            letter-spacing: 0.45px; color: rgba(255,255,255,0.52);
+            margin-bottom: 18px; line-height: 1.65;
+        }
+        .dl-hero-sub strong { color: rgba(255,255,255,0.85); }
+
+        /* big download button */
+        .t-btn-dl-hero {
+            display: flex; align-items: center; justify-content: center; gap: 10.8px;
+            width: 100%; padding: 16.2px 21.6px;
+            background: var(--cyan); color: #000;
+            font-family: 'Orbitron'; font-size: clamp(0.684rem, 2vw, 0.81rem);
+            letter-spacing: 2.7px; border: none; cursor: pointer;
+            clip-path: polygon(3% 0, 100% 0, 97% 100%, 0 100%);
+            transition: opacity 0.3s, transform 0.2s;
+            text-decoration: none; font-weight: 700;
+        }
+        .t-btn-dl-hero:hover { opacity: 0.88; transform: translateY(-2px); }
+        .t-btn-dl-hero:disabled { opacity: 0.3; cursor: not-allowed; transform: none; }
+        .t-btn-dl-hero .dl-arrow { font-size: 1.08rem; }
+
+        /* email-soon notice strip */
+        .email-soon-strip {
+            display: flex; align-items: flex-start; gap: 12.6px;
+            margin: 12.6px auto 0; max-width: 540px;
+            padding: 12.6px 16.2px;
+            background: rgba(255,209,102,0.05); border: 1px solid rgba(255,209,102,0.28);
+            font-family: 'Share Tech Mono'; font-size: clamp(0.648rem, 1.8vw, 0.765rem);
+            letter-spacing: 0.9px; color: rgba(255,200,80,0.8);
+            line-height: 1.75; text-align: left; border-radius: var(--radius);
+        }
+        .email-soon-icon { font-size: 0.99rem; flex-shrink: 0; margin-top: 1.8px; }
+        .email-soon-strip a { color: var(--gold); text-decoration: underline; cursor: pointer; }
+        .email-soon-strip a:hover { color: #ffe98d; }
+
+        /* action buttons */
+        .ticket-actions {
+            display: flex; gap: 10.8px; flex-wrap: wrap;
+            justify-content: center; margin: 16.2px auto 0; max-width: 504px;
+        }
+        .t-btn {
+            display: inline-flex; align-items: center; gap: 7.2px;
+            font-family: 'Orbitron'; font-size: clamp(0.63rem, 1.8vw, 0.738rem);
+            letter-spacing: 2.25px; padding: 12.6px 21.6px;
+            cursor: pointer; border: none; text-decoration: none;
+            transition: all 0.3s; clip-path: polygon(4% 0,100% 0,96% 100%,0 100%);
+            min-height: 43.2px;
+        }
+        .t-btn-dl { background: var(--cyan); color: #000; font-weight: 700; }
+        .t-btn-dl:hover { opacity: 0.85; transform: translateY(-1px); }
+        .t-btn-resend {
+            background: transparent; border: 1px solid rgba(255,209,102,0.35);
+            color: var(--gold); clip-path: none;
+            font-size: clamp(0.612rem, 1.6vw, 0.702rem);
+            border-radius: var(--radius);
+        }
+        .t-btn-resend:hover { background: rgba(255,209,102,0.1); border-color: rgba(255,209,102,0.6); }
+        .t-btn-resend:disabled { opacity: 0.3; cursor: not-allowed; }
+
+        .multi-ticket-note {
+            font-family: 'Share Tech Mono'; font-size: clamp(0.63rem, 1.8vw, 0.738rem);
+            letter-spacing: 1.8px; color: rgba(0,242,255,0.7); padding: 10.8px 0;
+        }
+
+        /* multi-ticket individual download rows */
+        .multi-ticket-item {
+            display: flex; align-items: center; gap: 12.6px;
+            border: 1px solid rgba(0,242,255,0.2); background: rgba(0,242,255,0.03);
+            padding: 14.4px 18px; margin-bottom: 9px; cursor: pointer;
+            text-decoration: none; border-radius: var(--radius);
+            transition: border-color 0.3s, background 0.3s, box-shadow 0.3s;
+        }
+        .multi-ticket-item:hover {
+            border-color: var(--cyan); background: rgba(0,242,255,0.08);
+            box-shadow: 0 0 16px rgba(0,242,255,0.08);
+        }
+        .mti-icon { font-size: 1.44rem; flex-shrink: 0; }
+        .mti-info { flex: 1; text-align: left; }
+        .mti-name {
+            font-family: 'Orbitron'; font-size: clamp(0.666rem, 2vw, 0.774rem);
+            letter-spacing: 1.35px; color: #fff; margin-bottom: 4.5px;
+        }
+        .mti-code {
+            font-family: 'Share Tech Mono'; font-size: clamp(0.63rem, 1.8vw, 0.738rem);
+            color: rgba(0,242,255,0.5);
+        }
+        .mti-dl {
+            font-family: 'Orbitron'; font-size: clamp(0.612rem, 1.8vw, 0.72rem);
+            letter-spacing: 1.8px; color: #000; background: var(--cyan);
+            padding: 8.1px 14.4px; flex-shrink: 0; font-weight: 700;
+            clip-path: polygon(6% 0,100% 0,94% 100%,0 100%);
+        }
+
+        @media (max-width: 500px) {
+            .ticket-actions { flex-direction: column; align-items: stretch; }
+            .t-btn { justify-content: center; clip-path: none; }
+            .t-btn-dl-hero { clip-path: none; }
+            .multi-ticket-item { flex-wrap: wrap; }
+            .mti-dl { clip-path: none; width: 100%; text-align: center; margin-top: 7.2px; padding: 10.8px; }
+        }
+
+        /* ─── PER-TICKET DOWNLOAD CARDS (multi-ticket) ───────── */
+        .ticket-dl-card {
+            display: flex; align-items: center; justify-content: space-between;
+            gap: 14.4px; padding: 16.2px 18px; margin-bottom: 10.8px;
+            background: var(--ocean-card); border: 1px solid rgba(0,242,255,0.2);
+            position: relative; overflow: hidden; border-radius: var(--radius);
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .ticket-dl-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1.8px;
+            background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+        }
+        .ticket-dl-card:hover {
+            border-color: rgba(0,242,255,0.45);
+            box-shadow: 0 0 24px rgba(0,242,255,0.08);
+        }
+        .ticket-dl-card-left { display: flex; align-items: center; gap: 12.6px; min-width: 0; flex: 1; }
+        .ticket-dl-num {
+            font-family: 'Share Tech Mono'; font-size: clamp(0.585rem, 2vw, 0.675rem);
+            letter-spacing: 1.8px; color: rgba(0,242,255,0.68);
+            flex-shrink: 0; width: 21.6px; text-align: center;
+        }
+        .ticket-dl-icon { font-size: 1.62rem; flex-shrink: 0; }
+        .ticket-dl-info { min-width: 0; }
+        .ticket-dl-name {
+            font-family: 'Orbitron'; font-size: clamp(0.684rem, 2vw, 0.81rem);
+            letter-spacing: 1.35px; color: #fff; margin-bottom: 4.5px;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .ticket-dl-meta {
+            font-family: 'Share Tech Mono'; font-size: clamp(0.63rem, 1.8vw, 0.738rem);
+            letter-spacing: 0.9px; color: rgba(255,255,255,0.65); margin-bottom: 3.6px;
+        }
+        .ticket-dl-code {
+            font-family: 'Share Tech Mono'; font-size: clamp(0.612rem, 1.5vw, 0.702rem);
+            letter-spacing: 1.35px; color: rgba(0,242,255,0.72);
+        }
+        .ticket-dl-btn {
+            display: flex; align-items: center; gap: 8.1px; flex-shrink: 0;
+            font-family: 'Orbitron'; font-size: clamp(0.63rem, 1.8vw, 0.738rem);
+            letter-spacing: 1.8px; padding: 11.7px 19.8px;
+            background: var(--cyan); color: #000;
+            border: none; cursor: pointer; font-weight: 700;
+            clip-path: polygon(6% 0, 100% 0, 94% 100%, 0 100%);
+            transition: opacity 0.3s, transform 0.2s;
+            min-height: 43.2px;
+        }
+        .ticket-dl-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+        .ticket-dl-btn:disabled { opacity: 0.3; cursor: not-allowed; transform: none; }
+        .ticket-dl-btn .dl-arrow { font-size: 0.99rem; }
+
+        @media (max-width: 480px) {
+            .ticket-dl-card { flex-direction: column; align-items: stretch; gap: 12.6px; }
+            .ticket-dl-btn {
+                justify-content: center; width: 100%;
+                padding: 13.5px; clip-path: none; border-radius: var(--radius);
+            }
+        }
+
+        /* ─── PAYMENT METHOD TOGGLE ──────────────────────────── */
+        .pay-method-row {
+            display: flex; gap: 10.8px; margin-bottom: 19.8px; flex-wrap: wrap;
+        }
+        .pay-method-btn {
+            flex: 1; min-width: 126px;
+            padding: 14.4px 12.6px; border: 1.5px solid rgba(0,242,255,0.2);
+            background: transparent; cursor: pointer;
+            font-family: 'Orbitron'; font-size: clamp(0.612rem, 1.8vw, 0.72rem);
+            letter-spacing: 1.8px; color: rgba(255,255,255,0.7);
+            border-radius: var(--radius); transition: all 0.3s;
+            display: flex; align-items: center; justify-content: center; gap: 9px;
+        }
+        .pay-method-btn:hover { border-color: rgba(0,242,255,0.45); color: rgba(255,255,255,0.7); }
+        .pay-method-btn.active {
+            border-color: var(--cyan); color: var(--cyan);
+            background: rgba(0,242,255,0.07);
+            box-shadow: 0 0 0 2px rgba(0,242,255,0.08);
+        }
+        .pay-method-btn.upi-active {
+            border-color: var(--gold); color: var(--gold);
+            background: rgba(255,209,102,0.06);
+            box-shadow: 0 0 0 2px rgba(255,209,102,0.07);
+        }
+        .pay-method-btn.unavailable,
+        .pay-method-btn:disabled {
+            cursor: not-allowed; opacity: 0.4; filter: grayscale(0.6);
+            border-color: rgba(255,255,255,0.12); color: rgba(255,255,255,0.62);
+            background: transparent; box-shadow: none;
+        }
+        .pay-method-btn.unavailable:hover { border-color: rgba(255,255,255,0.12); color: rgba(255,255,255,0.62); }
+        .pay-method-unavail-tag {
+            display: block; margin-top: 3.6px;
+            font-family: 'Share Tech Mono'; font-size: 0.612rem;
+            letter-spacing: 0.9px; color: var(--coral); opacity: 0.95;
+        }
+        .pay-method-icon { font-size: 1.035rem; }
+
+        /* ─── UPI PANEL ───────────────────────────────────────── */
+        .upi-panel { display: none; }
+        .upi-panel.visible { display: block; animation: fadeUp 0.4s var(--expo); }
+
+        .upi-qr-wrap {
+            text-align: center; padding: 25.2px 18px 21.6px;
+            background: rgba(255,209,102,0.03); border: 1px solid rgba(255,209,102,0.2);
+            border-radius: var(--radius); margin-bottom: 16.2px; position: relative;
+        }
+        .upi-qr-wrap::before {
+            content:''; position:absolute; top:0; left:0; right:0; height:1.8px;
+            background: linear-gradient(90deg,transparent,var(--gold),transparent);
+        }
+        .upi-qr-label {
+            font-family: 'Orbitron'; font-size: clamp(0.612rem, 1.8vw, 0.72rem);
+            letter-spacing: 2.7px; color: rgba(255,209,102,0.7); margin-bottom: 14.4px;
+        }
+        .upi-qr-img-box {
+            display: inline-block; padding: 12.6px;
+            background: #fff; border-radius: 5.4px;
+            margin-bottom: 14.4px; box-shadow: 0 0 30px rgba(255,209,102,0.12);
+        }
+        .upi-qr-img-box img { display:block; width: 180px; height: 180px; }
+        .upi-amount-box {
+            display: inline-block; margin-bottom: 16.2px; padding: 10.8px 25.2px;
+            background: rgba(255,209,102,0.06); border: 1.5px solid rgba(255,209,102,0.4);
+            border-radius: var(--radius);
+        }
+        .upi-amount-label {
+            font-family: 'Orbitron'; font-size: clamp(0.576rem, 1.5vw, 0.648rem);
+            letter-spacing: 2.7px; color: rgba(255,209,102,0.6); margin-bottom: 3.6px;
+        }
+        .upi-amount-value {
+            font-family: 'Orbitron'; font-size: clamp(1.26rem, 5vw, 1.62rem);
+            font-weight: 700; color: var(--gold); letter-spacing: 0.9px;
+            text-shadow: 0 0 20px rgba(255,209,102,0.35);
+        }
+        .upi-amount-sub {
+            font-family: 'Share Tech Mono'; font-size: clamp(0.612rem, 1.5vw, 0.684rem);
+            letter-spacing: 0.45px; color: rgba(255,255,255,0.65); margin-top: 3.6px;
+        }
+        .upi-id-chip {
+            display: inline-flex; align-items: center; gap: 9px;
+            background: rgba(0,0,0,0.45); border: 1px solid rgba(255,209,102,0.3);
+            padding: 9px 18px; border-radius: 1.8px; cursor: pointer;
+            font-family: 'Share Tech Mono'; font-size: clamp(0.756rem, 2.2vw, 0.864rem);
+            letter-spacing: 1.35px; color: var(--gold);
+            transition: background 0.2s;
+        }
+        .upi-id-chip:hover { background: rgba(255,209,102,0.1); }
+        .upi-id-copy-icon { font-size: 0.81rem; opacity: 0.6; }
+        .upi-autopay-btn {
+            display: block; width: 100%; max-width: 280px; margin: 14.4px auto 0;
+            background: linear-gradient(135deg, var(--cyan), #0099aa); color: #001318;
+            font-family: 'Orbitron'; font-weight: 700; font-size: 0.72rem; letter-spacing: 1.8px;
+            border: none; border-radius: var(--radius); padding: 12.6px 18px; cursor: pointer;
+            box-shadow: 0 0 18px rgba(0,242,255,0.25); transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .upi-autopay-btn:hover { transform: translateY(-1px); box-shadow: 0 0 24px rgba(0,242,255,0.4); }
+        .upi-autopay-btn:active { transform: translateY(0); }
+        .upi-autopay-note {
+            font-size: 0.675rem; color: rgba(255,255,255,0.5); margin-top: 7.2px;
+            font-family: 'Share Tech Mono'; letter-spacing: 0.45px;
+        }
+        .upi-steps {
+            display: flex; gap: 9px; flex-direction: column;
+            margin-bottom: 18px;
+        }
+        .upi-step-row {
+            display: flex; align-items: flex-start; gap: 12.6px;
+            background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.06);
+            padding: 10.8px 14.4px; border-radius: var(--radius);
+        }
+        .upi-step-num {
+            width: 23.4px; height: 23.4px; border-radius: 50%; flex-shrink: 0;
+            background: rgba(255,209,102,0.14); border: 1.5px solid rgba(255,209,102,0.4);
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Orbitron'; font-size: 0.585rem; color: var(--gold); font-weight: 700;
+        }
+        .upi-step-text {
+            font-family: 'Share Tech Mono'; font-size: clamp(0.684rem, 1.8vw, 0.792rem);
+            letter-spacing: 0.9px; color: rgba(255,255,255,0.5); line-height: 1.6;
+            padding-top: 2.7px;
+        }
+        .upi-step-text strong { color: rgba(255,255,255,0.82); }
+
+        /* ─── UPI PROOF UPLOAD ───────────────────────────────── */
+        .upi-proof-section { margin-top: 3.6px; }
+        .upi-proof-section .card-title { margin-bottom: 16.2px; color: var(--gold); }
+
+        .upload-drop {
+            border: 1.5px dashed rgba(255,209,102,0.35);
+            background: rgba(255,209,102,0.03);
+            border-radius: var(--radius); padding: 27px 18px;
+            text-align: center; cursor: pointer; transition: all 0.3s;
+            margin-bottom: 14.4px; position: relative;
+        }
+        .upload-drop:hover, .upload-drop.drag-over {
+            border-color: var(--gold); background: rgba(255,209,102,0.07);
+        }
+        .upload-drop input[type="file"] {
+            position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+        }
+        .upload-drop-icon { font-size: 1.8rem; margin-bottom: 9px; display: block; }
+        .upload-drop-label {
+            font-family: 'Orbitron'; font-size: clamp(0.63rem, 1.8vw, 0.738rem);
+            letter-spacing: 1.8px; color: rgba(255,209,102,0.75); margin-bottom: 5.4px;
+        }
+        .upload-drop-sub {
+            font-family: 'Share Tech Mono'; font-size: clamp(0.63rem, 1.6vw, 0.738rem);
+            letter-spacing: 0.9px; color: rgba(255,255,255,0.62);
+        }
+        .upload-preview {
+            display: none; position: relative;
+            border: 1px solid rgba(255,209,102,0.4); border-radius: var(--radius); overflow: hidden;
+            margin-bottom: 14.4px;
+        }
+        .upload-preview img { width: 100%; max-height: 260px; object-fit: contain; display: block; background: #000; }
+        .upload-preview-remove {
+            position: absolute; top: 7.2px; right: 7.2px;
+            background: rgba(255,68,102,0.85); color: #fff;
+            border: none; cursor: pointer; padding: 5.4px 9px;
+            font-family: 'Orbitron'; font-size: 0.612rem; letter-spacing: 0.9px;
+            border-radius: 1.8px; transition: background 0.2s;
+        }
+        .upload-preview-remove:hover { background: var(--error); }
+
+        /* ─── UPLOAD SLOT LOADING STATE ───────────────────────── */
+        .upload-loading {
+            display: none; flex-direction: column; align-items: center;
+            justify-content: center; gap: 10.8px; padding: 12.6px 0;
+        }
+        .upload-loading.show { display: flex; }
+        .upload-spinner {
+            width: 23.4px; height: 23.4px; border: 2px solid rgba(255,209,102,0.18);
+            border-top-color: var(--gold); border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+        .upload-loading-text {
+            font-family: 'Share Tech Mono'; font-size: clamp(0.63rem, 1.6vw, 0.738rem);
+            letter-spacing: 1.8px; color: rgba(255,209,102,0.7);
+        }
+
+        /* ─── UPI SUBMIT OVERLAY ──────────────────────────────── */
+        .upi-submit-overlay {
+            display: none; position: fixed; inset: 0; z-index: 9500;
+            background: rgba(0,8,16,0.88); backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            align-items: center; justify-content: center; padding: 18px;
+        }
+        .upi-submit-overlay.show { display: flex; animation: fadeUp 0.3s var(--expo); }
+        .upi-submit-overlay-box {
+            display: flex; flex-direction: column; align-items: center; gap: 16.2px;
+            padding: 37.8px 34.2px; border: 1px solid rgba(0,242,255,0.25);
+            background: rgba(8,16,26,0.7); border-radius: var(--radius);
+            box-shadow: 0 0 60px rgba(0,242,255,0.12); max-width: 288px; text-align: center;
+        }
+        .upi-submit-overlay-text {
+            font-family: 'Orbitron'; font-size: clamp(0.648rem, 1.8vw, 0.765rem);
+            letter-spacing: 2.25px; color: rgba(0,242,255,0.85); line-height: 1.8;
+        }
+        .upi-submit-overlay-sub {
+            font-family: 'Share Tech Mono'; font-size: clamp(0.612rem, 1.5vw, 0.684rem);
+            letter-spacing: 0.9px; color: rgba(255,255,255,0.62);
+        }
+
+        .txn-field-wrap { margin-bottom: 3.6px; }
+        .txn-field-wrap .field input {
+            font-family: 'Share Tech Mono'; letter-spacing: 1.8px;
+        }
+        .txn-warning-note {
+            display: flex; align-items: flex-start; gap: 8px;
+            margin-top: 10px; padding: 10px 12px;
+            background: rgba(255,68,102,0.08); border: 1px solid rgba(255,68,102,0.35);
+            border-radius: var(--radius);
+            font-family: 'Share Tech Mono'; font-size: clamp(0.66rem, 1.8vw, 0.76rem);
+            letter-spacing: 0.3px; color: rgba(255,150,170,0.95); line-height: 1.55;
+        }
+        .txn-warning-note strong { color: var(--error); }
+
+        /* ─── TXN ID EXAMPLE (collapsible) ────────────────────── */
+        .txn-example-wrap { margin-bottom: 16px; }
+        .txn-example-toggle {
+            display: flex; align-items: center; justify-content: space-between;
+            gap: 10px; cursor: pointer; padding: 12px 14px;
+            background: rgba(0,242,255,0.04); border: 1px solid rgba(0,242,255,0.25);
+            border-radius: var(--radius); transition: background 0.2s, border-color 0.2s;
+            font-family: 'Orbitron'; font-size: clamp(0.62rem, 1.8vw, 0.7rem);
+            letter-spacing: 1px; color: var(--cyan); font-weight: 600;
+        }
+        .txn-example-toggle:hover { background: rgba(0,242,255,0.08); border-color: rgba(0,242,255,0.4); }
+        .txn-example-chevron { transition: transform 0.3s var(--expo); flex-shrink: 0; font-size: 0.9rem; }
+        .txn-example-toggle.open .txn-example-chevron { transform: rotate(180deg); }
+        .txn-example-body {
+            max-height: 0; overflow: hidden;
+            transition: max-height 0.35s var(--expo);
+        }
+        .txn-example-body.open { max-height: 520px; }
+        .txn-example-note {
+            font-size: clamp(0.82rem, 2.2vw, 0.9rem); color: rgba(255,255,255,0.7);
+            line-height: 1.6; margin: 12px 2px 14px;
+        }
+        .txn-example-note strong { color: var(--gold); }
+
+        /* mock UPI success screen */
+        .txn-example-mock {
+            max-width: 320px; margin: 0 auto 10px;
+            background: #0a0e14; border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 10px; padding: 20px 18px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+        }
+        .txn-mock-header {
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            font-family: 'Rajdhani'; font-weight: 600; font-size: 0.95rem;
+            color: var(--green); margin-bottom: 14px;
+        }
+        .txn-mock-check {
+            width: 22px; height: 22px; border-radius: 50%;
+            background: var(--green); color: #000; font-size: 0.7rem;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+        }
+        .txn-mock-amount {
+            text-align: center; font-family: 'Orbitron'; font-weight: 700;
+            font-size: 1.6rem; color: #fff; margin-bottom: 16px;
+        }
+        .txn-mock-row {
+            display: flex; justify-content: space-between; gap: 10px;
+            padding: 9px 0; border-top: 1px solid rgba(255,255,255,0.08);
+            font-family: 'Share Tech Mono'; font-size: 0.78rem;
+        }
+        .txn-mock-key { color: rgba(255,255,255,0.5); flex-shrink: 0; }
+        .txn-mock-val { color: rgba(255,255,255,0.85); text-align: right; word-break: break-all; }
+        .txn-mock-row.txn-mock-highlight {
+            background: rgba(255,209,102,0.1);
+            margin: 4px -10px -4px; padding: 10px 10px;
+            border-top: 1px dashed rgba(255,209,102,0.5);
+            border-radius: 4px;
+        }
+        .txn-mock-utr { color: var(--gold); font-weight: 700; letter-spacing: 1px; }
+        .txn-mock-arrow {
+            text-align: center; font-family: 'Share Tech Mono'; font-size: 0.7rem;
+            letter-spacing: 0.5px; color: rgba(255,209,102,0.85); margin-top: 10px;
+        }
+
+        .upi-submit-note {
+            font-family: 'Share Tech Mono'; font-size: clamp(0.63rem, 1.6vw, 0.738rem);
+            letter-spacing: 0.9px; color: rgba(255,255,255,0.62); margin-top: 12.6px;
+            line-height: 1.7;
+        }
+        .upi-submit-note strong { color: rgba(255,209,102,0.7); }
+
+        /* ─── GLOBAL MOBILE POLISH ────────────────────────────── */
+        @media (max-width: 440px) {
+            .card { padding: 16.2px 14.4px; }
+            .ep-body { padding: 14.4px 12.6px; }
+            .ep-header { padding: 12.6px 14.4px; }
+            .event-row { flex-wrap: wrap; gap: 9px; }
+            .ev-badge { order: -1; }
+            .success-panel { padding: 36px 14.4px 27px; }
+            /* Event names (e.g. "CEO SESSION", "IMO SESSION") were being
+               clipped/hidden in the "EVENTS IN CART" list because ev-info
+               could get squeezed to near-zero width next to the icon,
+               badge and price. Give the name its own full-width line and
+               let it wrap instead of being cut off with an ellipsis. */
+            .ev-info { flex-basis: 100%; }
+            .ev-name {
+                white-space: normal;
+                overflow: visible;
+                text-overflow: clip;
+                word-break: break-word;
+                line-height: 1.3;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div id="bg">
+    <div class="grid-bg"></div>
+    <div class="glow g1"></div>
+    <div class="glow g2"></div>
+    <div class="scan-line"></div>
+</div>
+
+<!-- NAV -->
+<nav>
+    <a href="{{ url_for('home') }}" class="nav-brand">⚓ ANCHORAGE 2026</a>
+    <div class="nav-right">
+        <a href="{{ url_for('events') }}" class="nav-link">EVENTS</a>
+        <a href="{{ url_for('cart') }}" class="nav-link">CART</a>
+    </div>
+</nav>
+
+<!-- STEPPER -->
+<div class="stepper-wrap">
+    <div class="stepper">
+        <div class="step active" id="step1">
+            <div class="step-dot">1</div>
+            <div class="step-lbl">PARTICIPANT</div>
+        </div>
+        <div class="step" id="step2">
+            <div class="step-dot">2</div>
+            <div class="step-lbl">TEAMS</div>
+        </div>
+        <div class="step" id="step3">
+            <div class="step-dot">3</div>
+            <div class="step-lbl">REVIEW</div>
+        </div>
+        <div class="step" id="step4">
+            <div class="step-dot">4</div>
+            <div class="step-lbl">PAYMENT</div>
+        </div>
+    </div>
+</div>
+
+<div class="page-wrap">
+
+    <div class="page-hero">
+        <span class="page-tag">◈ ANCHORAGE 2026 · DEPT OF SHIP TECHNOLOGY, CUSAT ◈</span>
+        <h1 class="page-title">EVENT REGISTRATION</h1>
+        <p class="page-sub">// Complete your registration for selected events</p>
+    </div>
+
+    <!-- ══ SECTION 1 — PARTICIPANT INFO ══ -->
+    <div class="reg-section active" id="sec1">
+
+        <div class="card">
+            <div class="card-title">EVENTS IN CART</div>
+            <div class="events-list" id="cartPreviewList">
+                <!-- Rendered by renderCartPreview() from CART_ITEMS (Flask → user_cart JOIN events) -->
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">YOUR DETAILS</div>
+
+            <div class="row-2">
+                <div class="field" id="f1-fn">
+                    <label>FIRST NAME *</label>
+                    <input type="text" id="p1Fname" placeholder="First name" autocomplete="given-name"
+                           value="{{ session.get('user_name','').split(' ')[0] }}">
+                    <div class="field-err">First name required</div>
+                </div>
+                <div class="field" id="f1-ln">
+                    <label>LAST NAME *</label>
+                    <input type="text" id="p1Lname" placeholder="Last name" autocomplete="family-name"
+                           value="{{ ' '.join(session.get('user_name','').split(' ')[1:]) }}">
+                    <div class="field-err">Last name required</div>
+                </div>
+            </div>
+
+            <div class="row-2">
+                <div class="field" id="f1-em">
+                    <label>EMAIL ADDRESS *</label>
+                    <input type="email" id="p1Email" placeholder="your@email.com" autocomplete="email"
+                           value="{{ session.get('user_email','') }}">
+                    <div class="field-err">Valid email required</div>
+                </div>
+                <div class="field" id="f1-ph">
+                    <label>PHONE NUMBER *</label>
+                    <input type="tel" id="p1Phone" placeholder="+91 XXXXX XXXXX" autocomplete="tel"
+                           value="{{ session.get('user_phone','') }}">
+                    <div class="field-err">Valid phone required</div>
+                </div>
+            </div>
+
+            <div class="row-3">
+                <div class="field" id="f1-col">
+                    <label>COLLEGE / INSTITUTION / WORK *</label>
+                    <input type="text" id="p1College" placeholder="College name or Company name">
+                    <div class="field-err">Required</div>
+                </div>
+                <div class="field" id="f1-dept">
+                    <label>DEPARTMENT *</label>
+                    <input type="text" id="p1Dept" placeholder="e.g. Naval Arch">
+                    <div class="field-err">Required</div>
+                </div>
+                <div class="field" id="f1-yr">
+                    <label>YEAR OF STUDY *</label>
+                    <select id="p1Year">
+                        <option value="">Select year</option>
+                        <option>1st Year</option>
+                        <option>2nd Year</option>
+                        <option>3rd Year</option>
+                        <option>4th Year</option>
+                        <option>5th Year</option>
+                        <option>Post Graduate</option>
+                    </select>
+                    <div class="field-err">Required</div>
+                </div>
+            </div>
+
+        </div><!-- /.card -->
+
+        <div class="btn-row">
+            <button class="btn-back" onclick="location.href='{{ url_for('cart') }}'">‹ BACK TO CART</button>
+            <button class="btn-primary" onclick="step1Next()">
+                <span class="btn-txt">NEXT ›</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- ══ SECTION 2 — PER-EVENT PARTICIPANT ASSIGNMENT ══ -->
+    <div class="reg-section" id="sec2">
+        <div id="eventParticipantBlocks"></div>
+        <div class="btn-row">
+            <button class="btn-back" onclick="goSec(1)">‹ BACK</button>
+            <button class="btn-primary" onclick="step2Next()">
+                <span class="btn-txt">NEXT: REVIEW ›</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- ══ SECTION 3 — REVIEW ══ -->
+    <div class="reg-section" id="sec3">
+
+        <div class="card">
+            <div class="card-title">REGISTRATION SUMMARY</div>
+            <table class="review-table" id="reviewTable"></table>
+        </div>
+
+        <div class="card">
+            <div class="card-title">EVENTS & PARTICIPANTS</div>
+            <div id="reviewEvents"></div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">ORDER TOTAL</div>
+            <div class="total-box">
+                <div id="orderRows"></div>
+                <div class="total-row" id="orderConvFeeRow" style="display:none;">
+                    <span style="color:rgba(255,255,255,0.75)">CONVENIENCE FEE (3% + GST)</span>
+                    <span id="orderConvFeeVal" style="color:rgba(255,255,255,0.65)">₹0</span>
+                </div>
+                <div class="total-grand">
+                    <div class="total-grand-label">TOTAL AMOUNT</div>
+                    <div class="total-grand-val" id="orderGrandTotal">₹0</div>
+                </div>
+            </div>
+            <label class="terms-row">
+                <input type="checkbox" id="termsCheck">
+                <div class="check-box"></div>
+                <div class="terms-text">I confirm all details are correct and agree to the <a href="{{ url_for('privacy_policy') }}">terms &amp; conditions</a> of Anchorage 2026.</div>
+            </label>
+            <label class="terms-row">
+                <input type="checkbox" id="refundCheck">
+                <div class="check-box"></div>
+                <div class="terms-text">I understand registration fees are <strong style="color:var(--coral)">non-refundable</strong> once payment is confirmed.</div>
+            </label>
+        </div>
+
+        <div class="btn-row">
+            <button class="btn-back" id="sec3Back" onclick="goSec(HAS_GROUP ? 2 : 1)">‹ BACK</button>
+            <button class="btn-primary" onclick="proceedToPayment()">
+                <span class="btn-txt">PROCEED TO PAYMENT ›</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- ══ SECTION 4 — PAYMENT ══ -->
+    <div class="reg-section" id="sec4">
+
+        <div class="card">
+            <div class="card-title">PAYMENT SUMMARY</div>
+            <div class="total-box">
+                <div id="payOrderRows"></div>
+                <div class="total-row" id="payConvFeeRow" style="display:none;">
+                    <span style="color:rgba(255,255,255,0.75)">CONVENIENCE FEE (3% + GST)</span>
+                    <span id="payConvFeeVal" style="color:rgba(255,255,255,0.65)">₹0</span>
+                </div>
+                <div class="total-grand">
+                    <div class="total-grand-label">AMOUNT TO PAY</div>
+                    <div class="total-grand-val" id="payGrandTotal">₹0</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── Payment info card ── -->
+        <div class="card" id="payMethodCard">
+            <div class="card-title" id="payMethodTitle">SECURE PAYMENT</div>
+            <div class="info-box" id="payInfoBox">
+                <p id="payInfoText">
+                    You'll be redirected to our secure payment partner <strong>TiQR</strong> to complete payment
+                    via UPI, cards, or net banking. Once payment is confirmed, your ticket is generated
+                    automatically and emailed to you right away.
+                </p>
+            </div>
+            <div class="sec-badges">
+                <div class="sec-badge">🔒 SECURE CHECKOUT</div>
+                <div class="sec-badge">⚡ INSTANT TICKET</div>
+                <div class="sec-badge">✅ TIQR VERIFIED</div>
+            </div>
+        </div>
+
+        <div class="btn-row">
+            <button class="btn-back" onclick="goSec(3)">‹ BACK</button>
+            <button class="btn-primary" id="payBtn" onclick="handlePayClick()">
+                <span class="btn-txt" id="payBtnText">PAY &amp; CONFIRM ›</span>
+                <div class="spinner" id="paySpinner"></div>
+            </button>
+        </div>
+    </div>
+
+    <!-- ══ SUCCESS ══ -->
+    <div class="reg-section" id="secDone">
+        <div class="success-panel">
+            <span class="success-icon">⚓</span>
+            <div class="success-title">REGISTRATION CONFIRMED!</div>
+            <div class="success-ref" id="successRef">REF: ANC2026-XXXXXX</div>
+            <p class="success-sub" id="successMsg">Your registration is complete. See you at Anchorage 2026!</p>
+
+            <!-- OFFICIAL TICKET DISCLAIMER — must be seen before leaving this page -->
+            <div class="ticket-disclaimer">
+                <div class="ticket-disclaimer-head">⚠ IMPORTANT — READ BEFORE YOU LEAVE</div>
+                <div class="ticket-disclaimer-body">
+                    Your <strong>official ticket</strong> — with your <strong>Name, Event Name &amp; Team Members</strong> —
+                    has been emailed to you from <strong>Anchorage 2026</strong>. Please download it from your inbox and keep it safe.
+                    <br><br>
+                    <span class="warn-word">Disregard any ticket sent on WhatsApp</span> — it is not valid.
+                    Only the ticket from your email will be accepted for entry.
+                </div>
+            </div>
+
+            <!-- ── SINGLE TICKET — Download-first layout ── -->
+            <div class="ticket-section" id="singleTicketSection" style="display:none;">
+
+                <!-- Hero download banner -->
+                <div class="dl-hero-banner">
+                    <div class="dl-hero-title">◈ SAVE YOUR TICKET NOW</div>
+                    <div class="dl-hero-sub">
+                        <strong>Download your ticket immediately</strong> — it will not be stored on our servers.
+                        Keep this file safe; you'll need it at the venue.
+                    </div>
+                    <button id="dlBtn" class="t-btn-dl-hero" onclick="downloadTicket(this)">
+                        <span class="dl-arrow">⬇</span>
+                        <span id="dlBtnTxt">DOWNLOAD MY TICKET</span>
+                    </button>
+                </div>
+
+                <!-- Email-soon notice (secondary) -->
+                <div class="email-soon-strip">
+                    <span class="email-soon-icon">✉️</span>
+                    <span>
+                        Your ticket will also be <strong style="color:rgba(255,200,80,0.95)">emailed to you shortly</strong> —
+                        check your inbox in a few minutes. If it doesn't arrive, use the download above.
+                        <br>Can't find it?
+                        <a onclick="resendEmail()" id="resendBtn">Resend email</a>
+                        <span id="resendTxt"></span>
+                    </span>
+                </div>
+
+                <!-- Ticket preview (below the fold) -->
+                <div class="ticket-section-label" style="margin-top:21.6px;">◈ TICKET PREVIEW</div>
+                <div class="ticket-img-wrap">
+                    <img id="ticketPreviewImg" src="" alt="Anchorage 2026 Ticket" class="ticket-img">
+                    <div class="ticket-loading" id="ticketLoading">
+                        <div class="ticket-spinner"></div>
+                        <span>GENERATING PREVIEW…</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── MULTIPLE TICKETS — Individual download cards ── -->
+            <div class="ticket-section" id="multiTicketSection" style="display:none;">
+
+                <div class="dl-hero-title" style="margin-bottom:9px;">◈ YOUR TICKETS</div>
+                <div class="dl-hero-sub" style="margin-bottom:18px;">
+                    Download each ticket separately — you'll need the correct ticket at each event venue.
+                </div>
+
+                <!-- One card per ticket, injected by JS -->
+                <div id="multiTicketItems"></div>
+
+                <!-- Email notice -->
+                <div class="email-soon-strip" style="margin-top:14.4px;">
+                    <span class="email-soon-icon">✉️</span>
+                    <span>
+                        All tickets will also be <strong style="color:rgba(255,200,80,0.95)">emailed to you shortly.</strong>
+                        Didn't receive them?
+                        <a onclick="resendEmail()" id="resendBtnMulti">Resend all emails</a>
+                    </span>
+                </div>
+            </div>
+
+            <a href="{{ url_for('events') }}" class="success-btn" style="margin-top:18px;">EXPLORE MORE EVENTS →</a>
+            <a href="{{ url_for('home') }}" class="success-home">← BACK TO HOME</a>
+        </div>
+    </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="upi-submit-overlay" id="paySubmitOverlay">
+    <div class="upi-submit-overlay-box">
+        <div class="ticket-spinner"></div>
+        <div class="upi-submit-overlay-text" id="paySubmitOverlayText">REDIRECTING TO SECURE PAYMENT…</div>
+        <div class="upi-submit-overlay-sub">Please don't close this tab</div>
+    </div>
+</div>
+
+<script>
+const CREATE_ORDER_URL    = "{{ url_for('create_order') }}";
+const EVENTS_URL          = "{{ url_for('events') }}";
+const CART_URL            = "{{ url_for('cart') }}";
+
+// CART_ITEMS is built directly from the student's user_cart JOIN events
+// query in Flask — these are exactly the events they added to cart.
+const CART_ITEMS = [
+    {% for item in cart_items %}
+    {
+        id:    {{ item.id | int }},
+        name:  {{ item.title | tojson }},
+        price: {{ item.price | int }},
+        pricing_mode: {{ item.pricing_mode | tojson }},
+        icon:  {{ item.icon | tojson }},
+        team:  {{ item.team | tojson }},
+        venue: {{ item.venue | tojson }},
+        day:   {{ item.event_day | tojson }},
+        category: {{ item.category | tojson }}
+    }{% if not loop.last %},{% endif %}
+    {% endfor %}
+];
+
+// ── PROMO CODE INTEGRATION ──────────────────────────────────────────────
+const PROMO_DATA = {{ promo | tojson | safe }};
+
+// ── CAMPUS AMBASSADOR REFERRAL ───────────────────────────────────────────
+// Loaded from session (set by /validate-referral on the cart page).
+// Displayed in the review step for transparency; sent to /create-order for
+// attribution. Never affects price.
+const REFERRAL_DATA = {{ (session.get('referral') or {}) | tojson | safe }};
+
+// ── Post-payment success view ───────────────────────────────────────────
+// /payment-complete redirects here with ?tickets=CODE1,CODE2 once TiQR
+// confirms a paid cart. TICKET_ITEMS is shaped exactly like CART_ITEMS
+// (id/name/icon/team/venue/day/category) so showTicketSuccess() can render
+// the same download-card UI for paid tickets that free checkouts already get.
+const TICKET_CODES  = {{ ticket_codes | tojson }};
+const TICKET_ITEMS  = {{ purchased_tickets | tojson }};
+const TICKET_FNAME  = {{ ticket_fname | tojson }};
+
+// RAW_SUBTOTAL / SUBTOTAL / CONV_FEE / TOTAL_WITH_FEE are recomputed (not
+// fixed at page load) because 'per_member' events' true price depends on
+// team size, which the student sets in Step 2. recomputeTotals() is called
+// once here with an early estimate (min team size), then again inside
+// buildReview() once actual team sizes are known.
+let RAW_SUBTOTAL = 0, DISCOUNT = 0, SUBTOTAL = 0, CONV_FEE = 0, TOTAL_WITH_FEE = 0;
+
+// ── Convenience fee (mirrors app.py: 2.36%) ────────────────────────────
+const CONVENIENCE_FEE_PERCENT = 3.5;
+function calcConvenienceFee(amount) {
+    if (amount <= 0) return { fee: 0, total: 0 };
+    const fee = Math.round(amount * CONVENIENCE_FEE_PERCENT / 100 * 100) / 100;
+    return { fee: fee, total: Math.round((amount + fee) * 100) / 100 };
+}
+
+// Current best-known member count for an event: actual entered team once
+// Step 2 has been filled in, otherwise the event's minimum team size (or
+// 1 for solo/individual events) as an early estimate.
+function getMemberCountForTotal(item) {
+    const state = eventParticipants[item.id];
+    if (state && state.members) return Math.max(1, state.members.length);
+    if (!isGroupEvent(item)) return 1;
+    return getTeamLimits(item).min;
+}
+
+function getEffectivePrice(item) {
+    return item.pricing_mode === 'per_member'
+        ? item.price * getMemberCountForTotal(item)
+        : item.price;
+}
+
+function recomputeTotals() {
+    RAW_SUBTOTAL = CART_ITEMS.reduce((s, i) => s + getEffectivePrice(i), 0);
+    DISCOUNT = (PROMO_DATA && PROMO_DATA.code) ? (PROMO_DATA.discount || 0) : 0;
+    SUBTOTAL = Math.max(0, RAW_SUBTOTAL - DISCOUNT);
+    const calc = calcConvenienceFee(SUBTOTAL);
+    CONV_FEE = calc.fee;
+    TOTAL_WITH_FEE = calc.total;
+}
+
+// ── Render the "Events in Cart" preview in Step 1 ─────────────────────
+// Runs immediately — data comes from CART_ITEMS which Flask built from
+// user_cart JOIN events (the student's actual cart in the database).
+function renderCartPreview() {
+    const list = document.getElementById('cartPreviewList');
+    if (!list) return;
+    if (!CART_ITEMS.length) {
+        list.innerHTML = '<div style="font-family:\'Share Tech Mono\';font-size:0.675rem;color:rgba(255,255,255,0.62);padding:25.2px;text-align:center;letter-spacing:2.7px">// NO EVENTS IN CART</div>';
+        return;
+    }
+    list.innerHTML = CART_ITEMS.map(item => {
+        const t = (item.team || 'Solo').toLowerCase().trim();
+        const isSolo  = t === 'solo';
+        const isMixed = t.includes('solo') && (t.includes('duo') || t.includes('/'));
+        const effectivePrice = getEffectivePrice(item);
+        let priceLabel = effectivePrice === 0 ? 'FREE' : '\u20B9' + effectivePrice;
+        if (item.pricing_mode === 'per_member' && item.price > 0) {
+            // Early estimate before Step 2 is filled in — final amount is
+            // shown accurately in the Review step once team size is set.
+            priceLabel = `₹${item.price}/member (est. ₹${effectivePrice})`;
+        }
+        const priceClass = effectivePrice === 0 ? 'free' : 'paid';
+        const badge = isSolo  ? `<div class="ev-badge ind">SOLO</div>`
+                    : isMixed ? `<div class="ev-badge ind">SOLO / DUO</div>`
+                    :           `<div class="ev-badge grp">${item.team.toUpperCase()}</div>`;
+        const meta = [
+            item.category ? item.category.toUpperCase() : '',
+            item.venue    ? item.venue : '',
+            item.day      ? 'DAY ' + item.day : ''
+        ].filter(Boolean).join(' · ');
+        return `<div class="event-row">
+            <div class="ev-icon">${item.icon}</div>
+            <div class="ev-info">
+                <div class="ev-name">${item.name}</div>
+                <div class="ev-meta">${meta}</div>
+            </div>
+            ${badge}
+            <div class="ev-price ${priceClass}">${priceLabel}</div>
+        </div>`;
+    }).join('');
+}
+
+// ── Classify events by team field ──────────────────────────────────────
+// team values: 'Solo', 'Solo / Duo', '2 Members', '2–3 Members',
+//              '3–4 Members', '1–3 Members', etc.
+function isGroupEvent(item) {
+    const t = (item.team || '').toLowerCase().trim();
+    return t !== 'solo';
+}
+
+// Returns { min, max } team size parsed from the team string
+function getTeamLimits(item) {
+    const t = (item.team || 'Solo').toLowerCase().trim();
+    if (t === 'solo') return { min: 1, max: 1 };
+    if (t === 'solo / duo' || t === 'solo/duo') return { min: 1, max: 2 };
+    const range = t.match(/(\d+)\s*[\u2013\-]\s*(\d+)/);
+    if (range) return { min: parseInt(range[1]), max: parseInt(range[2]) };
+    const single = t.match(/^(\d+)/);
+    if (single) { const n = parseInt(single[1]); return { min: n, max: n }; }
+    return { min: 2, max: 10 };
+}
+
+const GROUP_ITEMS      = CART_ITEMS.filter(isGroupEvent);
+const INDIVIDUAL_ITEMS = CART_ITEMS.filter(i => !isGroupEvent(i));
+const HAS_GROUP        = GROUP_ITEMS.length > 0;
+const HAS_INDIVIDUAL   = INDIVIDUAL_ITEMS.length > 0;
+
+// ── Per-event participant state ────────────────────────────────────────
+// eventParticipants[eventId] = { type: 'individual'|'group', members: [{fname,lname,email,phone,college,dept},...] }
+const eventParticipants = {};
+
+let currentStep = 1;
+
+if (!CART_ITEMS.length && !TICKET_CODES.length) location.href = CART_URL;
+
+recomputeTotals();
+renderCartPreview();
+document.getElementById('payBtnText').textContent =
+    SUBTOTAL === 0 ? 'CONFIRM FREE REGISTRATION ›' : `PAY ₹${TOTAL_WITH_FEE.toFixed(2)} & CONFIRM ›`;
+
+// Paid checkout redirected back here post-payment — show the same success
+// screen the free-checkout path shows, just fed from server-looked-up
+// ticket data instead of the (by-now emptied) cart.
+if (TICKET_CODES.length) {
+    // The server already removed these events from user_cart, but the
+    // browser's localStorage cart snapshot (anch_cart) was never cleared
+    // for the paid path (unlike the free path below) — if we don't clear
+    // it here too, cart.html's sync-on-load will read the stale local copy
+    // and re-insert these already-registered events straight back into
+    // user_cart the next time the user opens /cart.
+    try { localStorage.removeItem('anch_cart'); } catch(e) {}
+    launchConfetti();
+    showTicketSuccess(TICKET_CODES, TICKET_FNAME, true, TICKET_ITEMS);
+}
+
+// ── Utilities ──────────────────────────────────────────────────────────
+function showToast(msg, cls = '') {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className   = 'toast ' + cls;
+    void t.offsetWidth;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3400);
+}
+
+function markErr(fieldId, isError) {
+    const el = document.getElementById(fieldId);
+    if (el) el.classList.toggle('has-error', isError);
+    return !isError;
+}
+
+function goSec(n) {
+    document.querySelectorAll('.reg-section').forEach(s => s.classList.remove('active'));
+    const t = document.getElementById('sec' + n) || document.getElementById('secDone');
+    if (t) t.classList.add('active');
+    currentStep = n;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    syncSteps(n);
+}
+
+function syncSteps(n) {
+    // In solo-only flow step 2 is skipped; treat it as done whenever we're on step 3+
+    const effectiveN = (!HAS_GROUP && n >= 3) ? n : n;
+    [1,2,3,4].forEach(i => {
+        const el = document.getElementById('step' + i);
+        if (!el) return;
+        const isDone = (i < n) || (!HAS_GROUP && i === 2 && n >= 3);
+        el.className = 'step' + (isDone ? ' done' : i === n ? ' active' : '');
+        el.querySelector('.step-dot').textContent = isDone ? '✓' : i;
+    });
+}
+
+function getPrimary() {
+    return {
+        fname:   document.getElementById('p1Fname').value.trim(),
+        lname:   document.getElementById('p1Lname').value.trim(),
+        email:   document.getElementById('p1Email').value.trim(),
+        phone:   document.getElementById('p1Phone').value.trim(),
+        college: document.getElementById('p1College').value.trim(),
+        dept:    document.getElementById('p1Dept').value.trim()
+    };
+}
+
+// ── Step 1 validation ─────────────────────────────────────────────────
+function step1Next() {
+    const fname   = document.getElementById('p1Fname').value.trim();
+    const lname   = document.getElementById('p1Lname').value.trim();
+    const email   = document.getElementById('p1Email').value.trim();
+    const phone   = document.getElementById('p1Phone').value.trim();
+    const college = document.getElementById('p1College').value.trim();
+    const dept    = document.getElementById('p1Dept').value.trim();
+    const year    = document.getElementById('p1Year').value;
+
+    const v1 = markErr('f1-fn',  !fname);
+    const v2 = markErr('f1-ln',  !lname);
+    const v3 = markErr('f1-em',  !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email));
+    const v4 = markErr('f1-ph',  phone.replace(/[\s\+\-]/g,'').length < 10);
+    const v5 = markErr('f1-col', !college);
+    const v6 = markErr('f1-dept',!dept);
+    const v7 = markErr('f1-yr',  !year);
+    const ok = v1 && v2 && v3 && v4 && v5 && v6 && v7;
+
+    if (!ok) { showToast('◈ PLEASE FIX THE ERRORS ABOVE', 'error'); return; }
+
+    buildParticipantBlocks();
+
+    // Skip Step 2 (team assignment) when every event is solo — go straight to review
+    if (!HAS_GROUP) {
+        CART_ITEMS.forEach(item => {
+            eventParticipants[item.id] = { type: 'individual', members: [getPrimary()] };
+        });
+        buildReview();
+        goSec(3);
+        return;
+    }
+
+    goSec(2);
+}
+
+// ── Step 2 — Build per-event participant blocks ────────────────────────
+function buildParticipantBlocks() {
+    const container = document.getElementById('eventParticipantBlocks');
+    container.innerHTML = '';
+
+    // Track which group event index this is (for "copy team" feature)
+    let groupEventIdx = 0;
+
+    CART_ITEMS.forEach((item, cartIdx) => {
+        const isGroup = isGroupEvent(item);
+        const blockId = `epBlock_${item.id}`;
+        const eventId = item.id;
+
+        // Restore previous team size if set
+        const prevState = eventParticipants[eventId];
+        const prevSize  = prevState ? prevState.members.length : (isGroup ? 2 : 1);
+
+        const block = document.createElement('div');
+        block.className = `event-participant-block${isGroup ? ' group-block' : ''}`;
+        block.id = blockId;
+
+        // Header
+        block.innerHTML = `
+            <div class="ep-header">
+                <div class="ep-icon">${item.icon}</div>
+                <div>
+                    <div class="ep-title">${item.name}</div>
+                    <div class="ep-subtitle">${isGroup ? '👥 ' + (item.team || 'GROUP') : '🧑 SOLO EVENT'} ${item.venue ? '· ' + item.venue : ''} ${item.day ? '· DAY ' + item.day : ''}</div>
+                </div>
+            </div>
+            <div class="ep-body" id="epBody_${eventId}"></div>
+        `;
+
+        container.appendChild(block);
+
+        if (isGroup) {
+            buildGroupBody(eventId, groupEventIdx, prevSize, prevState);
+            groupEventIdx++;
+        } else {
+            buildIndividualBody(eventId, prevState);
+        }
+    });
+}
+
+// Individual event body — fill in who's participating
+function buildIndividualBody(eventId, prevState) {
+    const body = document.getElementById(`epBody_${eventId}`);
+    const p    = prevState ? prevState.members[0] : getPrimary();
+
+    body.innerHTML = `
+        <div class="info-box" style="margin-bottom:14.4px">
+            <p>Enter the details of the <strong>individual participant</strong> for this event.</p>
+        </div>
+        <div class="member-card">
+            <div class="member-label">// PARTICIPANT</div>
+            <div class="row-2">
+                <div class="field" id="ind_${eventId}_fn"><label>FIRST NAME *</label><input type="text" id="ind_${eventId}_fname" placeholder="First name" value="${esc(p.fname)}"><div class="field-err">Required</div></div>
+                <div class="field" id="ind_${eventId}_ln"><label>LAST NAME *</label><input type="text" id="ind_${eventId}_lname" placeholder="Last name" value="${esc(p.lname)}"><div class="field-err">Required</div></div>
+            </div>
+            <div class="row-2">
+                <div class="field" id="ind_${eventId}_em"><label>EMAIL *</label><input type="email" id="ind_${eventId}_email" placeholder="email@example.com" value="${esc(p.email)}"><div class="field-err">Valid email required</div></div>
+                <div class="field" id="ind_${eventId}_ph"><label>PHONE *</label><input type="tel" id="ind_${eventId}_phone" placeholder="+91 XXXXX XXXXX" value="${esc(p.phone)}"><div class="field-err">Required</div></div>
+            </div>
+            <div class="row-2" style="margin-bottom:0">
+                <div class="field"><label>COLLEGE</label><input type="text" id="ind_${eventId}_college" placeholder="College name" value="${esc(p.college)}"></div>
+                <div class="field"><label>DEPARTMENT</label><input type="text" id="ind_${eventId}_dept" placeholder="Department" value="${esc(p.dept)}"></div>
+            </div>
+        </div>
+    `;
+
+    // "Fill with my details" quick-fill
+    const primary = getPrimary();
+    if (!prevState) {
+        // auto-fill primary participant details
+        ['fname','lname','email','phone','college','dept'].forEach(f => {
+            const el = document.getElementById(`ind_${eventId}_${f}`);
+            if (el && !el.value) el.value = primary[f] || '';
+        });
+    }
+}
+
+// Group event body — team size picker + member slots + copy-from-above
+function buildGroupBody(eventId, groupIdx, initialSize, prevState) {
+    const body = document.getElementById(`epBody_${eventId}`);
+    const item  = CART_ITEMS.find(i => i.id === eventId);
+    const lim   = getTeamLimits(item);
+    const size = Math.max(lim.min, Math.min(lim.max, initialSize || lim.min));
+
+    // Determine if there's a previous group event to copy from
+    const prevGroupEventId = getPreviousGroupEventId(eventId);
+
+    let copyHtml = '';
+    if (prevGroupEventId !== null) {
+        const prevItem = CART_ITEMS.find(i => i.id === prevGroupEventId);
+        copyHtml = `
+            <div class="copy-team-banner" onclick="copyTeamFrom(${prevGroupEventId}, ${eventId})">
+                <div class="copy-team-icon">📋</div>
+                <div class="copy-team-text">
+                    <div class="copy-team-title">COPY TEAM FROM PREVIOUS EVENT</div>
+                    <div class="copy-team-sub">Use the same team as "${prevItem ? prevItem.name : 'previous group event'}"</div>
+                </div>
+                <button class="copy-team-btn" onclick="event.stopPropagation();copyTeamFrom(${prevGroupEventId}, ${eventId})">COPY TEAM ›</button>
+            </div>
+        `;
+    }
+
+    body.innerHTML = `
+        <div class="info-box gold" style="margin-bottom:14.4px">
+            <p>Set the <strong>team size</strong> then fill in each member's details. <strong>Member 1</strong> is the primary registrant (you).</p>
+        </div>
+        ${copyHtml}
+        <div class="team-size-row">
+            <div class="team-size-label" id="tsLabel_${eventId}">⚡ TEAM SIZE (INCLUDING YOU) — ${lim.min === lim.max ? lim.min + " MEMBER" + (lim.min > 1 ? "S" : "") : lim.min + "–" + lim.max + " MEMBERS"}</div>
+            <div class="team-size-ctrl">
+                <button class="ts-btn" onclick="changeTeamSize(${eventId}, -1)">−</button>
+                <div class="ts-val" id="tsVal_${eventId}">${size}</div>
+                <button class="ts-btn" onclick="changeTeamSize(${eventId}, +1)">+</button>
+            </div>
+        </div>
+        <div class="member-wrap" id="memberSlots_${eventId}"></div>
+    `;
+
+    renderMemberSlots(eventId, size, prevState);
+}
+
+function getPreviousGroupEventId(currentEventId) {
+    // Find the most recent group event before currentEventId in cart order
+    let prev = null;
+    for (const item of CART_ITEMS) {
+        if (item.id === currentEventId) break;
+        if (isGroupEvent(item)) prev = item.id;
+    }
+    return prev;
+}
+
+function changeTeamSize(eventId, delta) {
+    const valEl = document.getElementById(`tsVal_${eventId}`);
+    const item  = CART_ITEMS.find(i => i.id === eventId);
+    const lim   = getTeamLimits(item);
+    let cur = parseInt(valEl.textContent);
+    cur = Math.max(lim.min, Math.min(lim.max, cur + delta));
+    valEl.textContent = cur;
+    // Read current values before re-render
+    const cur_state = readGroupState(eventId);
+    renderMemberSlots(eventId, cur, { members: cur_state });
+
+    // Team size affects the total for 'per_member' events — update the
+    // in-memory state used by getMemberCountForTotal() and refresh anything
+    // showing a price estimate.
+    eventParticipants[eventId] = { type: 'group', members: readGroupState(eventId) };
+    recomputeTotals();
+    renderCartPreview();
+}
+
+
+function renderMemberSlots(eventId, size, prevState) {
+    const wrap = document.getElementById(`memberSlots_${eventId}`);
+    const primary = getPrimary();
+    let html = '';
+    for (let i = 1; i <= size; i++) {
+        const isPrimary = i === 1;
+        const prev = prevState && prevState.members && prevState.members[i-1];
+        const v = f => {
+            if (isPrimary) return esc(primary[f] || '');
+            return prev ? esc(prev[f] || '') : '';
+        };
+        html += `
+        <div class="member-card gold-card" id="gm_${eventId}_${i}">
+            <div class="member-label">// MEMBER ${i}${isPrimary ? ' — YOU (PRIMARY)' : ''}</div>
+            <div class="row-2">
+                <div class="field" id="gf_${eventId}_${i}_fn"><label>FIRST NAME *</label><input type="text" id="g_${eventId}_${i}_fname" placeholder="First name" value="${v('fname')}" ${isPrimary?'readonly':''}><div class="field-err">Required</div></div>
+                <div class="field" id="gf_${eventId}_${i}_ln"><label>LAST NAME *</label><input type="text" id="g_${eventId}_${i}_lname" placeholder="Last name" value="${v('lname')}" ${isPrimary?'readonly':''}><div class="field-err">Required</div></div>
+            </div>
+            <div class="row-2">
+                <div class="field" id="gf_${eventId}_${i}_em"><label>EMAIL *</label><input type="email" id="g_${eventId}_${i}_email" placeholder="email@example.com" value="${v('email')}" ${isPrimary?'readonly':''}><div class="field-err">Valid email required</div></div>
+                <div class="field" id="gf_${eventId}_${i}_ph"><label>PHONE *</label><input type="tel" id="g_${eventId}_${i}_phone" placeholder="+91 XXXXX XXXXX" value="${v('phone')}" ${isPrimary?'readonly':''}><div class="field-err">Required</div></div>
+            </div>
+            <div class="row-2" style="margin-bottom:0">
+                <div class="field"><label>COLLEGE</label><input type="text" id="g_${eventId}_${i}_college" placeholder="College name" value="${v('college')}" ${isPrimary?'readonly':''}></div>
+                <div class="field"><label>DEPARTMENT</label><input type="text" id="g_${eventId}_${i}_dept" placeholder="Department" value="${v('dept')}" ${isPrimary?'readonly':''}></div>
+            </div>
+        </div>`;
+    }
+    wrap.innerHTML = html;
+}
+
+function copyTeamFrom(srcEventId, destEventId) {
+    const srcMembers = readGroupState(srcEventId);
+    if (!srcMembers || srcMembers.length === 0) {
+        showToast('◈ FILL IN THE TEAM ABOVE FIRST', 'error'); return;
+    }
+    const destSizeEl = document.getElementById(`tsVal_${destEventId}`);
+    const curSize = parseInt(destSizeEl.textContent);
+    const newSize = srcMembers.length;
+    destSizeEl.textContent = newSize;
+    renderMemberSlots(destEventId, newSize, { members: srcMembers });
+    eventParticipants[destEventId] = { type: 'group', members: srcMembers };
+    recomputeTotals();
+    renderCartPreview();
+    showToast('◈ TEAM COPIED SUCCESSFULLY', 'success');
+}
+
+// Read current entered values for a group event (returns array of member objects)
+function readGroupState(eventId) {
+    const valEl = document.getElementById(`tsVal_${eventId}`);
+    if (!valEl) return [];
+    const size = parseInt(valEl.textContent);
+    const members = [];
+    for (let i = 1; i <= size; i++) {
+        members.push({
+            fname:   document.getElementById(`g_${eventId}_${i}_fname`)?.value.trim()   || '',
+            lname:   document.getElementById(`g_${eventId}_${i}_lname`)?.value.trim()   || '',
+            email:   document.getElementById(`g_${eventId}_${i}_email`)?.value.trim()   || '',
+            phone:   document.getElementById(`g_${eventId}_${i}_phone`)?.value.trim()   || '',
+            college: document.getElementById(`g_${eventId}_${i}_college`)?.value.trim() || '',
+            dept:    document.getElementById(`g_${eventId}_${i}_dept`)?.value.trim()    || ''
+        });
+    }
+    return members;
+}
+
+function readIndividualState(eventId) {
+    return [{
+        fname:   document.getElementById(`ind_${eventId}_fname`)?.value.trim()   || '',
+        lname:   document.getElementById(`ind_${eventId}_lname`)?.value.trim()   || '',
+        email:   document.getElementById(`ind_${eventId}_email`)?.value.trim()   || '',
+        phone:   document.getElementById(`ind_${eventId}_phone`)?.value.trim()   || '',
+        college: document.getElementById(`ind_${eventId}_college`)?.value.trim() || '',
+        dept:    document.getElementById(`ind_${eventId}_dept`)?.value.trim()    || ''
+    }];
+}
+
+// ── Step 2 validation ─────────────────────────────────────────────────
+function step2Next() {
+    let ok = true;
+
+    CART_ITEMS.forEach(item => {
+        const eId = item.id;
+        if (isGroupEvent(item)) {
+            const size = parseInt(document.getElementById(`tsVal_${eId}`)?.textContent || 2);
+            for (let i = 1; i <= size; i++) {
+                const email = document.getElementById(`g_${eId}_${i}_email`)?.value.trim() || '';
+                const vfn = markErr(`gf_${eId}_${i}_fn`, !document.getElementById(`g_${eId}_${i}_fname`)?.value.trim());
+                const vln = markErr(`gf_${eId}_${i}_ln`, !document.getElementById(`g_${eId}_${i}_lname`)?.value.trim());
+                const vem = markErr(`gf_${eId}_${i}_em`, !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email));
+                const vph = markErr(`gf_${eId}_${i}_ph`, !document.getElementById(`g_${eId}_${i}_phone`)?.value.trim());
+                if (!vfn || !vln || !vem || !vph) ok = false;
+            }
+        } else {
+            const email = document.getElementById(`ind_${eId}_email`)?.value.trim() || '';
+            const vfn = markErr(`ind_${eId}_fn`, !document.getElementById(`ind_${eId}_fname`)?.value.trim());
+            const vln = markErr(`ind_${eId}_ln`, !document.getElementById(`ind_${eId}_lname`)?.value.trim());
+            const vem = markErr(`ind_${eId}_em`, !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email));
+            const vph = markErr(`ind_${eId}_ph`, !document.getElementById(`ind_${eId}_phone`)?.value.trim());
+            if (!vfn || !vln || !vem || !vph) ok = false;
+        }
+    });
+
+    if (!ok) { showToast('◈ PLEASE FIX ALL PARTICIPANT DETAILS', 'error'); return; }
+
+    // Persist state
+    CART_ITEMS.forEach(item => {
+        const eId = item.id;
+        eventParticipants[eId] = {
+            type:    isGroupEvent(item) ? 'group' : 'individual',
+            members: isGroupEvent(item) ? readGroupState(eId) : readIndividualState(eId)
+        };
+    });
+
+    buildReview();
+    goSec(3);
+}
+
+// ── Build review ──────────────────────────────────────────────────────
+function buildReview() {
+    const fname   = document.getElementById('p1Fname').value.trim();
+    const lname   = document.getElementById('p1Lname').value.trim();
+    const email   = document.getElementById('p1Email').value.trim();
+    const phone   = document.getElementById('p1Phone').value.trim();
+    const college = document.getElementById('p1College').value.trim();
+    const dept    = document.getElementById('p1Dept').value.trim();
+    const year    = document.getElementById('p1Year').value;
+    const roll    = document.getElementById('p1Roll')?.value.trim() || '';
+
+    const rows = [
+        ['NAME',    `${fname} ${lname}`],
+        ['EMAIL',   email],
+        ['PHONE',   phone],
+        ['COLLEGE', college],
+        ['DEPT',    dept],
+        ['YEAR',    year],
+        ...(roll ? [['ROLL NO', roll]] : [])
+    ];
+    document.getElementById('reviewTable').innerHTML =
+        rows.map(([k,v]) => `<tr><td>${k}</td><td>${v}</td></tr>`).join('');
+
+    // Per-event participant review
+    let eventsHtml = '';
+    CART_ITEMS.forEach(item => {
+        const ep = eventParticipants[item.id];
+        const members = ep ? ep.members : [];
+        const isGrp = isGroupEvent(item);
+        const badge = isGrp
+            ? `<div class="ev-badge grp" style="margin-left:auto">${item.team.toUpperCase()} · ${members.length} MEMBERS</div>`
+            : `<div class="ev-badge ind" style="margin-left:auto">${item.team.toUpperCase()}</div>`;
+
+        const memberRows = members.map((m, idx) => `
+            <div class="review-member-row">
+                <span class="rm-idx">${idx+1}</span>
+                <span class="rm-name">${m.fname} ${m.lname}</span>
+                <span style="color:rgba(255,255,255,0.62)">·</span>
+                <span>${m.email}</span>
+                <span style="color:rgba(255,255,255,0.62)">·</span>
+                <span>${m.phone}</span>
+            </div>`).join('');
+
+        eventsHtml += `
+            <div class="review-event-block">
+                <div class="review-event-header">
+                    <span style="font-size:1.17rem">${item.icon}</span>
+                    <div class="review-event-name">${item.name}</div>
+                    ${badge}
+                </div>
+                <div class="review-members-list">${memberRows || '<div class="review-member-row"><span style="color:rgba(255,255,255,0.6)">No participants added</span></div>'}</div>
+            </div>`;
+    });
+    document.getElementById('reviewEvents').innerHTML = eventsHtml;
+
+    // Recompute with the ACTUAL entered team sizes now that Step 2 is done
+    // — this is the authoritative estimate shown to the student before
+    // payment (the server independently recalculates the real charge too).
+    recomputeTotals();
+
+    // Build the order summary rows incorporating the promo discount
+    let rows2 = CART_ITEMS.map(i => {
+        const eff = getEffectivePrice(i);
+        const label = eff === 0 ? 'FREE'
+            : (i.pricing_mode === 'per_member'
+                ? `₹${i.price} × ${getMemberCountForTotal(i)} = ₹${eff}`
+                : `₹${eff}`);
+        return `<div class="total-row"><span>${i.name}</span><span>${label}</span></div>`;
+    }).join('');
+
+
+    if (PROMO_DATA && PROMO_DATA.code && DISCOUNT > 0) {
+        rows2 += `
+        <div class="total-row" style="margin-top:3.6px; padding-top:9px; border-top: 1px dashed rgba(6,214,160,0.3);">
+            <span style="color:var(--green); font-weight:600;">DISCOUNT (${PROMO_DATA.code})</span>
+            <span style="color:var(--green)">-₹${DISCOUNT}</span>
+        </div>`;
+    }
+
+    // Show Campus Ambassador referral attribution (no price change — purely informational)
+    if (REFERRAL_DATA && REFERRAL_DATA.referral_code) {
+        rows2 += `
+        <div class="total-row" style="margin-top:3.6px; padding-top:9px; border-top: 1px dashed rgba(255,209,102,0.25);">
+            <span style="color:var(--gold); font-size:0.75rem;">🎓 REFERRAL (${REFERRAL_DATA.referral_code})</span>
+            <span style="color:rgba(255,209,102,0.6); font-size:0.65rem; letter-spacing:1px;">APPLIED</span>
+        </div>`;
+    }
+
+    document.getElementById('orderRows').innerHTML    = rows2;
+    document.getElementById('payOrderRows').innerHTML = rows2;
+
+    // Show convenience fee row when there's a non-zero amount to pay
+    ['order', 'pay'].forEach(prefix => {
+        const feeRow = document.getElementById(`${prefix}ConvFeeRow`);
+        const feeVal = document.getElementById(`${prefix}ConvFeeVal`);
+        if (SUBTOTAL > 0) {
+            if (feeRow) feeRow.style.display = '';
+            if (feeVal) feeVal.textContent = '₹' + CONV_FEE.toFixed(2);
+        } else {
+            if (feeRow) feeRow.style.display = 'none';
+            if (feeVal) feeVal.textContent = '₹0';
+        }
+    });
+
+    const gEl = document.getElementById('orderGrandTotal');
+    const pEl = document.getElementById('payGrandTotal');
+    const lbl = SUBTOTAL <= 0 ? 'FREE' : `₹${TOTAL_WITH_FEE.toFixed(2)}`;
+    gEl.textContent = pEl.textContent = lbl;
+    gEl.className = pEl.className = 'total-grand-val' + (SUBTOTAL <= 0 ? ' is-free' : '');
+
+    document.getElementById('payBtnText').textContent =
+        SUBTOTAL <= 0 ? 'CONFIRM FREE REGISTRATION ›' : `PAY ₹${TOTAL_WITH_FEE.toFixed(2)} & CONFIRM ›`;
+
+    // Toggle the payment info card wording between free vs paid
+    const infoText = document.getElementById('payInfoText');
+    if (infoText) {
+        infoText.innerHTML = SUBTOTAL <= 0
+            ? 'This registration is <strong>free</strong> — no payment needed. Click below to confirm and your ticket will be generated and emailed instantly.'
+            : 'You\'ll be redirected to our secure payment partner <strong>TiQR</strong> to complete payment via UPI, cards, or net banking. Once payment is confirmed, your ticket is generated automatically and emailed to you right away.';
+    }
+}
+
+// ── Review → Payment ─────────────────────────────────────────────────
+function proceedToPayment() {
+    if (!document.getElementById('termsCheck').checked) {
+        showToast('◈ PLEASE ACCEPT TERMS & CONDITIONS', 'error'); return;
+    }
+    if (!document.getElementById('refundCheck').checked) {
+        showToast('◈ PLEASE CONFIRM THE REFUND POLICY', 'error'); return;
+    }
+    goSec(4);
+}
+
+// ── TiQR checkout ────────────────────────────────────────────────────
+// Free events complete instantly server-side (registration + ticket
+// build + email all happen inside /create-order) — we just load the
+// ticket into this page immediately.
+// Paid events get a TiQR booking + hosted-payment redirect_url back from
+// /create-order. We hand the browser off to TiQR to collect payment;
+// TiQR's webhook (server-to-server, not this browser tab) is what
+// actually confirms payment, builds the ticket from template.png, and
+// emails it. This tab is redirected back to /payment-complete afterwards,
+// which loads the ticket once the webhook has landed.
+// ──────────────────────────────────────────────────────────────────────
+async function submitRegistration() {
+    const payBtn  = document.getElementById('payBtn');
+    const btnText = document.getElementById('payBtnText');
+    const spinner = document.getElementById('paySpinner');
+
+    payBtn.disabled       = true;
+    btnText.textContent   = SUBTOTAL <= 0 ? 'CONFIRMING…' : 'STARTING PAYMENT…';
+    spinner.style.display = 'inline-block';
+
+    const eventRegistrations = CART_ITEMS.map(item => ({
+        event_id: item.id,
+        type:     isGroupEvent(item) ? 'group' : 'individual',
+        members:  eventParticipants[item.id] ? eventParticipants[item.id].members : []
+    }));
+
+    const participant = {
+        first_name: document.getElementById('p1Fname').value.trim(),
+        last_name:  document.getElementById('p1Lname').value.trim(),
+        email:      document.getElementById('p1Email').value.trim(),
+        phone:      document.getElementById('p1Phone').value.trim(),
+        college:    document.getElementById('p1College').value.trim(),
+        dept:       document.getElementById('p1Dept').value.trim(),
+        year:       document.getElementById('p1Year').value,
+        roll_no:    document.getElementById('p1Roll')?.value.trim() || ''
+    };
+
+    try {
+        const res = await fetch(CREATE_ORDER_URL, {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                event_ids:           CART_ITEMS.map(e => e.id),
+                participant:         participant,
+                event_registrations: eventRegistrations
+            })
+        });
+
+        // Always try to parse JSON even on non-200 so we get the error message
+        let data = {};
+        try { data = await res.json(); } catch(e) {}
+
+        if (!res.ok || data.error) {
+            throw new Error(data.error || ('Server error ' + res.status));
+        }
+
+        if (data.free) {
+            // ── Free event(s) — ticket is already built & emailed. Load it now. ──
+            try { localStorage.removeItem('anch_cart'); } catch(e) {}
+            launchConfetti();
+            const fname = document.getElementById('p1Fname').value.trim();
+            showTicketSuccess(data.ticket_codes || [], fname, false);
+
+        } else if (data.redirect_url) {
+            // ── Paid event(s) — hand off to TiQR's hosted payment page ──
+            // Bulk checkouts go through a single TiQR payment page that covers
+            // all events at once; single-event checkouts work the same way.
+            btnText.textContent = 'REDIRECTING TO SECURE PAYMENT…';
+            setPayOverlay(true, 'REDIRECTING TO SECURE PAYMENT…');
+            window.location.href = data.redirect_url;
+
+        } else {
+            throw new Error('Unexpected response from server');
+        }
+
+    } catch (err) {
+        console.error(err);
+        setPayOverlay(false);
+        showToast('◈ ERROR: ' + err.message, 'error');
+        payBtn.disabled       = false;
+        spinner.style.display = 'none';
+        btnText.textContent   = SUBTOTAL <= 0 ? 'CONFIRM FREE REGISTRATION ›' : `PAY ₹${TOTAL_WITH_FEE.toFixed(2)} & CONFIRM ›`;
+    }
+}
+
+// ── Render the success panel + downloadable ticket card(s) ─────────────
+// Used for the free-checkout path, which completes instantly and can show
+// tickets right in this page. The paid path redirects to TiQR instead and
+// lands on /payment-complete, which shows the ticket once TiQR's webhook
+// confirms payment server-side.
+function showTicketSuccess(codes, fname, wasPaid, itemsOverride) {
+    window._registeredCodes = codes;   // keep for resend
+    const items = itemsOverride || CART_ITEMS;
+
+    document.getElementById('successRef').textContent = 'REF: ' + (codes[0] || 'ANC2026-CONFIRMED');
+    document.getElementById('successMsg').textContent =
+        `Welcome, ${fname}! Registration confirmed.` +
+        (wasPaid ? ` Payment received.` : '');
+
+    // ── Show success section ─────────────────────────────────
+    document.querySelectorAll('.reg-section').forEach(s => s.classList.remove('active'));
+    document.getElementById('secDone').classList.add('active');
+    [1,2,3,4].forEach(i => {
+        const s = document.getElementById('step' + i);
+        if (s) { s.className = 'step done'; s.querySelector('.step-dot').textContent = '✓'; }
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // ── Ticket preview / download ────────────────────────────
+    // Always use the download-card layout — one card per ticket, 1 or N events.
+    document.getElementById('multiTicketSection').style.display = 'block';
+    const wrap = document.getElementById('multiTicketItems');
+
+    if (codes.length === 0) {
+        wrap.innerHTML =
+            '<div style="font-family:\'Share Tech Mono\',monospace;font-size:0.675rem;' +
+            'letter-spacing:1.8px;color:rgba(255,255,255,0.62);padding:21.6px 0;text-align:center">' +
+            '// NO TICKET CODES RETURNED — CONTACT SUPPORT</div>';
+        return;
+    }
+
+    wrap.innerHTML = codes.map((code, idx) => {
+        const ev     = items[idx] || {};
+        const evName = ev.name  || ('Event ' + (idx + 1));
+        const evIcon = ev.icon  || '🎟️';
+        const evMeta = [
+            ev.category ? ev.category.toUpperCase() : '',
+            ev.day      ? 'DAY ' + ev.day           : '',
+            ev.venue    || ''
+        ].filter(Boolean).join(' · ');
+        const dlUrl  = '/ticket/' + code + '?download=1';
+        const dlFile = 'anchorage2026_ticket_' + code + '.png';
+        return `
+        <div class="ticket-dl-card">
+            <div class="ticket-dl-card-left">
+                <div class="ticket-dl-num">#${idx + 1}</div>
+                <div class="ticket-dl-icon">${evIcon}</div>
+                <div class="ticket-dl-info">
+                    <div class="ticket-dl-name">${evName}</div>
+                    <div class="ticket-dl-meta">${evMeta}</div>
+                    <div class="ticket-dl-code">ID: ${code}</div>
+                </div>
+            </div>
+            <button class="ticket-dl-btn"
+                    data-url="${dlUrl}"
+                    data-filename="${dlFile}"
+                    onclick="downloadTicket(this)">
+                <span class="dl-arrow">⬇</span>
+                <span class="btn-txt">DOWNLOAD</span>
+            </button>
+        </div>`;
+    }).join('');
+
+    // For single ticket: also show the inline image preview below the card
+    if (codes.length === 1) {
+        const sec = document.getElementById('singleTicketSection');
+        sec.style.display = 'block';
+        // Hide the redundant hero download banner (card above already handles it)
+        const heroBanner = sec.querySelector('.dl-hero-banner');
+        if (heroBanner) heroBanner.style.display = 'none';
+        const emailStrip = sec.querySelector('.email-soon-strip');
+        if (emailStrip) emailStrip.style.display = 'none';
+
+        const img = document.getElementById('ticketPreviewImg');
+        img.onload = () => {
+            img.classList.add('loaded');
+            document.getElementById('ticketLoading').style.display = 'none';
+        };
+        img.onerror = () => {
+            document.getElementById('ticketLoading').innerHTML =
+                '<span style="color:rgba(255,120,80,0.7);font-size:0.648rem;letter-spacing:1.8px">' +
+                '// PREVIEW UNAVAILABLE — USE DOWNLOAD BUTTON ABOVE</span>';
+        };
+        img.src = '/ticket/' + codes[0];
+    }
+}
+
+// ── Resend ticket email ────────────────────────────────────────────────
+async function resendEmail() {
+    const codes = window._registeredCodes || [];
+    if (!codes.length) { showToast('◈ NO TICKET CODE FOUND', 'error'); return; }
+
+    // Inline resend links in email-soon strips
+    const linkSingle = document.getElementById('resendBtn');
+    const linkMulti  = document.getElementById('resendBtnMulti');
+    const freeze = (el, txt) => { if(el){ el.style.pointerEvents='none'; el.style.opacity='0.4'; el.textContent=txt; } };
+    const restore = (el, txt) => { if(el){ el.style.pointerEvents=''; el.style.opacity=''; el.textContent=txt; } };
+    freeze(linkSingle, 'Sending…'); freeze(linkMulti, 'Sending…');
+
+    try {
+        for (const code of codes) {
+            const res  = await fetch('/send-ticket/' + code);
+            const data = await res.json();
+            if (!data.success) throw new Error(data.error || 'Send failed');
+        }
+        if (linkSingle) linkSingle.textContent = '✓ Sent!';
+        if (linkMulti)  linkMulti.textContent  = '✓ All sent!';
+        showToast('◈ TICKET EMAILED SUCCESSFULLY', 'success');
+
+        setTimeout(() => {
+            restore(linkSingle, 'Resend email');
+            restore(linkMulti, 'Resend all emails');
+        }, 3500);
+    } catch (err) {
+        restore(linkSingle, 'Resend email');
+        restore(linkMulti, 'Resend all emails');
+        showToast('◈ EMAIL FAILED: ' + err.message, 'error');
+    }
+}
+
+// ── Helpers ────────────────────────────────────────────────────────────
+function esc(str) {
+    return (str || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
+// ── Download ticket via fetch+blob (works cross-origin, avoids <a download> issues) ──
+async function downloadTicket(btn) {
+    const url      = btn.dataset.url;
+    const filename = btn.dataset.filename || 'anchorage2026_ticket.png';
+    if (!url) { showToast('◈ NO TICKET URL — TRY AGAIN', 'error'); return; }
+
+    // Support both hero button (has #dlBtnTxt span) and plain buttons
+    const txtEl   = btn.querySelector('#dlBtnTxt') || btn.querySelector('.btn-txt') || null;
+    const origText = txtEl ? txtEl.textContent : btn.textContent;
+    btn.disabled  = true;
+    if (txtEl) txtEl.textContent = 'DOWNLOADING…'; else btn.textContent = 'DOWNLOADING…';
+
+    try {
+        const res = await fetch(url);
+        if (!res.ok) throw new Error('Server returned ' + res.status);
+        const blob   = await res.blob();
+        const objUrl = URL.createObjectURL(blob);
+        const a      = document.createElement('a');
+        a.href       = objUrl;
+        a.download   = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(objUrl);
+        showToast('◈ TICKET DOWNLOADED', 'success');
+    } catch (err) {
+        showToast('◈ DOWNLOAD FAILED: ' + err.message, 'error');
+    } finally {
+        btn.disabled = false;
+        if (txtEl) txtEl.textContent = origText; else btn.textContent = origText;
+    }
+}
+
+// ── Unified pay button handler ────────────────────────────────────────
+function handlePayClick() {
+    submitRegistration();
+}
+
+// ── Generic "redirecting to secure payment" overlay ─────────────────────
+function setPayOverlay(state, text) {
+    const overlay = document.getElementById('paySubmitOverlay');
+    const textEl  = document.getElementById('paySubmitOverlayText');
+    if (!overlay) return;
+    if (state) {
+        if (text && textEl) textEl.textContent = text;
+        overlay.classList.add('show');
+    } else {
+        overlay.classList.remove('show');
+    }
+}
+
+function launchConfetti() {
+    const colors = ['#00f2ff','#ffd166','#06d6a0','#ff6b6b','#b56bff','#ffffff'];
+    for (let i = 0; i < 70; i++) {
+        setTimeout(() => {
+            const dot = document.createElement('div');
+            dot.className = 'confetti-dot';
+            const sz = 5 + Math.random() * 10;
+            dot.style.cssText = `width:${sz}px;height:${sz}px;background:${colors[Math.floor(Math.random()*colors.length)]};left:${Math.random()*100}vw;top:0;animation-duration:${1.2+Math.random()}s;animation-delay:${Math.random()*0.6}s`;
+            document.body.appendChild(dot);
+            setTimeout(() => dot.remove(), 3000);
+        }, i * 25);
+    }
+}
+</script>
+</body>
+</html>

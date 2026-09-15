@@ -1,0 +1,2890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- ============ PRIMARY SEO ============ -->
+    <title>Anchorage 2026 | Maritime Tech Symposium &mdash; Dept. of Ship Technology, CUSAT</title>
+    <meta name="description" content="Anchorage 2026 is the flagship maritime technical symposium of the Department of Ship Technology, CUSAT — Oct 10-12, 2026. Workshops, competitions, exhibitions, Navy Expo & a live concert. Register now.">
+    <meta name="keywords" content="Anchorage 2026, CUSAT symposium, Department of Ship Technology, ship technology fest, naval architecture fest, marine engineering symposium, CUSAT Kochi, maritime technical fest Kerala">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <meta name="author" content="Department of Ship Technology, CUSAT">
+    <meta name="geo.region" content="IN-KL">
+    <meta name="geo.placename" content="Kochi, Kerala">
+    <meta name="geo.position" content="10.0457;76.3175">
+    <meta name="ICBM" content="10.0457, 76.3175">
+    <link rel="canonical" href="{{ url_for('home', _external=True) }}">
+    <link rel="alternate" hreflang="en-in" href="{{ url_for('home', _external=True) }}">
+    <link rel="alternate" hreflang="x-default" href="{{ url_for('home', _external=True) }}">
+
+    <!-- ============ OPEN GRAPH (Facebook / WhatsApp / LinkedIn) ============ -->
+    
+    
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Anchorage 2026 — Dept. of Ship Technology, CUSAT">
+    <meta property="og:title" content="Anchorage 2026 | Maritime Tech Symposium, CUSAT">
+    <meta property="og:description" content="The flagship maritime technical symposium of the Department of Ship Technology, CUSAT — Oct 10-12, 2026. Workshops, competitions, Navy Expo & a live concert.">
+    <meta property="og:image" content="{{ url_for('static', filename='assets/hero-logo.png', _external=True) }}">
+    <meta property="og:image:width" content="820">
+    <meta property="og:image:height" content="120">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:alt" content="Anchorage 2026 — Maritime Technical Symposium, Department of Ship Technology, CUSAT">
+    <meta property="og:url" content="{{ url_for('home', _external=True) }}">
+    <meta property="og:locale" content="en_IN">
+    <meta property="article:publisher" content="Department of Ship Technology, CUSAT">
+
+    <!-- ============ TWITTER / X CARD ============ -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Anchorage 2026 | Maritime Tech Symposium, CUSAT">
+    <meta name="twitter:description" content="Oct 10-12, 2026 · Dept. of Ship Technology, CUSAT. Workshops, competitions, exhibitions & a live concert.">
+    <meta name="twitter:image" content="{{ url_for('static', filename='assets/hero-logo.png', _external=True) }}">
+    <meta name="twitter:image:alt" content="Anchorage 2026 — Maritime Technical Symposium, Department of Ship Technology, CUSAT">
+
+    <!-- ============ THEME / MISC ============ -->
+    <meta name="theme-color" content="#00050a">
+
+    <link rel="icon" href="{{ url_for('static', filename='assets/favicon.ico') }}" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='assets/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='assets/favicon-16x16.png') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='assets/apple-touch-icon.png') }}">
+    <link rel="manifest" href="{{ url_for('static', filename='assets/site.webmanifest') }}">
+
+    <!-- Preconnect speeds up font loading (Core Web Vitals / page-speed = SEO ranking factor) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&family=Bebas+Neue&display=swap">
+
+    <!-- ============ STRUCTURED DATA (JSON-LD) — lets Google show rich Event results ============ -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Event",
+      "name": "Anchorage 2026",
+      "description": "Anchorage is the flagship technical symposium of the Department of Ship Technology (DOST), CUSAT, featuring technical workshops, competitions, exhibitions, a Navy Expo and a live concert.",
+      "startDate": "2026-10-10T09:00:00+05:30",
+      "endDate": "2026-10-12T18:00:00+05:30",
+      "eventStatus": "https://schema.org/EventScheduled",
+      "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+      "image": [
+        "{{ url_for('static', filename='assets/hero-logo.png', _external=True) }}"
+      ],
+      "location": {
+        "@type": "Place",
+        "name": "Department of Ship Technology, CUSAT",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Department of Ship Technology, CUSAT, Kalamassery",
+          "addressLocality": "Kochi",
+          "addressRegion": "Kerala",
+          "addressCountry": "IN"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 10.0457,
+          "longitude": 76.3175
+        }
+      },
+      "organizer": {
+        "@type": "Organization",
+        "name": "Department of Ship Technology, CUSAT",
+        "url": "{{ url_for('home', _external=True) }}",
+        "sameAs": [
+          "https://www.instagram.com/anchorage_cusat",
+          "https://www.linkedin.com/company/anchorage-cusat/",
+          "https://youtube.com/@societyofnavalarchitecture1487"
+        ]
+      },
+      "offers": {
+        "@type": "Offer",
+        "url": "{{ url_for('events', _external=True) }}",
+        "availability": "https://schema.org/PreOrder"
+      },
+      "subEvent": [
+        { "@type": "Event", "name": "AutoCAD Workshop", "startDate": "2026-10-10", "eventStatus": "https://schema.org/EventScheduled" },
+        { "@type": "Event", "name": "Python Coding Workshop", "startDate": "2026-10-10", "eventStatus": "https://schema.org/EventScheduled" },
+        { "@type": "Event", "name": "Boat Wars", "startDate": "2026-10-11", "eventStatus": "https://schema.org/EventScheduled" },
+        { "@type": "Event", "name": "Shark Tank", "startDate": "2026-10-12", "eventStatus": "https://schema.org/EventScheduled" },
+        { "@type": "Event", "name": "Treasure Hunt", "startDate": "2026-10-12", "eventStatus": "https://schema.org/EventScheduled" },
+        { "@type": "Event", "name": "Navy Expo", "startDate": "2026-10-10", "endDate": "2026-10-12", "eventStatus": "https://schema.org/EventScheduled" }
+      ]
+    }
+    </script>
+    <!-- TODO: fill in exact ticket price/currency in "offers" once finalised, and confirm postal address details -->
+
+    <!-- ============ STRUCTURED DATA — WebSite + Organization (sitelinks searchbox, knowledge panel) ============ -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Anchorage 2026",
+      "url": "{{ url_for('home', _external=True) }}",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "{{ url_for('home', _external=True) }}?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "EducationalOrganization",
+      "name": "Department of Ship Technology, CUSAT",
+      "alternateName": "Anchorage 2026",
+      "url": "{{ url_for('home', _external=True) }}",
+      "logo": "{{ url_for('static', filename='assets/hero-logo.png', _external=True) }}",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Department of Ship Technology, CUSAT, Kalamassery",
+        "addressLocality": "Kochi",
+        "addressRegion": "Kerala",
+        "addressCountry": "IN"
+      },
+      "sameAs": [
+        "https://www.instagram.com/anchorage_cusat",
+        "https://www.linkedin.com/company/anchorage-cusat/",
+        "https://youtube.com/@societyofnavalarchitecture1487"
+      ]
+    }
+    </script>
+    <!-- ============ STRUCTURED DATA — Breadcrumb (helps Google show a breadcrumb trail in results) ============ -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "{{ url_for('home', _external=True) }}" },
+        { "@type": "ListItem", "position": 2, "name": "Events", "item": "{{ url_for('events', _external=True) }}" },
+        { "@type": "ListItem", "position": 3, "name": "Register", "item": "{{ url_for('events', _external=True) }}" }
+      ]
+    }
+    </script>
+
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --neon-cyan: #00f2ff;
+            --neon-cyan-dim: rgba(0,242,255,0.6);
+            --deep-ocean: #00050a;
+            --glass-bright: rgba(0, 242, 255, 0.08);
+            --border-glow: rgba(0, 242, 255, 0.25);
+            --expo-easing: cubic-bezier(0.19, 1, 0.22, 1);
+            --pad: 40px;
+            --section-gap: 100px;
+        }
+
+        html { scroll-behavior: smooth; overflow-x: hidden; }
+        /* Visible only to screen readers & search engine crawlers — keeps the visual design untouched */
+        .visually-hidden {
+            position: absolute !important;
+            width: 1px; height: 1px;
+            margin: -1px; padding: 0; border: 0;
+            overflow: hidden;
+            clip: rect(0,0,0,0);
+            white-space: nowrap;
+        }
+        body {
+            background: var(--deep-ocean);
+            color: white;
+            font-family: 'Rajdhani', sans-serif;
+            overflow-x: hidden;
+            width: 100%;
+        }
+        h1, h2, h3 { font-family: 'Orbitron', sans-serif; text-transform: uppercase; letter-spacing: 4px; }
+
+        /* ====== BACKGROUND ====== */
+        #bg-layer { position: fixed; inset: 0; z-index: -5; overflow: hidden; background: #000810; }
+        .radar-bg {
+            position: absolute; inset: 0;
+            background-image:
+                linear-gradient(rgba(0,242,255,0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,242,255,0.04) 1px, transparent 1px);
+            background-size: 80px 80px;
+            opacity: 0.4;
+        }
+        .radar-pulse {
+            position: absolute; top: 50%; left: 50%;
+            width: 100vw; height: 100vw;
+            border: 1px solid rgba(0,242,255,0.08); border-radius: 50%;
+            transform: translate(-50%,-50%) scale(0);
+            animation: radar-ping 8s infinite linear;
+            pointer-events: none;
+        }
+        @keyframes radar-ping {
+            0%   { transform: translate(-50%,-50%) scale(0); opacity: 0.5; }
+            100% { transform: translate(-50%,-50%) scale(1.5); opacity: 0; }
+        }
+        .caustics {
+            position: absolute; width: 200%; height: 200%; top: -50%; left: -50%;
+            background: repeating-linear-gradient(45deg, transparent, transparent 5%, rgba(0,242,255,0.02) 10%, transparent 15%);
+            filter: blur(50px);
+            animation: rays 20s infinite linear;
+            pointer-events: none;
+        }
+        @keyframes rays { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .bubble {
+            position: absolute; border-radius: 50%; bottom: -50px; pointer-events: none;
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.3) 0%, rgba(0,242,255,0.08) 40%, rgba(255,255,255,0.03) 100%);
+            border: 0.5px solid rgba(255,255,255,0.15);
+            animation: floatUp var(--speed) infinite ease-in;
+        }
+        @keyframes floatUp {
+            0%   { transform: translateY(0) translateX(0); opacity: 0; }
+            10%  { opacity: 0.6; }
+            100% { transform: translateY(-110vh) translateX(-15px); opacity: 0; }
+        }
+
+        /* ====== LOADER ====== */
+        #hero-loader {
+            position: fixed; inset: 0;
+            background: #000000;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            transition: transform 1s cubic-bezier(0.85,0,0.15,1);
+            overflow: hidden;
+        }
+        /* subtle grid bg on loader */
+        #hero-loader::before {
+            content: '';
+            position: absolute; inset: 0;
+            background-image:
+                linear-gradient(rgba(0,242,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,242,255,0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+        }
+        /* sweeping scan line */
+        #hero-loader::after {
+            content: '';
+            position: absolute; left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(0,242,255,0.6), transparent);
+            animation: loader-scan 2.8s ease-in-out infinite;
+            pointer-events: none;
+        }
+        @keyframes loader-scan {
+            0%   { top: -2px; opacity: 0; }
+            5%   { opacity: 1; }
+            95%  { opacity: 0.4; }
+            100% { top: 100%; opacity: 0; }
+        }
+        .loader-finished { transform: translateY(-100%); }
+
+        /* Title */
+        #load-title {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: clamp(2.2rem, 8vw, 3.8rem);
+            color: var(--neon-cyan);
+            letter-spacing: 10px;
+            text-shadow: 0 0 20px rgba(0,242,255,0.8), 0 0 60px rgba(0,242,255,0.35);
+            -webkit-text-stroke: 1px var(--neon-cyan);
+            margin-bottom: 28px;
+            margin-right: -10px; /* offsets trailing letter-spacing so text is truly centered */
+            position: relative; z-index: 1;
+            text-align: center;
+        }
+
+        /* Progress bar container */
+        #hull-progress-wrap {
+            width: min(340px, 80vw);
+            height: 2px;
+            background: rgba(0,242,255,0.1);
+            margin-bottom: 14px;
+            position: relative;
+            z-index: 1;
+        }
+        #hull-progress-bar {
+            height: 100%; width: 0%;
+            background: var(--neon-cyan);
+            box-shadow: 0 0 10px var(--neon-cyan), 0 0 30px rgba(0,242,255,0.5);
+            position: relative;
+            transition: width 0.08s linear;
+        }
+        #hull-progress-bar::after {
+            content: '';
+            position: absolute; right: -3px; top: 50%;
+            transform: translateY(-50%);
+            width: 6px; height: 6px; border-radius: 50%;
+            background: white;
+            box-shadow: 0 0 10px var(--neon-cyan), 0 0 20px rgba(0,242,255,0.7);
+        }
+        #hull-pct {
+            position: absolute; right: 0; top: -18px;
+            font-family: monospace; font-size: 0.58rem;
+            color: var(--neon-cyan); letter-spacing: 1px;
+        }
+
+        /* Status line */
+        #status-msg {
+            font-family: monospace;
+            font-size: clamp(0.6rem, 2.5vw, 0.75rem);
+            letter-spacing: 3px;
+            color: var(--neon-cyan);
+            opacity: 0.75;
+            min-height: 1.4em;
+            position: relative; z-index: 1;
+            text-align: center;
+        }
+
+        /* Bridge online — hidden until triggered, replaces status */
+        #bridge-online {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(0.7rem, 3vw, 1rem);
+            letter-spacing: 8px;
+            color: var(--neon-cyan);
+            text-shadow: 0 0 25px rgba(0,242,255,0.9), 0 0 70px rgba(0,242,255,0.5);
+            position: relative; z-index: 1;
+            text-align: center;
+            opacity: 0;
+            pointer-events: none;
+            /* sits in the same vertical spot as status-msg — zero height until shown */
+            max-height: 0; overflow: hidden;
+            transition: max-height 0s, opacity 0s;
+        }
+        #bridge-online.show {
+            max-height: 3em;
+            opacity: 1;
+            animation: bridge-flicker 0.7s ease forwards,
+                       glow-pulse-text 2s ease-in-out infinite 0.7s;
+        }
+        @keyframes bridge-flicker {
+            0%  { opacity: 0; }
+            12% { opacity: 1; }
+            18% { opacity: 0.15; }
+            24% { opacity: 1; }
+            30% { opacity: 0.4; }
+            36% { opacity: 1; }
+            100%{ opacity: 1; }
+        }
+        @keyframes glow-pulse-text {
+            0%,100% { text-shadow: 0 0 20px rgba(0,242,255,0.8), 0 0 50px rgba(0,242,255,0.4); }
+            50%      { text-shadow: 0 0 40px rgba(0,242,255,1), 0 0 110px rgba(0,242,255,0.6), 0 0 200px rgba(0,242,255,0.2); }
+        }
+
+        /* Animated dots */
+        .loader-dots span { display: inline-block; animation: dot-blink 1.2s infinite; }
+        .loader-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .loader-dots span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes dot-blink { 0%,80%,100%{opacity:0} 40%{opacity:1} }
+
+        /* ====== GLOBAL GLOW PULSE ====== */
+        @keyframes glow-pulse {
+            0%,100% { box-shadow: 0 0 8px rgba(0,242,255,0.2), inset 0 0 8px rgba(0,242,255,0.03); border-color: rgba(0,242,255,0.25); }
+            50%      { box-shadow: 0 0 22px rgba(0,242,255,0.5), 0 0 50px rgba(0,242,255,0.2), inset 0 0 20px rgba(0,242,255,0.07); border-color: rgba(0,242,255,0.55); }
+        }
+
+        /* ====== LAYOUT ====== */
+        .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 var(--pad); }
+        section { width: 100%; padding: 80px 0; position: relative; display: flex; align-items: center; justify-content: center; flex-direction: column; }
+
+        /* ====== NAV ====== */
+        nav {
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+            padding: 20px 0;
+            background: rgba(0,5,10,0.85);
+            backdrop-filter: blur(24px);
+            border-bottom: 1px solid var(--border-glow);
+        }
+        .nav-inner { display: flex; justify-content: space-between; align-items: center; }
+        .nav-logo { height: 70px; display: flex; align-items: center; flex-shrink: 0; }
+        .nav-logo a { display: flex; height: 100%; }
+        .nav-logo img { height: 130%; width: auto; filter: drop-shadow(0 0 5px var(--neon-cyan)); }
+        .nav-links { display: flex; gap: 28px; }
+        .nav-link {
+            font-family: 'Orbitron', sans-serif; font-size: 0.68rem;
+            letter-spacing: 3px; text-transform: uppercase;
+            text-decoration: none; color: white; opacity: 0.6;
+            position: relative; padding-bottom: 4px;
+            transition: all 0.4s var(--expo-easing);
+            -webkit-tap-highlight-color: transparent;
+        }
+        .nav-link::after {
+            content: ''; position: absolute; bottom: 0; left: 50%;
+            width: 0; height: 1px; background: var(--neon-cyan);
+            transition: width 0.4s var(--expo-easing); transform: translateX(-50%);
+        }
+        .nav-link:hover { opacity: 1; color: var(--neon-cyan); text-shadow: 0 0 10px var(--neon-cyan); }
+        .nav-link:hover::after { width: 100%; }
+
+        /* Hamburger */
+        .hamburger {
+            display: none; flex-direction: column; gap: 5px;
+            cursor: pointer; padding: 8px; background: none; border: none;
+            z-index: 1100; -webkit-tap-highlight-color: transparent;
+        }
+        .hamburger span {
+            display: block; width: 24px; height: 2px;
+            background: var(--neon-cyan); box-shadow: 0 0 6px var(--neon-cyan);
+            transition: all 0.4s var(--expo-easing);
+        }
+        .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+        .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+        /* Mobile menu */
+        .mobile-menu {
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,3,8,0.98); backdrop-filter: blur(30px);
+            z-index: 1050; flex-direction: column;
+            align-items: center; justify-content: center;
+            transform: translateY(-100%);
+            transition: transform 0.6s var(--expo-easing);
+        }
+        .mobile-menu.open { transform: translateY(0); }
+        .mobile-menu-accent {
+            width: 1px; height: 60px; background: linear-gradient(to bottom, transparent, var(--neon-cyan), transparent);
+            margin-bottom: 28px;
+            animation: pulseHeight 2s ease-in-out infinite;
+        }
+        @keyframes pulseHeight { 0%,100% { opacity: 0.4; } 50% { opacity: 1; } }
+        .mobile-menu-link {
+            font-family: 'Orbitron', sans-serif; font-size: 1.1rem; letter-spacing: 8px;
+            text-decoration: none; color: rgba(255,255,255,0.45);
+            padding: 16px 0; width: 80%; text-align: center;
+            border-bottom: 1px solid rgba(0,242,255,0.07);
+            transition: all 0.5s var(--expo-easing);
+            -webkit-tap-highlight-color: transparent;
+            position: relative; overflow: hidden;
+        }
+        .mobile-menu-link:first-of-type { border-top: 1px solid rgba(0,242,255,0.07); }
+        .mobile-menu-link::before {
+            content: ''; position: absolute; left: -100%; top: 0; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0,242,255,0.05), transparent);
+            transition: left 0.5s ease;
+        }
+        .mobile-menu-link:hover::before, .mobile-menu-link:active::before { left: 100%; }
+        .mobile-menu-link:hover, .mobile-menu-link:active {
+            opacity: 1; color: var(--neon-cyan);
+            text-shadow: 0 0 30px rgba(0,242,255,0.8);
+            letter-spacing: 12px;
+        }
+
+        /* ====== HERO ====== */
+        #hero-main {
+            min-height: 100vh; text-align: center;
+            padding-top: 120px; padding-bottom: 60px;
+            position: relative; overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
+            box-sizing: border-box;
+        }
+
+        /* Radial glow behind the title */
+        #hero-main::before {
+            content: ''; position: absolute;
+            top: 20%; left: 50%; transform: translateX(-50%);
+            width: 700px; height: 400px;
+            background: radial-gradient(ellipse, rgba(0,242,255,0.07) 0%, transparent 70%);
+            pointer-events: none; z-index: 0;
+        }
+
+        /* Horizontal scan line across hero */
+        .hero-scan {
+            position: absolute; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent 0%, rgba(0,242,255,0.5) 40%, rgba(0,242,255,0.8) 50%, rgba(0,242,255,0.5) 60%, transparent 100%);
+            animation: heroScan 8s ease-in-out infinite;
+            pointer-events: none; z-index: 1; top: 30%;
+        }
+        @keyframes heroScan {
+            0%   { top: 15%; opacity: 0; }
+            10%  { opacity: 1; }
+            90%  { opacity: 0.6; }
+            100% { top: 85%; opacity: 0; }
+        }
+
+        /* Corner brackets framing the title */
+        .hero-title-wrap {
+            position: relative; display: block;
+            padding: 24px 32px; z-index: 2;
+            text-align: center;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .hero-title-wrap::before, .hero-title-wrap::after,
+        .hero-corner-bl, .hero-corner-br {
+            content: ''; position: absolute;
+            width: 28px; height: 28px;
+        }
+        .hero-title-wrap::before {
+            top: 0; left: 0;
+            border-top: 1px solid rgba(0,242,255,0.6);
+            border-left: 1px solid rgba(0,242,255,0.6);
+        }
+        .hero-title-wrap::after {
+            top: 0; right: 0;
+            border-top: 1px solid rgba(0,242,255,0.6);
+            border-right: 1px solid rgba(0,242,255,0.6);
+        }
+        .hero-corner-bl {
+            bottom: 0; left: 0;
+            border-bottom: 1px solid rgba(0,242,255,0.6);
+            border-left: 1px solid rgba(0,242,255,0.6);
+            position: absolute;
+        }
+        .hero-corner-br {
+            bottom: 0; right: 0;
+            border-bottom: 1px solid rgba(0,242,255,0.6);
+            border-right: 1px solid rgba(0,242,255,0.6);
+            position: absolute;
+        }
+
+        .hero-tagline {
+            font-family: 'Orbitron', sans-serif; font-size: 0.72rem;
+            letter-spacing: 10px; color: var(--neon-cyan);
+            margin-bottom: 6px; display: block; opacity: 0.65;
+            position: relative; z-index: 2;
+        }
+
+        /* Main title with layered glow */
+        .main-title {
+            font-size: clamp(3.8rem, 11vw, 8rem);
+            line-height: 1.1;
+            position: relative; z-index: 2;
+            display: block;
+            width: 100%;
+            text-align: center;
+        }
+        .main-title.title-white {
+            color: #fff;
+            text-shadow: none;
+        }
+
+        .main-title.title-cyan {
+            color: var(--neon-cyan);
+            margin-top: 10px;
+        }
+        @keyframes titleGlow {
+            0%,100% { text-shadow: none; }
+            50%      { text-shadow: none; }
+        }
+
+        /* Thin decorative line under title */
+        .hero-title-line {
+            width: 120px; height: 1px; margin: 16px auto 0;
+            background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+            position: relative; z-index: 2;
+        }
+        .hero-title-line::before, .hero-title-line::after {
+            content: ''; position: absolute; top: 50%; transform: translateY(-50%);
+            width: 5px; height: 5px; border-radius: 50%;
+            background: var(--neon-cyan); box-shadow: 0 0 8px var(--neon-cyan);
+        }
+        .hero-title-line::before { left: 0; }
+        .hero-title-line::after  { right: 0; }
+
+        /* Countdown */
+        .countdown-container { display: flex; gap: 14px; justify-content: center; margin-top: 32px; font-family: 'Orbitron'; position: relative; z-index: 2; }
+        .count-item {
+            background: rgba(0,242,255,0.04); border: 1px solid var(--border-glow);
+            padding: 14px 12px; min-width: 80px; text-align: center;
+            clip-path: polygon(0 0, 100% 0, 100% 70%, 80% 100%, 0 100%);
+            transition: all 0.3s ease; position: relative;
+            animation: glow-pulse 4s ease-in-out infinite;
+            animation-delay: calc(var(--i, 0) * 0.5s);
+        }
+        .count-item::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+            opacity: 0.6;
+        }
+        .count-no    { font-size: 2rem; color: var(--neon-cyan); display: block; text-shadow: 0 0 14px rgba(0,242,255,0.5); }
+        .count-label { font-size: 0.55rem; opacity: 0.5; letter-spacing: 3px; margin-top: 3px; display: block; }
+
+        .hero-desc {
+            max-width: 560px; margin: 24px auto 0;
+            font-weight: 700; letter-spacing: 1.8px; line-height: 1.8; font-size: 1.02rem;
+            position: relative; z-index: 2;
+            color: #fff;
+            background: linear-gradient(100deg, rgba(255,255,255,0.55) 0%, #ffffff 28%, var(--neon-cyan) 50%, #ffffff 72%, rgba(255,255,255,0.55) 100%);
+            background-size: 220% 100%;
+            -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 18px rgba(0,242,255,0.25);
+            opacity: 0; transform: translateY(22px);
+            animation:
+                heroDescIn 1.1s var(--expo-easing) forwards,
+                heroDescSheen 6s linear infinite;
+            animation-delay: 0.4s, 1.5s;
+        }
+        @keyframes heroDescIn {
+            from { opacity: 0; transform: translateY(22px); filter: blur(6px); }
+            to   { opacity: 1; transform: translateY(0);    filter: blur(0); }
+        }
+        @keyframes heroDescSheen {
+            0%   { background-position: 200% 0; }
+            100% { background-position: -20% 0; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .hero-desc { animation: none; opacity: 1; transform: none; background-position: 0 0; }
+        }
+
+        .btn-hex {
+            display: inline-block; padding: 18px 44px;
+            color: var(--neon-cyan); text-decoration: none;
+            font-family: 'Orbitron', sans-serif; font-weight: bold;
+            letter-spacing: 3px; font-size: 0.85rem;
+            border: 1px solid var(--neon-cyan);
+            background: var(--glass-bright);
+            clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
+            transition: all 0.5s var(--expo-easing);
+            margin-top: 32px; backdrop-filter: blur(5px);
+            position: relative; z-index: 2;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .btn-hex:hover  { background: var(--neon-cyan); color: black; box-shadow: 0 0 50px rgba(0,242,255,0.6); transform: scale(1.06) translateY(-4px); }
+        .btn-hex:active { background: var(--neon-cyan); color: black; transform: scale(0.97); }
+
+        /* ====== DATE STRIP ====== */
+        .date-strip {
+            width: 100%;
+            background: linear-gradient(90deg, transparent 0%, rgba(0,242,255,0.04) 20%, rgba(0,242,255,0.06) 50%, rgba(0,242,255,0.04) 80%, transparent 100%);
+            border-top: 1px solid rgba(0,242,255,0.15);
+            border-bottom: 1px solid rgba(0,242,255,0.15);
+            padding: 28px 0;
+            position: relative; overflow: hidden;
+        }
+        .date-strip::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 60%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0,242,255,0.06), transparent);
+            animation: stripShimmer 5s infinite linear;
+        }
+        @keyframes stripShimmer { to { left: 160%; } }
+        .date-strip-inner {
+            max-width: 1200px; margin: 0 auto;
+            padding: 0 40px;
+            display: flex; align-items: center; justify-content: center;
+            gap: 0; flex-wrap: wrap; position: relative; z-index: 1;
+        }
+        .date-strip-item {
+            display: flex; flex-direction: column; align-items: center;
+            padding: 0 40px; gap: 4px;
+        }
+        .date-strip-day {
+            font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.8rem, 6vw, 4.5rem);
+            color: var(--neon-cyan); line-height: 1;
+            text-shadow: 0 0 30px rgba(0,242,255,0.4);
+        }
+        .date-strip-meta {
+            font-family: 'Orbitron', sans-serif; font-size: 0.48rem;
+            letter-spacing: 4px; color: rgba(255,255,255,0.4);
+        }
+        .date-strip-divider {
+            width: 1px; height: 60px;
+            background: linear-gradient(to bottom, transparent, rgba(0,242,255,0.4), transparent);
+            flex-shrink: 0;
+        }
+        .date-strip-label {
+            width: 100%; text-align: center;
+            font-family: 'Orbitron', sans-serif; font-size: 0.42rem;
+            letter-spacing: 5px; color: rgba(0,242,255,0.35);
+            margin-top: 14px; padding-top: 14px;
+            border-top: 1px solid rgba(0,242,255,0.08);
+        }
+        @media (max-width: 600px) {
+            .date-strip-item { padding: 0 20px; }
+            .date-strip-inner { padding: 0 16px; }
+        }
+
+        /* ====== PRO SHOW ====== */
+        #concert { padding: 60px 0; }
+        .proshow-wrapper {
+            position: relative; width: 100%;
+            background: linear-gradient(135deg, rgba(0,8,18,0.95) 0%, rgba(0,15,25,0.9) 100%);
+            border: 1px solid rgba(0,242,255,0.15);
+            overflow: hidden;
+        }
+        .proshow-topbar {
+            width: 100%; height: 3px;
+            background: linear-gradient(90deg, transparent 0%, var(--neon-cyan) 30%, rgba(0,242,255,0.4) 70%, transparent 100%);
+        }
+        .proshow-corner { position: absolute; width: 32px; height: 32px; z-index: 2; }
+        .proshow-corner.tl { top: 3px; left: 0; border-top: 2px solid var(--neon-cyan); border-left: 2px solid var(--neon-cyan); }
+        .proshow-corner.tr { top: 3px; right: 0; border-top: 2px solid var(--neon-cyan); border-right: 2px solid var(--neon-cyan); }
+        .proshow-corner.bl { bottom: 0; left: 0; border-bottom: 2px solid var(--neon-cyan); border-left: 2px solid var(--neon-cyan); }
+        .proshow-corner.br { bottom: 0; right: 0; border-bottom: 2px solid var(--neon-cyan); border-right: 2px solid var(--neon-cyan); }
+        .proshow-dots {
+            position: absolute; inset: 0;
+            background-image: radial-gradient(rgba(0,242,255,0.06) 1px, transparent 1px);
+            background-size: 28px 28px; pointer-events: none;
+        }
+        .proshow-glow {
+            position: absolute; top: 50%; left: 0; transform: translateY(-50%);
+            width: 50%; height: 120%; border-radius: 50%;
+            background: radial-gradient(ellipse, rgba(0,242,255,0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .proshow-inner { display: grid; grid-template-columns: 1fr 1.1fr; min-height: 480px; position: relative; z-index: 1; }
+        .proshow-image-panel { position: relative; overflow: hidden; }
+        .proshow-image-panel img {
+            width: 100%; height: 100%; object-fit: cover; display: block;
+            filter: grayscale(0.4) contrast(1.15) brightness(0.85);
+            mix-blend-mode: screen;
+            transition: transform 1.4s var(--expo-easing), filter 0.8s ease;
+        }
+        .proshow-image-panel:hover img { filter: grayscale(0) contrast(1.1) brightness(1); transform: scale(1.04); }
+        .proshow-divider {
+            position: absolute; top: 8%; right: 0; bottom: 8%; width: 1px;
+            background: linear-gradient(to bottom, transparent, var(--neon-cyan) 30%, var(--neon-cyan) 70%, transparent);
+            opacity: 0.5;
+        }
+        .proshow-scan {
+            position: absolute; top: 0; left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(0,242,255,0.7), transparent);
+            animation: vscan 5s linear infinite; pointer-events: none;
+        }
+        @keyframes vscan { 0% { top: 0; opacity: 1; } 80% { opacity: 0.3; } 100% { top: 100%; opacity: 0; } }
+        .proshow-img-label {
+            position: absolute; bottom: 18px; left: 18px;
+            font-family: monospace; font-size: 0.55rem; color: var(--neon-cyan);
+            letter-spacing: 2px; opacity: 0.7; line-height: 1.6;
+            background: rgba(0,5,10,0.6); padding: 6px 10px;
+            border-left: 2px solid var(--neon-cyan);
+        }
+        .proshow-content {
+            padding: 52px 52px 52px 48px;
+            display: flex; flex-direction: column; justify-content: center; gap: 0;
+        }
+        .proshow-badge { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+        .proshow-badge-line { width: 36px; height: 1px; background: var(--neon-cyan); flex-shrink: 0; }
+        .proshow-badge-text { font-family: 'Orbitron', sans-serif; font-size: 0.6rem; color: var(--neon-cyan); letter-spacing: 6px; opacity: 0.8; }
+        .proshow-heading {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 5.5rem; line-height: 0.9; letter-spacing: 3px;
+            color: white; text-transform: uppercase;
+            text-shadow: 0 0 60px rgba(0,242,255,0.15); margin-bottom: 6px;
+        }
+        .proshow-heading-accent {
+            display: block; font-family: 'Bebas Neue', sans-serif;
+            font-size: 3.8rem; line-height: 1; letter-spacing: 5px;
+            color: transparent; -webkit-text-stroke: 1px var(--neon-cyan); font-style: normal;
+        }
+        .proshow-tagline {
+            margin: 22px 0 26px; padding: 16px 20px;
+            border-left: 3px solid var(--neon-cyan);
+            background: linear-gradient(90deg, rgba(0,242,255,0.07), transparent);
+            position: relative; overflow: hidden;
+        }
+        .proshow-tagline::after {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(0,242,255,0.12), transparent);
+            transform: translateX(-100%); animation: shimmer 4s infinite 2s;
+        }
+        @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+        .proshow-tagline p { font-size: 0.9rem; letter-spacing: 1.5px; line-height: 1.7; opacity: 0.85; }
+        .proshow-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 28px; }
+        .proshow-meta-card {
+            padding: 14px 16px; background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(0,242,255,0.12);
+            border-top: 2px solid rgba(0,242,255,0.4);
+            transition: border-color 0.3s ease;
+        }
+        .proshow-meta-card:hover { border-color: var(--neon-cyan); }
+        .proshow-meta-label { font-family: 'Orbitron', sans-serif; font-size: 0.48rem; letter-spacing: 3px; color: var(--neon-cyan); opacity: 0.55; margin-bottom: 6px; }
+        .proshow-meta-value { font-family: 'Orbitron', sans-serif; font-size: 0.95rem; color: white; }
+        .proshow-cta {
+            display: inline-flex; align-items: center; gap: 14px; padding: 16px 36px;
+            color: var(--neon-cyan); text-decoration: none;
+            font-family: 'Orbitron', sans-serif; font-size: 0.72rem; letter-spacing: 3px;
+            border: 1px solid var(--neon-cyan); background: rgba(0,242,255,0.05);
+            clip-path: polygon(0 0, 88% 0, 100% 50%, 88% 100%, 0 100%, 12% 50%);
+            transition: all 0.4s var(--expo-easing);
+            -webkit-tap-highlight-color: transparent; align-self: flex-start;
+        }
+        .proshow-cta:hover { background: var(--neon-cyan); color: black; box-shadow: 0 0 40px rgba(0,242,255,0.5); transform: translateX(6px); }
+        .proshow-cta:active { background: var(--neon-cyan); color: black; }
+        .proshow-cta-arrow { font-size: 1rem; transition: transform 0.3s ease; }
+        .proshow-cta:hover .proshow-cta-arrow { transform: translateX(4px); }
+        .reveal-left  { opacity: 0; transform: translateX(-60px); transition: all 1.4s var(--expo-easing); }
+        .reveal-right { opacity: 0; transform: translateX(60px);  transition: all 1.4s var(--expo-easing); }
+        .reveal-active { opacity: 1 !important; transform: none !important; }
+
+        /* ====== ABOUT ====== */
+        #about { text-align: center; }
+        .about-text { max-width: 800px; margin: 0 auto; font-size: 1.1rem; opacity: 0.75; line-height: 1.9; letter-spacing: 1px; }
+
+        /* ====== EVENTS CAROUSEL ====== */
+        #events { padding: 60px 0; }
+
+        .ev-header { text-align: center; margin-bottom: 40px; }
+        .ev-badge { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+        .ev-badge-line { width: 30px; height: 1px; background: var(--neon-cyan); }
+        .ev-badge-text {
+            font-family: 'Orbitron', sans-serif; font-size: 0.55rem;
+            color: var(--neon-cyan); letter-spacing: 6px; opacity: 0.75;
+        }
+        .ev-title {
+            font-family: 'Orbitron', sans-serif; font-size: 1.4rem;
+            letter-spacing: 6px; color: var(--neon-cyan); text-transform: uppercase; margin-bottom: 4px;
+        }
+        .ev-subtitle { font-size: 0.75rem; color: rgba(255,255,255,0.35); letter-spacing: 4px; text-transform: uppercase; }
+
+        .ev-tabs {
+            display: flex; justify-content: center; gap: 8px;
+            margin-bottom: 28px; flex-wrap: wrap;
+        }
+        .ev-tab {
+            font-family: 'Orbitron', sans-serif; font-size: 0.52rem;
+            letter-spacing: 3px; padding: 8px 18px;
+            border: 1px solid var(--border-glow); color: rgba(255,255,255,0.4);
+            background: none; cursor: pointer;
+            clip-path: polygon(8% 0,100% 0,92% 100%,0 100%);
+            transition: all 0.4s var(--expo-easing);
+            text-transform: uppercase; -webkit-tap-highlight-color: transparent;
+        }
+        .ev-tab:hover { color: var(--neon-cyan); border-color: var(--neon-cyan); }
+        .ev-tab.active {
+            background: var(--neon-cyan); color: #000;
+            border-color: var(--neon-cyan); box-shadow: 0 0 24px rgba(0,242,255,0.4);
+        }
+
+        .ev-track-outer {
+            overflow: hidden; position: relative;
+            cursor: grab;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        .ev-track-outer.dragging {
+            cursor: grabbing;
+        }
+        .ev-track-outer::before, .ev-track-outer::after {
+            content: ''; position: absolute; top: 0; bottom: 0; width: 60px; z-index: 10; pointer-events: none;
+        }
+        .ev-track-outer::before { left: 0; background: linear-gradient(to right, var(--deep-ocean), transparent); }
+        .ev-track-outer::after  { right: 0; background: linear-gradient(to left, var(--deep-ocean), transparent); }
+
+        .ev-track {
+            display: flex; gap: 16px;
+            transition: transform 0.7s var(--expo-easing);
+            padding: 8px 4px 16px;
+        }
+        .ev-track.no-transition {
+            transition: none;
+        }
+
+        .ev-card {
+            flex-shrink: 0; width: 220px;
+            background: linear-gradient(145deg, rgba(0,15,28,0.95), rgba(0,6,14,0.98));
+            border: 1px solid var(--border-glow);
+            position: relative; overflow: hidden; cursor: pointer;
+            transition: all 0.5s var(--expo-easing);
+            clip-path: polygon(0 0,100% 0,100% 88%,92% 100%,0 100%);
+        }
+        .ev-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+            opacity: 0; transition: opacity 0.4s;
+        }
+        .ev-card:hover { border-color: var(--neon-cyan); transform: translateY(-6px); box-shadow: 0 20px 60px rgba(0,242,255,0.12); }
+        .ev-card:hover::before { opacity: 1; }
+        .ev-card.active-card { border-color: var(--neon-cyan); box-shadow: 0 0 30px rgba(0,242,255,0.18); }
+
+        .ev-card-scan {
+            position: absolute; top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(0,242,255,0.5), transparent);
+            animation: ev-carscan 4s linear infinite; opacity: 0; pointer-events: none;
+        }
+        .ev-card:hover .ev-card-scan { opacity: 1; }
+        @keyframes ev-carscan { 0%{top:0;} 100%{top:100%;} }
+
+        .ev-card-icon {
+            width: 100%; height: 100px;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(0,242,255,0.04);
+            border-bottom: 1px solid var(--border-glow);
+            font-size: 2.8rem; position: relative; overflow: hidden;
+        }
+        .ev-card-icon::after {
+            content: ''; position: absolute; inset: 0;
+            background: radial-gradient(circle at center, rgba(0,242,255,0.07), transparent 70%);
+        }
+        .ev-card-icon-label {
+            position: absolute; bottom: 6px; right: 8px;
+            font-family: 'Orbitron', sans-serif; font-size: 0.4rem;
+            color: var(--neon-cyan); letter-spacing: 2px; opacity: 0.5;
+        }
+
+        .ev-card-body { padding: 14px 14px 18px; }
+        .ev-card-day {
+            font-family: 'Orbitron', sans-serif; font-size: 0.4rem;
+            letter-spacing: 3px; color: var(--neon-cyan); opacity: 0.6; margin-bottom: 5px;
+        }
+        .ev-card-name {
+            font-family: 'Orbitron', sans-serif; font-size: 0.68rem;
+            letter-spacing: 2px; color: #fff; line-height: 1.3; margin-bottom: 8px; text-transform: uppercase;
+        }
+        .ev-card-desc {
+            font-size: 0.75rem; color: rgba(255,255,255,0.45);
+            line-height: 1.5; letter-spacing: 0.5px; margin-bottom: 12px;
+        }
+        .ev-card-prize {
+            display: flex; align-items: center; gap: 6px; padding: 7px 10px;
+            background: rgba(0,242,255,0.06); border: 1px solid rgba(0,242,255,0.15);
+            border-left: 2px solid var(--neon-cyan);
+        }
+        .ev-prize-icon { font-size: 0.75rem; }
+        .ev-prize-val { font-family: 'Orbitron', sans-serif; font-size: 0.6rem; color: var(--neon-cyan); letter-spacing: 1px; }
+        .ev-prize-label { font-size: 0.6rem; color: rgba(255,255,255,0.3); letter-spacing: 1px; }
+        .ev-card-tag {
+            display: inline-block; font-family: 'Orbitron', sans-serif; font-size: 0.38rem;
+            letter-spacing: 2px; padding: 3px 8px; border: 1px solid var(--border-glow);
+            color: rgba(0,242,255,0.6); margin-top: 8px; text-transform: uppercase;
+        }
+
+        /* ── Coming Soon overlay on event cards ── */
+        .ev-card-soon-badge {
+            position: absolute; top: 50%; left: 50%; z-index: 6;
+            transform: translate(-50%, -50%);
+            font-family: 'Orbitron', sans-serif; font-size: 0.52rem; letter-spacing: 3px;
+            padding: 10px 18px; text-transform: uppercase; text-align: center; white-space: nowrap;
+            background: rgba(0,5,10,0.92);
+            border: 1px solid rgba(0,242,255,0.6);
+            color: var(--neon-cyan);
+            animation: soonPulse 2.5s ease-in-out infinite;
+        }
+        @keyframes soonPulse {
+            0%,100% { box-shadow: 0 0 8px rgba(0,242,255,0.25); opacity: 0.9; }
+            50%      { box-shadow: 0 0 22px rgba(0,242,255,0.6); opacity: 1; }
+        }
+        .ev-card-soon-overlay {
+            position: absolute; inset: 0; z-index: 5;
+            background: rgba(0,5,10,0.72);
+            backdrop-filter: blur(4px);
+            pointer-events: none;
+        }
+        /* Blur the actual card content underneath */
+        .ev-card.soon .ev-card-icon,
+        .ev-card.soon .ev-card-body {
+            filter: blur(3px);
+            user-select: none;
+        }
+        .ev-card.soon { cursor: default; }
+        .ev-card.soon:hover { transform: none; box-shadow: none; border-color: var(--border-glow); }
+        .ev-card.soon:hover::before { opacity: 0; }
+
+        .ev-nav {
+            display: flex; justify-content: center; align-items: center; gap: 20px; margin-top: 22px;
+        }
+        .ev-nav-btn {
+            width: 38px; height: 38px; border: 1px solid var(--border-glow);
+            background: none; cursor: pointer; color: var(--neon-cyan);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1rem; clip-path: polygon(15% 0,100% 0,85% 100%,0 100%);
+            transition: all 0.3s; -webkit-tap-highlight-color: transparent;
+        }
+        .ev-nav-btn:hover { background: var(--neon-cyan); color: #000; }
+        .ev-nav-btn:disabled { opacity: 0.2; cursor: not-allowed; }
+
+        .ev-dots { display: flex; gap: 6px; }
+        .ev-dot {
+            width: 20px; height: 2px; background: rgba(0,242,255,0.2);
+            transition: all 0.4s; cursor: pointer;
+        }
+        .ev-dot.active { background: var(--neon-cyan); width: 32px; box-shadow: 0 0 8px var(--neon-cyan); }
+
+        .ev-detail-panel {
+            margin-top: 28px;
+            background: linear-gradient(135deg, rgba(0,15,28,0.95), rgba(0,6,14,0.98));
+            border: 1px solid var(--border-glow); border-top: 2px solid var(--neon-cyan);
+            padding: 24px 28px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;
+            position: relative; overflow: hidden;
+        }
+        .ev-detail-panel::before {
+            content: ''; position: absolute; inset: 0;
+            background-image: radial-gradient(rgba(0,242,255,0.04) 1px, transparent 1px);
+            background-size: 24px 24px; pointer-events: none;
+        }
+        .ev-detail-stat { text-align: center; position: relative; }
+        .ev-detail-stat + .ev-detail-stat::before {
+            content: ''; position: absolute; left: 0; top: 15%; bottom: 15%; width: 1px;
+            background: linear-gradient(to bottom, transparent, var(--border-glow), transparent);
+        }
+        .ev-detail-stat-val {
+            font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--neon-cyan);
+            display: block; line-height: 1; margin-bottom: 4px;
+            text-shadow: 0 0 20px rgba(0,242,255,0.3);
+        }
+        .ev-detail-stat-label {
+            font-family: 'Orbitron', sans-serif; font-size: 0.42rem;
+            letter-spacing: 3px; color: rgba(255,255,255,0.35); text-transform: uppercase;
+        }
+
+        .ev-cta-row {
+            display: flex; justify-content: center; margin-top: 30px; gap: 14px; flex-wrap: wrap;
+        }
+        .ev-cta-primary {
+            font-family: 'Orbitron', sans-serif; font-size: 0.6rem; letter-spacing: 3px;
+            padding: 13px 32px; color: var(--neon-cyan); text-decoration: none;
+            border: 1px solid var(--neon-cyan); background: rgba(0,242,255,0.05);
+            clip-path: polygon(8% 0,100% 0,92% 100%,0 100%);
+            cursor: pointer; transition: all 0.4s var(--expo-easing);
+            text-transform: uppercase; -webkit-tap-highlight-color: transparent;
+        }
+        .ev-cta-primary:hover { background: var(--neon-cyan); color: #000; box-shadow: 0 0 30px rgba(0,242,255,0.4); }
+        .ev-cta-secondary {
+            font-family: 'Orbitron', sans-serif; font-size: 0.6rem; letter-spacing: 3px;
+            padding: 13px 32px; color: rgba(255,255,255,0.4); text-decoration: none;
+            border: 1px solid rgba(255,255,255,0.1); background: none;
+            clip-path: polygon(8% 0,100% 0,92% 100%,0 100%);
+            cursor: pointer; transition: all 0.4s var(--expo-easing);
+            text-transform: uppercase; -webkit-tap-highlight-color: transparent;
+        }
+        .ev-cta-secondary:hover { color: #fff; border-color: rgba(255,255,255,0.3); }
+
+        /* ====== HUB ====== */
+        #hub { padding: 60px 0; }
+        .hub-sub { font-size: 0.85rem; color: var(--neon-cyan); letter-spacing: 5px; opacity: 0.6; margin-top: 8px; margin-bottom: 44px; }
+        .scene {
+            height: 580px; width: 100%;
+            display: flex; align-items: center; justify-content: center;
+            position: relative; perspective: 2000px; overflow: hidden;
+        }
+        .core-display {
+            width: 280px; height: 280px; border: 2px solid var(--neon-cyan); border-radius: 50%;
+            display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 5;
+            background: radial-gradient(circle, rgba(0,242,255,0.12), transparent);
+            box-shadow: inset 0 0 70px rgba(0,242,255,0.3), 0 0 30px rgba(0,242,255,0.2);
+            transition: all 0.6s var(--expo-easing);
+            -webkit-tap-highlight-color: transparent;
+        }
+        .core-status-label { font-size: 0.55rem; opacity: 0.5; letter-spacing: 4px; }
+        .core-status-val   { font-size: 1.1rem; font-weight: bold; color: var(--neon-cyan); }
+        .orbit-item {
+            position: absolute; padding: 13px 22px;
+            background: rgba(0,5,10,0.95); border: 1px solid var(--neon-cyan);
+            color: var(--neon-cyan); font-size: 0.75rem; font-family: 'Orbitron';
+            white-space: nowrap; cursor: pointer; text-decoration: none;
+            transition: background 0.4s, box-shadow 0.4s;
+            backdrop-filter: blur(5px); user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .orbit-item:hover  { background: var(--neon-cyan); color: black; box-shadow: 0 0 20px var(--neon-cyan); z-index: 1000 !important; }
+        .orbit-item:active { background: var(--neon-cyan); color: black; }
+
+        /* ====== SPONSORS ====== */
+        #sponsors { padding: 30px 0; }
+        .sponsors-title {
+            font-family: 'Orbitron'; font-size: 0.75rem; letter-spacing: 8px;
+            margin-bottom: 30px; opacity: 0.4; text-align: center;
+        }
+        .sponsor-scroll {
+            width: 100%; overflow: hidden; padding: 30px 0;
+            background: rgba(0,242,255,0.02);
+            border-top: 1px solid var(--border-glow); border-bottom: 1px solid var(--border-glow);
+            position: relative; white-space: nowrap;
+        }
+        .sponsor-scroll::before, .sponsor-scroll::after {
+            content: ''; position: absolute; top: 0; bottom: 0; width: 120px; z-index: 2; pointer-events: none;
+        }
+        .sponsor-scroll::before { left: 0; background: linear-gradient(to right, var(--deep-ocean), transparent); }
+        .sponsor-scroll::after  { right: 0; background: linear-gradient(to left, var(--deep-ocean), transparent); }
+        .sponsor-track {
+            display: flex; align-items: center; width: max-content;
+            gap: var(--logo-gap, 50px);
+            will-change: transform;
+        }
+        .sponsor-logo {
+            width: auto; max-width: 250px; height: 140px; flex-shrink: 0;
+            object-fit: contain; object-position: center; opacity: 1;
+            background: rgba(0,242,255,0.04); border: 1px solid rgba(0,242,255,0.15);
+            padding: 8px 14px; transition: transform 0.4s ease, filter 0.4s ease, opacity 0.4s ease; display: block;
+        }
+        .sponsor-logo:hover { filter: drop-shadow(0 0 10px var(--neon-cyan)); transform: scale(1.08); opacity: 1; }
+
+        /* ====== FOOTER ====== */
+        footer {
+            padding: 90px 0 40px; position: relative;
+            background: linear-gradient(180deg, #000000 0%, #04070a 45%, #000000 100%);
+            border-top: 1px solid var(--border-glow);
+        }
+
+        /* -- main grid -- */
+        .footer-grid { display: grid; grid-template-columns: 1.6fr 0.9fr 0.9fr 1.3fr; gap: 40px; margin-bottom: 50px; }
+        .footer-brand-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+        .footer-anchor-icon { width: 20px; height: 20px; flex-shrink: 0; color: var(--neon-cyan); filter: drop-shadow(0 0 6px rgba(0,242,255,0.6)); }
+        .footer-brand { font-size: 1.6rem; color: var(--neon-cyan); font-family: 'Orbitron'; }
+        .footer-desc  { opacity: 0.55; line-height: 1.8; font-size: 0.88rem; margin-bottom: 22px; max-width: 320px; }
+        .footer-status { display: flex; align-items: center; gap: 10px; font-family: monospace; font-size: 0.65rem; letter-spacing: 2px; opacity: 0.6; }
+        .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--neon-cyan); box-shadow: 0 0 8px var(--neon-cyan); animation: dotPulse 2s ease-in-out infinite; flex-shrink: 0; }
+        @keyframes dotPulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.35; transform: scale(0.75); } }
+
+        .footer-heading { font-family: 'Orbitron'; margin-bottom: 16px; font-size: 0.68rem; letter-spacing: 4px; opacity: 0.7; }
+        .footer-links { list-style: none; }
+        .footer-links a { text-decoration: none; color: rgba(255,255,255,0.5); font-size: 0.88rem; display: block; margin-bottom: 12px; transition: all 0.3s ease; -webkit-tap-highlight-color: transparent; }
+        .footer-links a:hover  { color: var(--neon-cyan); padding-left: 8px; }
+
+        .footer-social { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 30px; }
+        .social-badge {
+            width: 38px; height: 38px; display: flex; align-items: center; justify-content: center;
+            border: 1px solid var(--border-glow); background: rgba(0,242,255,0.04);
+            clip-path: polygon(20% 0, 100% 0, 80% 100%, 0 100%);
+            color: rgba(255,255,255,0.6); transition: all 0.3s var(--expo-easing);
+            -webkit-tap-highlight-color: transparent;
+        }
+        .social-badge svg { width: 16px; height: 16px; }
+        .social-badge:hover { color: black; background: var(--neon-cyan); box-shadow: 0 0 20px rgba(0,242,255,0.5); transform: translateY(-3px); }
+
+        .footer-coords { font-family: monospace; font-size: 0.85rem; letter-spacing: 1px; color: var(--neon-cyan); opacity: 0.85; line-height: 1.7; }
+        .footer-addr   { display: block; margin-top: 10px; font-family: 'Rajdhani'; color: rgba(255,255,255,0.55); opacity: 1; font-size: 0.85rem; line-height: 1.7; letter-spacing: 0.5px; }
+
+        .footer-bottom {
+            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;
+            border-top: 1px solid rgba(255,255,255,0.07); padding-top: 24px;
+            font-size: 0.7rem; opacity: 0.45; font-family: monospace; letter-spacing: 1px;
+        }
+        .footer-bottom-right { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; }
+        .footer-bottom-link { color: inherit; text-decoration: none; font-family: 'Orbitron'; font-size: 0.58rem; letter-spacing: 2px; opacity: 1; transition: color 0.3s; }
+        .footer-bottom-link:hover { color: var(--neon-cyan); }
+
+        /* -- back-to-top "surface" control -- */
+        .surface-btn {
+            position: relative; display: flex; align-items: center; gap: 6px;
+            background: transparent; border: 1px solid var(--border-glow); color: rgba(255,255,255,0.6);
+            font-family: 'Orbitron'; font-size: 0.58rem; letter-spacing: 2px; padding: 9px 16px;
+            clip-path: polygon(12% 0,100% 0,88% 100%,0 100%);
+            cursor: pointer; transition: all 0.3s var(--expo-easing); overflow: visible;
+        }
+        .surface-btn:hover { color: var(--neon-cyan); border-color: var(--neon-cyan); box-shadow: 0 0 16px rgba(0,242,255,0.3); }
+        .surface-bubbles { position: absolute; inset: 0; pointer-events: none; overflow: visible; }
+        .surface-bubbles i {
+            position: absolute; bottom: 4px; left: 20%; border-radius: 50%; width: 4px; height: 4px; opacity: 0;
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.6), rgba(0,242,255,0.1));
+        }
+        .surface-bubbles i:nth-child(2) { left: 50%; width: 5px; height: 5px; }
+        .surface-bubbles i:nth-child(3) { left: 78%; width: 3px; height: 3px; }
+        .surface-btn:hover .surface-bubbles i { animation: surfaceRise 1.3s ease-in infinite; }
+        .surface-btn:hover .surface-bubbles i:nth-child(2) { animation-delay: 0.2s; }
+        .surface-btn:hover .surface-bubbles i:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes surfaceRise { 0% { transform: translateY(0); opacity: 0; } 15% { opacity: 0.8; } 100% { transform: translateY(-30px); opacity: 0; } }
+
+        /* ====== TABLET ====== */
+        @media (max-width: 1024px) {
+            :root { --pad: 28px; }
+            .footer-grid { grid-template-columns: 1fr 1fr; gap: 28px; }
+            .proshow-heading { font-size: 4.5rem; }
+            .proshow-heading-accent { font-size: 3.2rem; }
+            .proshow-content { padding: 40px 40px 40px 36px; }
+        }
+
+        /* ====== MOBILE ====== */
+        @media (max-width: 768px) {
+            :root { --pad: 20px; }
+            nav { padding: 14px 0; }
+            .nav-logo { height: 46px; }
+            .nav-links { display: none; }
+            .hamburger { display: flex; }
+            .mobile-menu { display: flex; }
+
+            #hero-main { min-height: 100svh; padding-top: 90px; padding-bottom: 40px; justify-content: center; }
+            .hero-tagline { font-size: 0.52rem; letter-spacing: 5px; margin-bottom: 14px; }
+            .main-title {
+                font-size: clamp(2.2rem, 11vw, 4rem);
+                letter-spacing: 0.08em;
+                /* offset the trailing letter-spacing so text appears truly centred */
+                text-indent: 0.08em;
+                white-space: nowrap;
+                overflow: visible;
+            }
+            .countdown-container { gap: 8px; margin-top: 24px; }
+            .count-item { min-width: 0; flex: 1; padding: 12px 6px; }
+            .count-no    { font-size: 1.5rem; }
+            .count-label { font-size: 0.42rem; letter-spacing: 1px; margin-top: 2px; }
+            .hero-desc { font-size: 0.88rem; letter-spacing: 1px; padding: 0 8px; }
+            .btn-hex   { padding: 15px 28px; font-size: 0.68rem; letter-spacing: 2px; margin-top: 24px; }
+
+            #concert { padding: 32px 0; }
+            .proshow-wrapper { border-left: none; border-right: none; }
+            .proshow-inner { display: flex; flex-direction: column; min-height: unset; }
+            .proshow-image-panel { width: 100%; height: 240px; flex-shrink: 0; position: relative; }
+            .proshow-image-panel img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(0.3) contrast(1.1) brightness(0.8); }
+            .proshow-image-panel::after {
+                content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 80px;
+                background: linear-gradient(to bottom, transparent, rgba(0,8,18,0.98)); pointer-events: none;
+            }
+            .proshow-divider { display: none; }
+            .proshow-content { padding: 28px 22px 32px; gap: 0; }
+            .proshow-badge { margin-bottom: 14px; }
+            .proshow-badge-text { font-size: 0.55rem; letter-spacing: 4px; }
+            .proshow-heading { font-size: clamp(3.5rem, 18vw, 5rem); line-height: 0.88; letter-spacing: 2px; }
+            .proshow-heading-accent { font-size: clamp(2.2rem, 12vw, 3.2rem); letter-spacing: 3px; }
+            .proshow-tagline { margin: 18px 0 20px; padding: 13px 16px; }
+            .proshow-tagline p { font-size: 0.82rem; letter-spacing: 1px; }
+            .proshow-meta { grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 22px; }
+            .proshow-meta-card { padding: 12px 14px; }
+            .proshow-meta-label { font-size: 0.45rem; letter-spacing: 2px; }
+            .proshow-meta-value { font-size: 0.85rem; }
+            .proshow-cta { align-self: stretch; text-align: center; justify-content: center; clip-path: none; padding: 16px 20px; border-radius: 0; }
+            .proshow-cta:hover { transform: none; }
+
+            #about { padding: 40px 0; }
+            .about-text { font-size: 0.95rem; }
+
+            #events { padding: 40px 0; }
+            .ev-title { font-size: 1.1rem; letter-spacing: 4px; }
+            .ev-card { width: 180px; }
+            .ev-detail-panel { grid-template-columns: 1fr; gap: 12px; padding: 16px; }
+            .ev-detail-stat + .ev-detail-stat::before { display: none; }
+            .ev-cta-primary, .ev-cta-secondary { clip-path: none; border-radius: 0; }
+
+            #hub { padding: 40px 0; }
+            .hub-sub { letter-spacing: 3px; font-size: 0.72rem; }
+            .scene { height: 360px; perspective: 600px; }
+            .core-display { width: 130px; height: 130px; }
+            .core-status-label { font-size: 0.45rem; letter-spacing: 3px; }
+            .core-status-val   { font-size: 0.75rem; }
+            .orbit-item { font-size: 0.5rem !important; padding: 8px 10px !important; }
+
+            .sponsor-logo { width: auto; max-width: 160px; height: 90px; padding: 6px 10px; }
+            .sponsor-scroll::before, .sponsor-scroll::after { width: 60px; }
+
+            footer { padding: 50px 0 24px; }
+            .footer-grid { grid-template-columns: 1fr 1fr; gap: 30px 18px; }
+            .footer-bottom { flex-direction: column; align-items: flex-start; gap: 14px; font-size: 0.65rem; }
+            .footer-bottom-right { width: 100%; justify-content: space-between; }
+            .footer-brand  { font-size: 1.2rem; }
+        }
+
+        /* ====== SMALL PHONE ====== */
+        @media (max-width: 400px) {
+            :root { --pad: 14px; }
+            .main-title { font-size: clamp(1.7rem, 10.5vw, 2.4rem); letter-spacing: 0.05em; text-indent: 0.05em; }
+            .count-no   { font-size: 1.2rem; }
+            .proshow-heading { font-size: 3.2rem; }
+            .proshow-heading-accent { font-size: 2rem; }
+            .proshow-image-panel { height: 200px; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .hero-tagline { letter-spacing: 3px; }
+            .sponsor-logo { width: auto; max-width: 130px; height: 75px; }
+        }
+
+        @media (hover: none) {
+            .btn-hex:hover  { transform: none; box-shadow: none; }
+            .proshow-cta:hover { transform: none; }
+            .proshow-image-panel:hover img { transform: none; }
+        }
+
+        @media (max-width: 480px) {
+            #load-title { font-size: 2rem; }
+            #status-msg { font-size: 0.65rem; }
+        }
+
+        /* ====== EVENT POSTERS ====== */
+        #event-posters {
+            padding: 80px 0 60px;
+            position: relative;
+            overflow-x: hidden;
+            border-top: 1px solid rgba(0,242,255,0.08);
+        }
+        .posters-badge {
+            display: flex; align-items: center; justify-content: center;
+            gap: 14px; margin-bottom: 10px;
+        }
+        .posters-badge-line { width: 40px; height: 1px; background: var(--neon-cyan); opacity: 0.5; }
+        .posters-badge-text {
+            font-family: 'Orbitron', sans-serif; font-size: 0.52rem;
+            color: var(--neon-cyan); letter-spacing: 7px; opacity: 0.7;
+        }
+        .posters-heading {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(1rem, 3.5vw, 1.5rem);
+            letter-spacing: 8px; color: #fff;
+            text-align: center; margin-bottom: 48px;
+        }
+        .posters-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            width: 100%;
+        }
+        /* Each poster is a clickable link */
+        .poster-link {
+            display: block;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(0,242,255,0.18);
+            background: rgba(0,8,18,0.9);
+            transition: border-color 0.4s var(--expo-easing), transform 0.4s var(--expo-easing), box-shadow 0.4s var(--expo-easing);
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            /* Aspect ratio: desktop 3240×1080 = 3:1 */
+            aspect-ratio: 3 / 1;
+        }
+        .poster-link:hover {
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 30px rgba(0,242,255,0.25), 0 0 60px rgba(0,242,255,0.08);
+            transform: translateY(-4px) scale(1.015);
+        }
+        .poster-link:active { transform: scale(0.98); }
+        /* Corner accents */
+        .poster-link::before, .poster-link::after {
+            content: ''; position: absolute; width: 16px; height: 16px; z-index: 3;
+            transition: width 0.4s ease, height 0.4s ease;
+        }
+        .poster-link::before {
+            top: 0; left: 0;
+            border-top: 2px solid var(--neon-cyan);
+            border-left: 2px solid var(--neon-cyan);
+        }
+        .poster-link::after {
+            bottom: 0; right: 0;
+            border-bottom: 2px solid var(--neon-cyan);
+            border-right: 2px solid var(--neon-cyan);
+        }
+        .poster-link:hover::before, .poster-link:hover::after {
+            width: 28px; height: 28px;
+        }
+        /* The poster image */
+        .poster-img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.7s var(--expo-easing), filter 0.5s ease;
+            filter: brightness(0.88) contrast(1.08);
+        }
+        .poster-link:hover .poster-img {
+            transform: scale(1.04);
+            filter: brightness(1) contrast(1.1);
+        }
+        /* Overlay gradient + label */
+        .poster-overlay {
+            position: absolute; inset: 0; z-index: 2;
+            background: linear-gradient(
+                to top,
+                rgba(0,5,15,0.85) 0%,
+                rgba(0,5,15,0.3) 40%,
+                transparent 70%
+            );
+            display: flex; flex-direction: column;
+            justify-content: flex-end;
+            padding: 16px 20px;
+            transition: background 0.4s ease;
+        }
+        .poster-link:hover .poster-overlay {
+            background: linear-gradient(
+                to top,
+                rgba(0,15,30,0.92) 0%,
+                rgba(0,10,20,0.25) 50%,
+                transparent 80%
+            );
+        }
+        .poster-type {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(0.42rem, 1vw, 0.58rem);
+            letter-spacing: 5px; color: var(--neon-cyan);
+            opacity: 0.75; margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+        .poster-name {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(1.4rem, 3.5vw, 2.4rem);
+            letter-spacing: 3px; color: #fff; line-height: 1;
+            text-shadow: 0 0 20px rgba(0,242,255,0.3);
+        }
+        .poster-arrow {
+            position: absolute; top: 16px; right: 20px; z-index: 3;
+            font-family: 'Orbitron', sans-serif; font-size: 0.55rem;
+            color: var(--neon-cyan); letter-spacing: 2px;
+            opacity: 0; transform: translateX(-8px);
+            transition: opacity 0.4s ease, transform 0.4s var(--expo-easing);
+        }
+        .poster-link:hover .poster-arrow {
+            opacity: 1; transform: translateX(0);
+        }
+        /* Scan shimmer on hover */
+        .poster-scan {
+            position: absolute; left: 0; right: 0; height: 2px; z-index: 4;
+            background: linear-gradient(90deg, transparent, rgba(0,242,255,0.7), transparent);
+            top: -4px; opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+        .poster-link:hover .poster-scan {
+            opacity: 1;
+            animation: posterScan 1.4s ease-in-out infinite;
+        }
+        @keyframes posterScan {
+            0%   { top: 0%; opacity: 0.8; }
+            100% { top: 100%; opacity: 0; }
+        }
+
+        /* Placeholder when no image */
+        .poster-placeholder-bg {
+            position: absolute; inset: 0; z-index: 0;
+        }
+        .poster-placeholder-bg.workshop {
+            background: linear-gradient(135deg, #0a0020 0%, #001030 50%, #000d20 100%);
+        }
+        .poster-placeholder-bg.competition {
+            background: linear-gradient(135deg, #001520 0%, #000a15 50%, #001a20 100%);
+        }
+        .poster-placeholder-bg.lecture {
+            background: linear-gradient(135deg, #001a10 0%, #000d10 50%, #001520 100%);
+        }
+        .poster-placeholder-icon {
+            position: absolute; inset: 0; z-index: 1;
+            display: flex; align-items: center; justify-content: center;
+            font-size: clamp(2rem, 5vw, 4rem); opacity: 0.12;
+        }
+        .poster-placeholder-grid {
+            position: absolute; inset: 0; z-index: 1;
+            background-image:
+                linear-gradient(rgba(0,242,255,0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,242,255,0.04) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+
+        /* Scroll-reveal: poster 1 & 3 slide in from the right, middle poster slides in from the left */
+        .poster-link.poster-hidden-right { opacity: 0; transform: translateX(90px); transition: opacity 0.9s var(--expo-easing), transform 0.9s var(--expo-easing); }
+        .poster-link.poster-hidden-left  { opacity: 0; transform: translateX(-90px); transition: opacity 0.9s var(--expo-easing), transform 0.9s var(--expo-easing); }
+        .poster-link.poster-visible { opacity: 1; transform: none; }
+        .posters-grid .poster-link:nth-child(2) { transition-delay: 0.12s; }
+        .posters-grid .poster-link:nth-child(3) { transition-delay: 0.24s; }
+        @media (prefers-reduced-motion: reduce) {
+            .poster-link.poster-hidden-right, .poster-link.poster-hidden-left { opacity: 1; transform: none; transition: none; }
+        }
+
+        /* MOBILE: aspect ratio 3240×1600 = ~2.025:1 */
+        @media (max-width: 768px) {
+            #event-posters { padding: 44px 0 36px; }
+            .posters-heading { font-size: 0.9rem; letter-spacing: 5px; margin-bottom: 28px; }
+            .posters-grid {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+            .poster-link {
+                aspect-ratio: 3240 / 1600; /* ≈ 2.025:1 */
+            }
+            .poster-name { font-size: clamp(1.6rem, 7vw, 2.4rem); }
+            .poster-overlay { padding: 12px 16px; }
+        }
+
+        /* ====== REGISTER FOR UPDATES ====== */
+        #register-updates {
+            padding: 80px 0;
+            position: relative;
+            border-top: 1px solid rgba(0,242,255,0.1);
+        }
+        .rfu-wrap {
+            max-width: 600px; margin: 0 auto; text-align: center;
+        }
+        .rfu-badge {
+            display: inline-flex; align-items: center; gap: 10px; margin-bottom: 14px;
+        }
+        .rfu-badge-line { width: 30px; height: 1px; background: var(--neon-cyan); }
+        .rfu-badge-text {
+            font-family: 'Orbitron', sans-serif; font-size: 0.55rem;
+            color: var(--neon-cyan); letter-spacing: 6px; opacity: 0.75;
+        }
+        .rfu-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(1.1rem, 4vw, 1.6rem);
+            letter-spacing: 6px; color: #fff; margin-bottom: 10px;
+        }
+        .rfu-sub {
+            font-size: 0.88rem; color: rgba(255,255,255,0.38);
+            letter-spacing: 1px; line-height: 1.7; margin-bottom: 36px;
+        }
+        .rfu-box {
+            background: rgba(0,8,18,0.85);
+            border: 1px solid rgba(0,242,255,0.2);
+            padding: 32px 28px;
+            position: relative; overflow: hidden;
+        }
+        .rfu-box::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+        }
+        .rfu-box::after {
+            content: ''; position: absolute; inset: 0;
+            background-image: radial-gradient(rgba(0,242,255,0.03) 1px, transparent 1px);
+            background-size: 24px 24px; pointer-events: none;
+        }
+        .rfu-fields {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;
+            position: relative; z-index: 1;
+        }
+        @media (max-width: 480px) {
+            .rfu-fields { grid-template-columns: 1fr; }
+        }
+        .rfu-field {
+            display: flex; flex-direction: column; gap: 6px; text-align: left;
+        }
+        .rfu-label {
+            font-family: 'Orbitron', sans-serif; font-size: 0.38rem;
+            letter-spacing: 3px; color: var(--neon-cyan); opacity: 0.6;
+        }
+        .rfu-input {
+            width: 100%;
+            background: rgba(0,242,255,0.04);
+            border: 1px solid rgba(0,242,255,0.18);
+            color: #fff;
+            font-family: 'Rajdhani', sans-serif; font-size: 0.95rem;
+            letter-spacing: 0.5px; padding: 11px 14px;
+            outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            -webkit-appearance: none; border-radius: 0;
+        }
+        .rfu-input:focus {
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 0 1px rgba(0,242,255,0.12);
+        }
+        .rfu-input::placeholder { color: rgba(255,255,255,0.2); }
+        .rfu-input.rfu-err { border-color: #ff4466; }
+        .rfu-submit {
+            width: 100%; padding: 15px;
+            border: 1px solid var(--neon-cyan); background: transparent;
+            color: var(--neon-cyan);
+            font-family: 'Orbitron', sans-serif; font-size: 0.58rem;
+            letter-spacing: 4px; cursor: pointer;
+            clip-path: polygon(4% 0, 100% 0, 96% 100%, 0 100%);
+            position: relative; overflow: hidden;
+            transition: color 0.4s; margin-top: 6px;
+            z-index: 1;
+        }
+        .rfu-submit::before {
+            content: ''; position: absolute; inset: 0;
+            background: var(--neon-cyan);
+            transform: scaleX(0); transform-origin: left;
+            transition: transform 0.4s var(--expo-easing); z-index: -1;
+        }
+        .rfu-submit:hover { color: #000; }
+        .rfu-submit:hover::before { transform: scaleX(1); }
+        .rfu-submit:disabled { opacity: 0.35; cursor: not-allowed; }
+        .rfu-submit:disabled::before { display: none; }
+        .rfu-msg {
+            margin-top: 16px; font-family: 'Orbitron', sans-serif;
+            font-size: 0.52rem; letter-spacing: 3px;
+            display: none; position: relative; z-index: 1;
+        }
+        .rfu-msg.success { color: #06d6a0; display: block; }
+        .rfu-msg.error   { color: #ff4466; display: block; }
+        .rfu-secure {
+            margin-top: 16px; font-family: 'Share Tech Mono', monospace;
+            font-size: 0.42rem; letter-spacing: 2px;
+            color: rgba(255,255,255,0.18);
+            position: relative; z-index: 1;
+        }
+        @media (max-width: 560px) {
+            .rfu-box { padding: 24px 18px; }
+        }
+
+        /* ====== GFORM MODAL ====== */
+        #gform-overlay {
+            display: none; position: fixed; inset: 0; z-index: 3000;
+            background: rgba(0,3,8,0.92); backdrop-filter: blur(18px);
+            align-items: center; justify-content: center; padding: 20px;
+        }
+        #gform-overlay.open { display: flex; }
+        #gform-box {
+            width: 100%; max-width: 580px; max-height: 90vh;
+            background: rgba(0,8,18,0.98);
+            border: 1px solid var(--neon-cyan);
+            position: relative; overflow: hidden;
+            display: flex; flex-direction: column;
+            animation: gformIn 0.5s var(--expo-easing);
+            box-shadow: 0 0 60px rgba(0,242,255,0.18), inset 0 0 40px rgba(0,242,255,0.03);
+        }
+        @keyframes gformIn { from { opacity:0; transform:scale(0.9) translateY(20px); } to { opacity:1; transform:none; } }
+        #gform-box::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+        }
+        .gform-header {
+            padding: 18px 22px 14px;
+            border-bottom: 1px solid rgba(0,242,255,0.12);
+            display: flex; align-items: center; justify-content: space-between;
+            flex-shrink: 0;
+        }
+        .gform-title {
+            font-family: 'Orbitron', sans-serif; font-size: 0.6rem;
+            letter-spacing: 5px; color: var(--neon-cyan); opacity: 0.85;
+        }
+        .gform-close {
+            background: none; border: 1px solid rgba(0,242,255,0.3);
+            color: var(--neon-cyan); width: 30px; height: 30px;
+            cursor: pointer; font-size: 0.9rem; display: flex;
+            align-items: center; justify-content: center;
+            transition: all 0.3s; flex-shrink: 0;
+        }
+        .gform-close:hover { background: var(--neon-cyan); color: #000; }
+        #gform-frame {
+            flex: 1; border: none; min-height: 480px;
+            background: transparent;
+        }
+        @media (max-width: 600px) {
+            #gform-box { max-height: 95vh; }
+            #gform-frame { min-height: 420px; }
+        }
+
+        /* ====== SHIP BG ====== */
+        #ship-bg {
+            position: fixed; inset: 0; z-index: -4;
+            pointer-events: none;
+            opacity: 0;
+            will-change: opacity;
+        }
+        #ship-bg img {
+            position: absolute; inset: 0;
+            width: 100%; height: 100%;
+            object-fit: cover; object-position: center top;
+            display: block;
+        }
+        /* dark overlay so page text stays readable over the image */
+        #ship-bg::after {
+            content: '';
+            position: absolute; inset: 0;
+            background: rgba(0,5,10,0.55);
+            pointer-events: none;
+        }
+
+        /* ====== SHIP BG LAYER 2 ====== */
+        #ship-bg2 {
+            position: fixed; inset: 0; z-index: -3;
+            pointer-events: none;
+            opacity: 0;
+            will-change: opacity;
+        }
+        #ship-bg2 img {
+            position: absolute; inset: 0;
+            width: 100%; height: 100%;
+            object-fit: cover; object-position: center top;
+            display: block;
+        }
+        #ship-bg2::after {
+            content: '';
+            position: absolute; inset: 0;
+            background: rgba(0,5,10,0.45);
+            pointer-events: none;
+        }
+
+        /* ====================================================
+           DESKTOP SCALING — 769px and above
+           Targets 15.6" laptop screens (~1366×768 – 1920×1080)
+           Only positioning/scaling changed; no design changes.
+           ==================================================== */
+        @media (min-width: 769px) {
+
+            /* ── ROOT TOKENS ── */
+            :root {
+                --pad: 32px;
+                --section-gap: 70px;
+            }
+
+            /* ── NAV ── */
+            nav { padding: 14px 0; }
+            .nav-logo { height: 52px; }
+            .nav-logo img { height: 110%; }
+            .nav-links { gap: 20px; }
+            .nav-link { font-size: 0.62rem; letter-spacing: 2px; }
+
+            /* ── HERO ── */
+            #hero-main {
+                min-height: 100vh;
+                padding-top: 83px;
+                padding-bottom: 46px;
+                gap: 0;
+            }
+
+            /* Tagline */
+            .hero-tagline {
+                font-size: 0.71rem;
+                letter-spacing: 8px;
+                margin-bottom: 5px;
+            }
+
+            /* Hero logo image */
+            #hero-main .hero-logo-img {
+                max-width: min(736px, 90vw) !important;
+            }
+
+            /* Countdown */
+            .countdown-container { gap: 11px; margin-top: 23px; }
+            .count-item { min-width: 76px; padding: 13px 11px; }
+            .count-no   { font-size: 1.84rem; }
+            .count-label { font-size: 0.55rem; letter-spacing: 2px; }
+
+            /* Hero description */
+            .hero-desc {
+                max-width: 552px;
+                font-size: 1.06rem;
+                margin-top: 21px;
+                letter-spacing: 1.4px;
+            }
+
+            /* Hero CTA buttons */
+            .btn-hex {
+                padding: 16px 39px;
+                font-size: 0.86rem;
+                letter-spacing: 2.5px;
+                margin-top: 25px;
+            }
+
+            /* ── DATE STRIP ── */
+            .date-strip { padding: 20px 0; }
+            .date-strip-day { font-size: clamp(2rem, 4.5vw, 3.2rem); }
+            .date-strip-item { padding: 0 28px; }
+            .date-strip-divider { height: 44px; }
+            .date-strip-meta { font-size: 0.42rem; }
+            .date-strip-label { font-size: 0.38rem; margin-top: 10px; padding-top: 10px; }
+
+            /* ── PRO SHOW ── */
+            #concert { padding: 44px 0; }
+            .proshow-inner { min-height: 360px; }
+            .proshow-heading { font-size: 4rem; }
+            .proshow-heading-accent { font-size: 2.8rem; }
+            .proshow-content { padding: 36px 36px 36px 32px; gap: 0; }
+            .proshow-badge { margin-bottom: 14px; }
+            .proshow-badge-text { font-size: 0.55rem; letter-spacing: 5px; }
+            .proshow-tagline { margin: 16px 0 20px; padding: 13px 16px; }
+            .proshow-tagline p { font-size: 0.82rem; }
+            .proshow-meta { gap: 10px; margin-bottom: 22px; }
+            .proshow-meta-card { padding: 11px 13px; }
+            .proshow-meta-label { font-size: 0.42rem; }
+            .proshow-meta-value { font-size: 0.82rem; }
+            .proshow-cta { font-size: 0.62rem; padding: 13px 28px; }
+
+            /* ── ABOUT ── */
+            #about { padding: 50px 0; }
+            .about-text { font-size: 0.97rem; max-width: 700px; line-height: 1.8; }
+
+            /* ── EVENT POSTERS ── */
+            #event-posters { padding: 30px 0 24px; }
+            .posters-heading { font-size: clamp(0.9rem, 2.5vw, 1.25rem); letter-spacing: 6px; margin-bottom: 18px; }
+            .posters-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            .poster-link {
+                /* Slim banner height — all 3 stack and fit within ~90vh */
+                aspect-ratio: 7 / 1;
+            }
+            .poster-name { font-size: clamp(1rem, 1.6vw, 1.4rem); }
+            .poster-overlay { padding: 10px 16px; }
+            .poster-type { font-size: 0.4rem; letter-spacing: 4px; margin-bottom: 2px; }
+
+            /* ── EVENTS CAROUSEL ── */
+            #events { padding: 44px 0; }
+            .ev-header { margin-bottom: 28px; }
+            .ev-title { font-size: 1.2rem; letter-spacing: 5px; }
+            .ev-subtitle { font-size: 0.68rem; }
+            .ev-tab { font-size: 0.48rem; padding: 7px 15px; }
+            .ev-card { width: 200px; }
+            .ev-card-icon { height: 85px; font-size: 2.4rem; }
+            .ev-card-name { font-size: 0.62rem; }
+            .ev-card-desc { font-size: 0.7rem; }
+            .ev-card-body { padding: 12px 12px 16px; }
+            .ev-detail-panel { padding: 18px 22px; gap: 16px; }
+            .ev-detail-stat-val { font-size: 1.6rem; }
+            .ev-detail-stat-label { font-size: 0.38rem; }
+            .ev-nav { margin-top: 16px; gap: 16px; }
+            .ev-cta-row { margin-top: 22px; }
+            .ev-cta-primary, .ev-cta-secondary { font-size: 0.55rem; padding: 11px 26px; }
+
+            /* ── HUB ── */
+            #hub { padding: 44px 0; }
+            .hub-sub { font-size: 0.75rem; letter-spacing: 4px; margin-bottom: 30px; }
+            .scene { height: 440px; }
+            .core-display { width: 220px; height: 220px; }
+            .core-status-label { font-size: 0.48rem; }
+            .core-status-val   { font-size: 0.9rem; }
+            .orbit-item { font-size: 0.65rem !important; padding: 10px 18px !important; }
+
+            /* ── SPONSORS ── */
+            #sponsors { padding: 22px 0; }
+            .sponsors-title { font-size: 0.68rem; letter-spacing: 6px; margin-bottom: 20px; }
+            .sponsor-scroll { padding: 22px 0; }
+            .sponsor-logo { width: auto; max-width: 190px; height: 110px; padding: 6px 12px; }
+
+            /* ── REGISTER FOR UPDATES ── */
+            #register-updates { padding: 56px 0; }
+            .rfu-title { font-size: clamp(1rem, 3vw, 1.35rem); letter-spacing: 5px; }
+            .rfu-sub { font-size: 0.82rem; margin-bottom: 28px; }
+            .rfu-box { padding: 26px 22px; }
+            .rfu-fields { gap: 12px; margin-bottom: 12px; }
+            .rfu-input { font-size: 0.88rem; padding: 10px 12px; }
+            .rfu-submit { font-size: 0.52rem; padding: 13px; }
+
+            /* ── FOOTER ── */
+            footer { padding: 60px 0 30px; }
+            .footer-grid { gap: 30px; }
+            .footer-brand { font-size: 1.35rem; }
+            .footer-desc { font-size: 0.82rem; }
+            .footer-heading { font-size: 0.62rem; }
+            .footer-links a { font-size: 0.82rem; margin-bottom: 10px; }
+            .footer-coords { font-size: 0.78rem; }
+            .footer-addr { font-size: 0.78rem; }
+            .footer-bottom { font-size: 0.64rem; padding-top: 20px; }
+
+            /* ── SECTION H2 HEADINGS ── */
+            h2 { font-size: clamp(1rem, 2.4vw, 1.5rem); letter-spacing: 6px; }
+
+        }
+
+        /* ── Tighter fix for smaller laptops (769–1280px) ── */
+        @media (min-width: 769px) and (max-width: 1280px) {
+            :root { --pad: 24px; }
+            .posters-grid { gap: 8px; }
+            .poster-link { aspect-ratio: 6 / 1; }
+
+            #hero-main { padding-top: 78px; padding-bottom: 37px; }
+            .countdown-container { gap: 9px; margin-top: 18px; }
+            .count-item { min-width: 67px; padding: 10px 9px; }
+            .count-no   { font-size: 1.55rem; }
+            .hero-desc  { max-width: 483px; font-size: 1.01rem; margin-top: 16px; }
+            .btn-hex    { padding: 14px 32px; font-size: 0.8rem; margin-top: 21px; }
+
+            .proshow-heading { font-size: 3.2rem; }
+            .proshow-heading-accent { font-size: 2.2rem; }
+            .proshow-inner { min-height: 300px; }
+
+            .scene { height: 380px; }
+            .core-display { width: 190px; height: 190px; }
+
+            .sponsor-logo { width: auto; max-width: 160px; height: 90px; }
+
+            #hero-main .hero-logo-img {
+                max-width: min(560px, 72vw) !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- BACKGROUND -->
+    <div id="bg-layer">
+        <div id="radar" class="radar-bg"></div>
+        <div id="ship-bg">
+            <picture>
+                <source media="(min-width: 769px)" srcset="{{ url_for('static', filename='assets/ship-desktop.webp') }}">
+                <img src="{{ url_for('static', filename='assets/ship-mobile.webp') }}" alt="" aria-hidden="true" fetchpriority="low" decoding="async">
+            </picture>
+        </div>
+        <div id="ship-bg2">
+            <picture>
+                <source media="(min-width: 769px)" srcset="{{ url_for('static', filename='assets/ship-desktop1.webp') }}">
+                <img src="{{ url_for('static', filename='assets/ship-mobile1.webp') }}" alt="" aria-hidden="true" fetchpriority="low" decoding="async">
+            </picture>
+        </div>
+        <div class="radar-pulse" style="animation-delay:0s;"></div>
+        <div class="radar-pulse" style="animation-delay:2.7s;"></div>
+        <div class="radar-pulse" style="animation-delay:5.4s;"></div>
+        <div class="caustics"></div>
+        <div id="bubbles"></div>
+    </div>
+
+    <!-- LOADER -->
+    <div id="hero-loader">
+        <div id="load-title"></div>
+        <div id="hull-progress-wrap">
+            <div id="hull-pct">0%</div>
+            <div id="hull-progress-bar"></div>
+        </div>
+        <div id="status-msg">
+            <span id="status-text">INITIALIZING</span><span class="loader-dots"><span>.</span><span>.</span><span>.</span></span>
+        </div>
+        <div id="bridge-online">&#x2B21;&nbsp; BRIDGE ONLINE &nbsp;&#x2B21;</div>
+    </div>
+
+    <!-- MOBILE MENU -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-accent"></div>
+        <a href="{{ url_for('home') }}"          class="mobile-menu-link" onclick="closeMobileMenu()">HOME</a>
+        <a href="{{ url_for('events') }}"         class="mobile-menu-link" onclick="closeMobileMenu()">EVENTS</a>
+        <a href="{{ url_for('about') }}"          class="mobile-menu-link" onclick="closeMobileMenu()">ABOUT</a>
+        <a href="{{ url_for('cart') }}"           class="mobile-menu-link" onclick="closeMobileMenu()">CART</a>
+        <a href="{{ url_for('partners') }}"                        class="mobile-menu-link" onclick="closeMobileMenu()">PARTNERS</a>
+        <a href="{{ url_for('privacy_policy') }}" class="mobile-menu-link" onclick="closeMobileMenu()">PRIVACY</a>
+    </div>
+
+    <!-- NAV -->
+    <nav>
+        <div class="container nav-inner">
+            <div class="nav-logo">
+                <a href="#hero-main"><img src="{{ url_for('static', filename='assets/logo1.webp') }}" alt="Anchorage 2026 Logo"></a>
+            </div>
+            <div class="nav-links">
+                <a href="{{ url_for('home') }}"          class="nav-link">Home</a>
+                <a href="{{ url_for('events') }}"         class="nav-link">Events</a>
+                <a href="{{ url_for('about') }}"          class="nav-link">About</a>
+                <a href="{{ url_for('partners') }}"                       class="nav-link">Partners</a>
+                <a href="{{ url_for('privacy_policy') }}" class="nav-link">Privacy</a>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+                <a href="{{ url_for('cart') }}" id="navCartLink" style="position:relative;display:inline-flex;align-items:center;font-family:'Orbitron',sans-serif;font-size:0.6rem;letter-spacing:2px;text-decoration:none;color:rgba(255,255,255,0.55);opacity:0.55;transition:all 0.3s;padding:0 2px;">
+                    🛒
+                    <span id="navCartBadge" style="display:none;position:absolute;top:-5px;right:-8px;background:var(--neon-cyan);color:#000;border-radius:50%;width:15px;height:15px;font-size:0.5rem;font-family:monospace;align-items:center;justify-content:center;font-weight:700;"></span>
+                </a>
+            </div>
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu" onclick="toggleMobileMenu()">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- PAGE -->
+    <div id="app-content">
+
+        <!-- HERO -->
+        <section id="hero-main">
+            <div class="container" style="text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+                <h1 class="visually-hidden">Anchorage 2026 — Maritime Technical Symposium, Department of Ship Technology, CUSAT (Oct 10-12, 2026)</h1>
+
+                <span class="hero-tagline">REIMAGINING · THE · POSSIBILITIES</span>
+                <picture>
+                    <source srcset="{{ url_for('static', filename='assets/hero-logo.webp') }}" type="image/webp">
+                    <img src="{{ url_for('static', filename='assets/hero-logo.png') }}"
+                         alt="Anchorage 2026 - Maritime Technical Symposium by Department of Ship Technology, CUSAT"
+                         class="hero-logo-img"
+                         width="820" height="120"
+                         fetchpriority="high" decoding="async"
+                         style="max-width:min(820px,90vw);width:100%;height:auto;display:block;margin:0 auto;filter:drop-shadow(0 0 18px rgba(0,242,255,0.35));position:relative;z-index:2;" />
+                </picture>
+                <div class="countdown-container">
+                    <div class="count-item" style="--i:0"><span id="days"    class="count-no">00</span><span class="count-label">DAYS</span></div>
+                    <div class="count-item" style="--i:1"><span id="hours"   class="count-no">00</span><span class="count-label">HOURS</span></div>
+                    <div class="count-item" style="--i:2"><span id="minutes" class="count-no">00</span><span class="count-label">MINS</span></div>
+                    <div class="count-item" style="--i:3"><span id="seconds" class="count-no">00</span><span class="count-label">SECS</span></div>
+                </div>
+                <p class="hero-desc">Experience the ultimate maritime technical symposium hosted by the Department of Ship Technology, CUSAT.</p>
+                <div style="display:flex; flex-direction:column; align-items:center; gap:14px; margin-top:0;">
+                    <a href="{{ url_for('events') }}" class="btn-hex" style="margin-top:32px;">EXPLORE EVENTS</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- DATE STRIP -->
+        <div class="date-strip">
+            <div class="date-strip-inner">
+                <div class="date-strip-item">
+                    <span class="date-strip-day">10</span>
+                    <span class="date-strip-meta">OCT &nbsp;·&nbsp; SAT</span>
+                </div>
+                <div class="date-strip-divider"></div>
+                <div class="date-strip-item">
+                    <span class="date-strip-day">11</span>
+                    <span class="date-strip-meta">OCT &nbsp;·&nbsp; SUN</span>
+                </div>
+                <div class="date-strip-divider"></div>
+                <div class="date-strip-item">
+                    <span class="date-strip-day">12</span>
+                    <span class="date-strip-meta">OCT &nbsp;·&nbsp; MON</span>
+                </div>
+                <div class="date-strip-label">2026 &nbsp;·&nbsp; DEPT OF SHIP TECHNOLOGY &nbsp;·&nbsp; CUSAT</div>
+            </div>
+        </div>
+
+        <!-- SPONSORS -->
+        <section id="sponsors">
+            <p class="sponsors-title">STRATEGIC PARTNERS</p>
+            <div class="sponsor-scroll">
+                <div class="sponsor-track" id="sponsorTrack">
+                    <img src="{{ url_for('static', filename='assets/great_waters.JPG') }}"  alt="Magazine Partner"  class="sponsor-logo">
+                    <img src="{{ url_for('static', filename='images/ariesenergy.png') }}"   alt="Event Sponsor"     class="sponsor-logo">
+                    <img src="{{ url_for('static', filename='images/GRSE.jpg') }}"          alt="Event Sponsor"     class="sponsor-logo">
+                    <img src="{{ url_for('static', filename='images/indywood.webp') }}"     alt="Events Partner"    class="sponsor-logo">
+                     <img src="{{ url_for('static', filename='images/Napa.PNG') }}"     alt="Events Partner"    class="sponsor-logo">
+                    <img src="{{ url_for('static', filename='images/navtech.jpg') }}"     alt="Events Partner"    class="sponsor-logo">
+                     <img src="{{ url_for('static', filename='images/C-marine.png') }}"     alt="Events Partner"    class="sponsor-logo">
+                       <img src="{{ url_for('static', filename='images/green.jpeg') }}"     alt="Events Partner"    class="sponsor-logo">
+                     <img src="{{ url_for('static', filename='images/21.jpeg') }}"     alt="Events Partner"    class="sponsor-logo">
+                     <img src="{{ url_for('static', filename='images/mechanfo.jpeg') }}"     alt="Supporting Partner"    class="sponsor-logo">
+                     <img src="{{ url_for('static', filename='images/dakar.jpeg') }}"     alt="Supporting Partner"    class="sponsor-logo">
+                     <img src="{{ url_for('static', filename='images/chow.png') }}"     alt="Supporting Partner"    class="sponsor-logo">
+                     <img src="{{ url_for('static', filename='images/vedam.png') }}"     alt="Supporting Partner"    class="sponsor-logo">
+                     <img src="{{ url_for('static', filename='images/GOG.png') }}"     alt="Supporting Partner"    class="sponsor-logo">
+                     <img src="{{ url_for('static', filename='images/medical.jpeg') }}"     alt="Medical Partner"    class="sponsor-logo">
+                     <img src="{{ url_for('static', filename='images/so.png') }}"     alt="Supporting Partner"    class="sponsor-logo">
+                     <img src="{{ url_for('static', filename='images/class.jpeg') }}"     alt="Supporting Partner"    class="sponsor-logo">
+                    
+                </div>
+            </div>
+        </section>
+
+        <!-- PRO SHOW -->
+        <section id="concert">
+            <div class="container">
+                <div class="proshow-wrapper">
+                    <div class="proshow-topbar"></div>
+                    <div class="proshow-corner tl"></div>
+                    <div class="proshow-corner tr"></div>
+                    <div class="proshow-corner bl"></div>
+                    <div class="proshow-corner br"></div>
+                    <div class="proshow-dots"></div>
+                    <div class="proshow-glow"></div>
+
+                    <div class="proshow-inner">
+                        <div class="proshow-image-panel reveal-left">
+                            <img src="{{ url_for('static', filename='assets/concert-hero.jpg') }}" alt="PRO SHOW Concert 2026">
+                            <div class="proshow-scan"></div>
+                            <div class="proshow-divider"></div>
+                            <div class="proshow-img-label">
+                                FREQ: 432Hz<br>
+                                SIGNAL: STABLE
+                            </div>
+                        </div>
+                        <div class="proshow-content reveal-right">
+                            <div class="proshow-badge">
+                                <div class="proshow-badge-line"></div>
+                                <span class="proshow-badge-text">AUDIO-VISUAL INTERFACE</span>
+                            </div>
+                            <div class="proshow-heading">
+                                THE PRO<br>SHOW
+                                <span class="proshow-heading-accent">LIVE CONCERT</span>
+                            </div>
+                            <div class="proshow-tagline">
+                                <p>Experience synchronized sonar frequencies & volumetric projections. A sub-aquatic sonic odyssey unlike anything else.</p>
+                            </div>
+                            <div class="proshow-meta">
+                                <div class="proshow-meta-card">
+                                    <div class="proshow-meta-label">DATE STAMP</div>
+                                    <div class="proshow-meta-value">Announcing Soon</div>
+                                </div>
+                                <div class="proshow-meta-card">
+                                    <div class="proshow-meta-label">VENUE</div>
+                                    <div class="proshow-meta-value">CUSAT OPEN ARENA</div>
+                                </div>
+                            </div>
+                            <a href="{{ url_for('events') }}" class="proshow-cta">
+                                TICKETS OPENING SOON
+                                <span class="proshow-cta-arrow">→</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ABOUT -->
+        <section id="about">
+            <div class="container" style="text-align:center;">
+                <h2 style="color:var(--neon-cyan); margin-bottom:26px;">Legacy of Excellence</h2>
+                <p class="about-text">
+                    Anchorage is the flagship technical symposium of the <b>Department of Ship Technology (DOST), CUSAT</b>.
+                    Established to bridge the gap between academic theory and maritime industry standards, DOST has been
+                    pioneering Naval Architecture education in India for decades. Anchorage 2026 continues this tradition
+                    by blending cutting-edge technology with the raw spirit of maritime exploration.
+                </p>
+                <a href="{{ url_for('about') }}" class="btn-hex" style="margin-top:28px;">LEARN MORE</a>
+            </div>
+        </section>
+
+        <!-- EVENTS CAROUSEL -->
+        <section id="events">
+            <div class="container" style="width:100%;">
+
+                <div class="ev-header">
+                    <div class="ev-badge">
+                        <div class="ev-badge-line"></div>
+                        <span class="ev-badge-text">MISSION DIRECTIVES</span>
+                        <div class="ev-badge-line"></div>
+                    </div>
+                    <h2 class="ev-title">Events &amp; Prizes</h2>
+                    <div class="ev-subtitle">Select a programme to access operational data</div>
+                </div>
+
+                <div class="ev-tabs" id="evTabs"></div>
+
+                <div class="ev-track-outer">
+                    <div class="ev-track" id="evTrack"></div>
+                </div>
+
+                <div class="ev-nav">
+                    <button class="ev-nav-btn" id="evPrev" aria-label="Previous">&#8592;</button>
+                    <div class="ev-dots" id="evDots"></div>
+                    <button class="ev-nav-btn" id="evNext" aria-label="Next">&#8594;</button>
+                </div>
+
+                <div class="ev-detail-panel" id="evDetail"></div>
+
+                <div class="ev-cta-row">
+                    <a href="{{ url_for('events') }}"   class="ev-cta-primary">View All Events &#8594;</a>
+                    <a href="{{ url_for('events') }}" class="ev-cta-secondary">Registration Info</a>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- HUB -->
+        <section id="hub">
+            <div class="container" style="text-align:center; width:100%;">
+                <h2 style="letter-spacing:12px; color:var(--neon-cyan);">Central Hub</h2>
+                <p class="hub-sub">EXPLORING THE CORE ARCHITECTURE</p>
+                <div class="scene" id="orbit-scene">
+                    <div class="core-display" id="hub-core">
+                        <span class="core-status-label">STATUS</span>
+                        <span class="core-status-val">ACTIVE SYNC</span>
+                    </div>
+                    <a href="{{ url_for('events') }}?category=workshop" class="orbit-item">WORKSHOPS</a>
+                    <a href="{{ url_for('events') }}?category=lecture" class="orbit-item">LECTURES</a>
+                    <a href="{{ url_for('events') }}?category=competition" class="orbit-item">COMPETITIONS</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- REGISTER FOR UPDATES -->
+        <section id="register-updates">
+            <div class="container">
+                <div class="rfu-wrap">
+                    <div class="rfu-badge">
+                        <div class="rfu-badge-line"></div>
+                        <span class="rfu-badge-text">STAY INFORMED</span>
+                        <div class="rfu-badge-line"></div>
+                    </div>
+                    <h2 class="rfu-title">Register for Updates</h2>
+                    <p class="rfu-sub">Be the first to know — event launches, registration windows, schedule drops, and announcements straight to your inbox.</p>
+
+                    <div class="rfu-box">
+                        <div class="rfu-fields">
+                            <div class="rfu-field">
+                                <label class="rfu-label" for="rfu-name">FULL NAME *</label>
+                                <input class="rfu-input" id="rfu-name" type="text" placeholder="Your name" autocomplete="name">
+                            </div>
+                            <div class="rfu-field">
+                                <label class="rfu-label" for="rfu-email">EMAIL ADDRESS *</label>
+                                <input class="rfu-input" id="rfu-email" type="email" placeholder="your@email.com" autocomplete="email">
+                            </div>
+                        </div>
+                        <div class="rfu-field" style="margin-bottom:14px;">
+                            <label class="rfu-label" for="rfu-college">COLLEGE / INSTITUTION *</label>
+                            <input class="rfu-input" id="rfu-college" type="text" placeholder="Your college or institution" autocomplete="organization" style="width:100%;">
+                        </div>
+                        <button class="rfu-submit" id="rfuBtn" onclick="submitRFU()">NOTIFY ME ›</button>
+                        <div class="rfu-msg" id="rfuMsg"></div>
+                        <div class="rfu-secure">🔒 YOUR DATA IS SAFE · ANCHORAGE 2026</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            <div class="container">
+
+                <div class="footer-grid">
+                    <div>
+                        <div class="footer-brand-row">
+                            <svg class="footer-anchor-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="5" r="2.2"/>
+                                <path d="M12 7.2V20M5 13a7 7 0 0 0 14 0M5 13H3M21 13h-2"/>
+                            </svg>
+                            <div class="footer-brand">ANCHORAGE '26</div>
+                        </div>
+                        <p class="footer-desc">The premier maritime technical symposium of CUSAT — charting two days of innovation in marine engineering.</p>
+                        <div class="footer-status"><span class="status-dot"></span>ALL SYSTEMS OPERATIONAL</div>
+                    </div>
+
+                    <div>
+                        <h3 class="footer-heading">Navigate</h3>
+                        <ul class="footer-links">
+                            <li><a href="{{ url_for('home') }}">Home</a></li>
+                            <li><a href="{{ url_for('events') }}">Events</a></li>
+                            <li><a href="{{ url_for('about') }}">About</a></li>
+                            <li><a href="{{ url_for('events') }}">Register</a></li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h3 class="footer-heading">Account</h3>
+                        <ul class="footer-links">
+                            <li><a href="{{ url_for('cart') }}">Cart</a></li>
+                            <li><a href="{{ url_for('privacy_policy') }}">Privacy Policy</a></li>
+                            <li><a href="{{ url_for('terms_and_conditions') }}">Terms &amp; Conditions</a></li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h3 class="footer-heading">Connect</h3>
+                        <div class="footer-social">
+                            <a href="https://www.instagram.com/anchorage_cusat?igsh=MTBjNm1pOXJiYm5yeA==" class="social-badge" aria-label="Instagram" target="_blank" rel="noopener">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="0.6" fill="currentColor" stroke="none"/></svg>
+                            </a>
+                            <a href="https://www.linkedin.com/company/anchorage-cusat/about/?viewAsMember=true" class="social-badge" aria-label="LinkedIn" target="_blank" rel="noopener">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+                            </a>
+                            <a href="https://youtube.com/@societyofnavalarchitecture1487?si=1YH_cW7dtDH-9faO" class="social-badge" aria-label="YouTube" target="_blank" rel="noopener">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 8.5a3 3 0 0 1 3-3h13a3 3 0 0 1 3 3v7a3 3 0 0 1-3 3h-13a3 3 0 0 1-3-3z"/><polygon points="10 9 15 12 10 15" fill="currentColor" stroke="none"/></svg>
+                            </a>
+                            <a href="https://snas.in" class="social-badge" aria-label="SNAS" target="_blank" rel="noopener">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M14 6l6 6-6 6"/></svg>
+                            </a>
+                        </div>
+                        <h3 class="footer-heading">Coordinates</h3>
+                        <p class="footer-coords">10.0457° N · 76.3175° E<span class="footer-addr">Department of Ship Technology<br>CUSAT, Kalamassery, Kochi</span></p>
+                    </div>
+                </div>
+
+                <div class="footer-bottom">
+                    <div>© 2026 ANCHORAGE · SNAS TECHNICAL WING</div>
+                    <div class="footer-bottom-right">
+                        <a href="{{ url_for('privacy_policy') }}" class="footer-bottom-link">PRIVACY POLICY</a>
+                        <a href="{{ url_for('terms_and_conditions') }}" class="footer-bottom-link">TERMS &amp; CONDITIONS</a>
+                        <button class="surface-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">
+                            <span class="surface-bubbles"><i></i><i></i><i></i></span>
+                            ▲ SURFACE
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <script>
+        /* ── Radar parallax ── */
+        const radar = document.getElementById('radar');
+        if (window.matchMedia('(hover: hover)').matches) {
+            document.addEventListener('mousemove', e => {
+                radar.style.transform = `translate(${(e.clientX - innerWidth/2)/60}px,${(e.clientY - innerHeight/2)/60}px)`;
+            });
+        }
+
+        /* ── Loader: Hull Analysis → Bridge Online ── */
+        (function initLoader() {
+            const loadTitle  = document.getElementById('load-title');
+            const loader     = document.getElementById('hero-loader');
+            const statusMsg  = document.getElementById('status-msg');
+            const statusText = document.getElementById('status-text');
+            const progressBar= document.getElementById('hull-progress-bar');
+            const pctEl      = document.getElementById('hull-pct');
+            const bridgeEl   = document.getElementById('bridge-online');
+            const phrase     = "ANCHORAGE";
+
+            const stages = [
+                { pct: 15, msg: "INITIALIZING SYSTEMS" },
+                { pct: 35, msg: "ANALYZING HULL" },
+                { pct: 55, msg: "MAPPING FRAME SECTIONS" },
+                { pct: 75, msg: "VALIDATING STABILITY" },
+                { pct: 90, msg: "SYNCHRONIZING BRIDGE" },
+                { pct: 100, msg: "ALL SYSTEMS NOMINAL" }
+            ];
+
+            let progress = 0;
+
+            function setProgress(val) {
+                progress = val;
+                progressBar.style.width = val + '%';
+                pctEl.textContent = Math.round(val) + '%';
+            }
+
+            function animateProgress(to, duration, cb) {
+                const from  = progress;
+                const start = performance.now();
+                function step(now) {
+                    const t = Math.min((now - start) / duration, 1);
+                    const e = t < 0.5 ? 2*t*t : -1+(4-2*t)*t;
+                    setProgress(from + (to - from) * e);
+                    if (t < 1) requestAnimationFrame(step);
+                    else if (cb) cb();
+                }
+                requestAnimationFrame(step);
+            }
+
+            function runStage(i) {
+                if (i >= stages.length) return;
+                const s = stages[i];
+                statusText.textContent = s.msg;
+                const dur = 160 + Math.random() * 100;
+                animateProgress(s.pct, dur, () => {
+                    if (i + 1 < stages.length)
+                        setTimeout(() => runStage(i + 1), 60 + Math.random() * 80);
+                    else
+                        setTimeout(finishLoader, 200);
+                });
+            }
+
+            function finishLoader() {
+                /* Hide the status line, show bridge-online in its place */
+                statusMsg.style.opacity = '0';
+                statusMsg.style.transition = 'opacity 0.3s ease';
+                setTimeout(() => {
+                    statusMsg.style.display = 'none';
+                    bridgeEl.classList.add('show');
+                }, 300);
+                setTimeout(() => loader.classList.add('loader-finished'), 1000);
+            }
+
+            function startSequence() {
+                // Type the title
+                let ci = 0;
+                function typeChar() {
+                    if (ci < phrase.length) {
+                        loadTitle.textContent += phrase[ci++];
+                        setTimeout(typeChar, 70);
+                    }
+                }
+                typeChar();
+                // Start stages with a small delay
+                setTimeout(() => runStage(0), 200);
+            }
+
+            window.addEventListener('load', startSequence);
+        })();
+
+        /* ── Mobile menu ── */
+        const ham = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+        let menuOpen = false;
+        function toggleMobileMenu() {
+            menuOpen = !menuOpen;
+            ham.classList.toggle('open', menuOpen);
+            mobileMenu.classList.toggle('open', menuOpen);
+            document.body.style.overflow = menuOpen ? 'hidden' : '';
+        }
+        function closeMobileMenu() {
+            menuOpen = false;
+            ham.classList.remove('open');
+            mobileMenu.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+        mobileMenu.addEventListener('click', e => { if (e.target === mobileMenu) closeMobileMenu(); });
+
+        /* ── Cart badge ── */
+        (function initNav() {
+            function getCart() { try { return JSON.parse(localStorage.getItem('anch_cart')  || '[]');  } catch { return [];   } }
+
+            const badge = document.getElementById('navCartBadge');
+
+            function updateCartBadge() {
+                const cart  = getCart();
+                const count = cart.length;
+                if (count > 0) { badge.textContent = count > 9 ? '9+' : count; badge.style.display = 'flex'; }
+                else { badge.style.display = 'none'; }
+            }
+
+            updateCartBadge();
+            window.addEventListener('storage', updateCartBadge);
+        })();
+
+        /* ── Reveal animation ── */
+        new IntersectionObserver(entries => {
+            entries.forEach(e => {
+                if (e.isIntersecting)
+                    e.target.querySelectorAll('.reveal-left,.reveal-right').forEach(el => el.classList.add('reveal-active'));
+            });
+        }, { threshold: 0.05 }).observe(document.querySelector('#concert'));
+
+        /* ── Poster reveal: 1st & 3rd slide in from the right, middle slides in from the left ── */
+        (function initPosterReveal() {
+            const postersSection = document.querySelector('#event-posters');
+            const posterLinks = postersSection ? postersSection.querySelectorAll('.poster-link') : [];
+            if (!posterLinks.length) return;
+
+            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (reduceMotion) return;
+
+            posterLinks.forEach((el, i) => {
+                el.classList.add(i === 1 ? 'poster-hidden-left' : 'poster-hidden-right');
+            });
+
+            const posterObserver = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) return;
+                    posterLinks.forEach(el => {
+                        el.classList.add('poster-visible');
+                        el.addEventListener('transitionend', function onDone(ev) {
+                            if (ev.propertyName !== 'transform') return;
+                            el.classList.remove('poster-hidden-left', 'poster-hidden-right', 'poster-visible');
+                            el.removeEventListener('transitionend', onDone);
+                        });
+                    });
+                    posterObserver.disconnect();
+                });
+            }, { threshold: 0.15 });
+
+            posterObserver.observe(postersSection);
+        })();
+
+        /* ── Orbit animation ── */
+        const orbitItems = document.querySelectorAll('.orbit-item');
+        let rotAngle = 0, paused = false;
+        orbitItems.forEach(item => {
+            item.addEventListener('mouseenter',  () => paused = true);
+            item.addEventListener('mouseleave',  () => paused = false);
+            item.addEventListener('touchstart',  () => paused = true, { passive: true });
+            item.addEventListener('touchend',    () => setTimeout(() => paused = false, 1200), { passive: true });
+        });
+        function orbitParams() {
+            const w = innerWidth;
+            if (w <= 400) return { r: 108, d: 55 };
+            if (w <= 768) return { r: 135, d: 72 };
+            return { r: 410, d: 250 };
+        }
+        function animateOrbit() {
+            if (!paused) rotAngle += 0.005;
+            const { r, d } = orbitParams();
+            orbitItems.forEach((item, i) => {
+                const a  = rotAngle + i * (2 * Math.PI / orbitItems.length);
+                const x  = Math.sin(a) * r;
+                const z  = Math.cos(a) * d;
+                const nz = (z + d) / (2 * d);
+                item.style.left      = '50%';
+                item.style.top       = '50%';
+                item.style.transform = `translate(-50%,-50%) translate3d(${x}px,0,${z}px) scale(${0.7 + nz * 0.5})`;
+                item.style.opacity   = 0.2 + nz * 0.8;
+                item.style.filter    = `blur(${(1 - nz) * 4}px)`;
+                item.style.zIndex    = Math.round(nz * 100);
+            });
+            requestAnimationFrame(animateOrbit);
+        }
+        animateOrbit();
+
+        /* ── Bubbles ── */
+        const bCont    = document.getElementById('bubbles');
+        const isMobile = window.matchMedia('(max-width: 768px)').matches;
+        function spawnBubble() {
+            const b = document.createElement('div');
+            b.className = 'bubble';
+            const s = Math.random() * 10 + 4;
+            b.style.cssText = `width:${s}px;height:${s}px;left:${Math.random()*100}%;--speed:${Math.random()*5+6}s`;
+            bCont.appendChild(b);
+            setTimeout(() => b.remove(), 11000);
+        }
+        setInterval(spawnBubble, isMobile ? 700 : 280);
+
+        /* ── Countdown ── */
+        const target = new Date('October 10, 2026 09:00:00').getTime();
+        function tick() {
+            const dist = Math.max(0, target - Date.now());
+            const pad  = n => String(Math.floor(n)).padStart(2,'0');
+            document.getElementById('days').textContent    = pad(dist / 86400000);
+            document.getElementById('hours').textContent   = pad((dist % 86400000) / 3600000);
+            document.getElementById('minutes').textContent = pad((dist % 3600000)  / 60000);
+            document.getElementById('seconds').textContent = pad((dist % 60000)    / 1000);
+        }
+        setInterval(tick, 1000); tick();
+
+        /* ── Sponsor infinite marquee ── */
+        (function initSponsorMarquee() {
+            const track = document.getElementById('sponsorTrack');
+            if (!track) return;
+
+            /* Wrap track in a flex strip, clone sits right beside it */
+            const strip = document.createElement('div');
+            strip.style.cssText = 'display:flex;align-items:center;gap:50px;width:max-content;will-change:transform;';
+            track.parentElement.insertBefore(strip, track);
+            strip.appendChild(track);
+
+            const clone = track.cloneNode(true);
+            clone.removeAttribute('id');
+            clone.querySelectorAll('[alt]').forEach(img => img.setAttribute('aria-hidden', 'true'));
+            strip.appendChild(clone);
+
+            let loopWidth = 0;
+            let pos       = 0;
+            let raf       = null;
+            let paused    = false;
+            const SPEED   = isMobile ? 50 : 70;
+
+            function measure() {
+                loopWidth = track.offsetWidth + 50; /* track width + gap */
+            }
+
+            let lastTime = null;
+            function step(ts) {
+                if (lastTime === null) lastTime = ts;
+                const dt = ts - lastTime;
+                lastTime = ts;
+                if (!paused) {
+                    pos += SPEED * (dt / 1000);
+                    if (loopWidth > 0 && pos >= loopWidth) pos -= loopWidth;
+                    strip.style.transform = `translateX(-${pos}px)`;
+                }
+                raf = requestAnimationFrame(step);
+            }
+
+            function start() {
+                measure();
+                lastTime = null;
+                if (!raf) raf = requestAnimationFrame(step);
+            }
+
+            const scroll = strip.parentElement;
+            scroll.addEventListener('mouseenter', () => { paused = true; });
+            scroll.addEventListener('mouseleave', () => { paused = false; lastTime = null; });
+            window.addEventListener('resize', () => { measure(); }, { passive: true });
+
+            const imgs = track.querySelectorAll('img');
+            let loaded = 0;
+            function onLoad() { if (++loaded === imgs.length) start(); }
+            imgs.forEach(img => {
+                if (img.complete) onLoad();
+                else { img.addEventListener('load', onLoad); img.addEventListener('error', onLoad); }
+            });
+            if (loaded === imgs.length) start();
+        })();
+
+        /* ── Events Carousel ── */
+        (function initEventsCarousel() {
+            const CATS = ['ALL','Workshop'];
+            const EVENTS = [
+                { name:'VisionEd',       day:'Sep 1- Oct 1', cat:'Competition',    icon:'📸',  desc:'Capture stories, inspire minds, and bring your vision to life through the art of filmmaking .', prize:'50,000', team:'Team', type:'Competitions',  soon:false },
+                { name:'Campus Ambassador', day:'--', cat:'Competition',    icon:'⚓', desc:'Become the face of the event on your campus.',    prize:'15,000', team:'Solo', type:'Competition',  soon:false },
+                { name:'Boat Wars',     day:'11 OCT 2026', cat:'Competition', icon:'⛵',  desc:'Fight the battle with boats, not swords.',                          prize:'50,000', team:'2-3 Members', type:'Competition',   soon:false },
+                { name:'Nautiq-Quiz',    day:'11 OCT 2026', cat:'Competition',  icon:'💡',  desc:'Race to make the Answers right.',                       prize:'25,000', team:'1-2 Members', type:'Competition',     soon:false },
+                { name:'Boat Wars',     day:'11 OCT 2026', cat:'Competition', icon:'⛵',  desc:'Fight the battle with boats, not swords.',                          prize:'TBA', team:'TBA', type:'Flagship',   soon:true },
+                { name:'Navy Expo',     day:'10–12 OCT 2026', cat:'Exhibition',icon:'⚓',  desc:'See the might of the Indian Navy — live exhibits & demonstrations.', prize:'TBA', team:'TBA', type:'Exhibition', soon:true },
+                { name:'Treasure Hunt', day:'12 OCT 2026', cat:'Competition', icon:'🪙',  desc:'Search, find, win — a campus-wide adventure awaits.',               prize:'TBA', team:'TBA', type:'Design',     soon:true },
+            ];
+
+            let currentCat = 'ALL';
+            let offset     = 0;
+            let activeIdx  = 0;
+            const VISIBLE  = window.innerWidth <= 768 ? 2 : 3;
+
+            function filtered() {
+                return currentCat === 'ALL' ? EVENTS : EVENTS.filter(e => e.cat === currentCat);
+            }
+
+            function cardW() { return window.innerWidth <= 768 ? 196 : 236; }
+
+            function maxOff(list) { return Math.max(0, list.length - VISIBLE); }
+
+            /* TABS */
+            function renderTabs() {
+                const el = document.getElementById('evTabs');
+                el.innerHTML = CATS.map(c =>
+                    `<button class="ev-tab${c===currentCat?' active':''}" data-cat="${c}">${c}</button>`
+                ).join('');
+                el.querySelectorAll('.ev-tab').forEach(btn => btn.addEventListener('click', () => {
+                    currentCat = btn.dataset.cat; offset = 0; activeIdx = 0;
+                    renderTabs(); renderTrack(); renderDetail();
+                }));
+            }
+
+            /* TRACK */
+            function renderTrack() {
+                const list  = filtered();
+                const track = document.getElementById('evTrack');
+                track.innerHTML = list.map((ev, i) => `
+                    <div class="ev-card${i===activeIdx?' active-card':''}${ev.soon?' soon':''}" data-idx="${i}">
+                        <div class="ev-card-scan"></div>
+                        ${ev.soon ? `<div class="ev-card-soon-overlay"></div><div class="ev-card-soon-badge">◈ Announcing Soon</div>` : ''}
+                        <div class="ev-card-icon">
+                            <span style="font-size:2.5rem">${ev.icon}</span>
+                            <span class="ev-card-icon-label">${ev.type.toUpperCase()}</span>
+                        </div>
+                        <div class="ev-card-body">
+                            <div class="ev-card-day">${ev.day}</div>
+                            <div class="ev-card-name">${ev.name}</div>
+                            <div class="ev-card-desc">${ev.desc}</div>
+                            <div class="ev-card-prize">
+                                <span class="ev-prize-icon">◈</span>
+                                <span class="ev-prize-val">${ev.soon ? 'TBA' : ev.prize}</span>
+                                <span class="ev-prize-label">&nbsp;· ${ev.soon ? 'Details coming soon' : ev.team}</span>
+                            </div>
+                            <span class="ev-card-tag">${ev.cat}</span>
+                        </div>
+                    </div>
+                `).join('');
+
+                track.style.transform = `translateX(-${offset * (cardW() + 16)}px)`;
+
+                track.querySelectorAll('.ev-card').forEach(card => card.addEventListener('click', () => {
+                    activeIdx = parseInt(card.dataset.idx);
+                    renderTrack(); renderDots(); renderDetail();
+                }));
+                renderDots();
+                document.getElementById('evPrev').disabled = offset <= 0;
+                document.getElementById('evNext').disabled = offset >= maxOff(list);
+            }
+
+            /* DOTS */
+            function renderDots() {
+                const list = filtered();
+                const el   = document.getElementById('evDots');
+                el.innerHTML = list.map((_,i) =>
+                    `<div class="ev-dot${i===activeIdx?' active':''}" data-i="${i}"></div>`
+                ).join('');
+                el.querySelectorAll('.ev-dot').forEach(d => d.addEventListener('click', () => {
+                    activeIdx = parseInt(d.dataset.i);
+                    offset    = Math.min(activeIdx, maxOff(list));
+                    renderTrack(); renderDetail();
+                }));
+            }
+
+            /* DETAIL PANEL */
+            function renderDetail() {
+                const list = filtered();
+                if (!list.length) return;
+                const ev = list[activeIdx] || list[0];
+                document.getElementById('evDetail').innerHTML = ev.soon ? `
+                    <div class="ev-detail-stat" style="grid-column:1/-1;display:flex;flex-direction:column;align-items:center;gap:10px;padding:8px 0;">
+                        <span style="font-family:'Orbitron';font-size:0.55rem;letter-spacing:5px;color:var(--neon-cyan);opacity:0.55;">◈ &nbsp; DETAILS ANNOUNCING SOON &nbsp; ◈</span>
+                        <span style="font-size:0.82rem;color:rgba(255,255,255,0.4);letter-spacing:1px;">Stay tuned — full event info drops soon.</span>
+                    </div>
+                ` : `
+                    <div class="ev-detail-stat">
+                        <span class="ev-detail-stat-val">${ev.prize}</span>
+                        <span class="ev-detail-stat-label">Prize Pool</span>
+                    </div>
+                    <div class="ev-detail-stat">
+                        <span class="ev-detail-stat-val" style="font-size:1.1rem;letter-spacing:1px;">${ev.team}</span>
+                        <span class="ev-detail-stat-label">Team Size</span>
+                    </div>
+                    <div class="ev-detail-stat">
+                        <span class="ev-detail-stat-val" style="font-size:1.1rem;">${ev.day}</span>
+                        <span class="ev-detail-stat-label">Schedule</span>
+                    </div>
+                `;
+            }
+
+            /* NAV BUTTONS */
+            document.getElementById('evPrev').addEventListener('click', () => {
+                if (offset > 0) { offset--; renderTrack(); }
+            });
+            document.getElementById('evNext').addEventListener('click', () => {
+                const list = filtered();
+                if (offset < maxOff(list)) { offset++; renderTrack(); }
+            });
+
+            /* AUTO-ADVANCE — pauses on hover */
+            let autoTimer;
+            function startAuto() {
+                autoTimer = setInterval(() => {
+                    const list = filtered();
+                    if (!list.length) return;
+                    activeIdx = (activeIdx + 1) % list.length;
+                    if (activeIdx > offset + VISIBLE - 1) offset = Math.min(activeIdx, maxOff(list));
+                    if (activeIdx < offset) offset = activeIdx;
+                    renderTrack(); renderDetail();
+                }, 3500);
+            }
+            function stopAuto() { clearInterval(autoTimer); }
+
+            const trackOuter = document.getElementById('evTrack').parentElement;
+            trackOuter.addEventListener('mouseenter', stopAuto);
+            trackOuter.addEventListener('mouseleave', startAuto);
+
+            /* ── DRAG / TOUCH SCROLL ── */
+            let dragStartX   = 0;
+            let dragCurX     = 0;
+            let isDragging   = false;
+            let dragMoved    = false;
+            const DRAG_THRESHOLD = 6; // px before we commit to a drag
+
+            function dragStart(x) {
+                stopAuto();
+                isDragging = true;
+                dragMoved  = false;
+                dragStartX = x;
+                dragCurX   = x;
+                trackOuter.classList.add('dragging');
+                const track = document.getElementById('evTrack');
+                track.classList.add('no-transition');
+            }
+
+            function dragMove(x) {
+                if (!isDragging) return;
+                const dx = x - dragStartX;
+                if (Math.abs(dx) > DRAG_THRESHOLD) dragMoved = true;
+                if (!dragMoved) return;
+                dragCurX = x;
+                const list  = filtered();
+                const track = document.getElementById('evTrack');
+                const baseTranslate = -(offset * (cardW() + 16));
+                const liveTranslate = baseTranslate + (x - dragStartX);
+                // Clamp so you can't pull past the first or last card
+                const minTranslate = -(maxOff(list) * (cardW() + 16));
+                const clamped = Math.min(0, Math.max(minTranslate, liveTranslate));
+                track.style.transform = `translateX(${clamped}px)`;
+            }
+
+            function dragEnd() {
+                if (!isDragging) return;
+                isDragging = false;
+                trackOuter.classList.remove('dragging');
+                const track = document.getElementById('evTrack');
+                track.classList.remove('no-transition');
+
+                if (dragMoved) {
+                    const dx   = dragCurX - dragStartX;
+                    const step = cardW() + 16;
+                    const list = filtered();
+                    // Snap: move by however many full card-widths were dragged (min 1 if dragged enough)
+                    const stepsRaw = -dx / step;
+                    let steps = Math.round(stepsRaw);
+                    if (steps === 0) steps = dx < -40 ? 1 : dx > 40 ? -1 : 0;
+                    offset = Math.max(0, Math.min(maxOff(list), offset + steps));
+                    // Keep activeIdx in view
+                    if (activeIdx < offset) activeIdx = offset;
+                    if (activeIdx > offset + VISIBLE - 1) activeIdx = offset + VISIBLE - 1;
+                    renderTrack(); renderDetail();
+                }
+                startAuto();
+            }
+
+            // Mouse events
+            trackOuter.addEventListener('mousedown',  e => { dragStart(e.clientX); });
+            window.addEventListener('mousemove',      e => { dragMove(e.clientX); });
+            window.addEventListener('mouseup',        ()  => { dragEnd(); });
+
+            // Touch events
+            trackOuter.addEventListener('touchstart', e => {
+                dragStart(e.touches[0].clientX);
+            }, { passive: true });
+            trackOuter.addEventListener('touchmove',  e => {
+                dragMove(e.touches[0].clientX);
+                if (dragMoved) e.preventDefault(); // block page scroll only while dragging cards
+            }, { passive: false });
+            trackOuter.addEventListener('touchend',   () => { dragEnd(); }, { passive: true });
+
+            // Prevent card clicks from firing when the user was dragging
+            trackOuter.addEventListener('click', e => {
+                if (dragMoved) { e.stopPropagation(); e.preventDefault(); }
+            }, true);
+
+            /* INIT */
+            renderTabs();
+            renderTrack();
+            renderDetail();
+            startAuto();
+        })();
+
+        /* ── Google Form Modal ── */
+        function openGFormModal() {
+            document.getElementById('gform-overlay').classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeGFormModal() {
+            document.getElementById('gform-overlay').classList.remove('open');
+            document.body.style.overflow = '';
+        }
+        function handleOverlayClick(e) {
+            if (e.target === document.getElementById('gform-overlay')) closeGFormModal();
+        }
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeGFormModal(); });
+
+        function submitRFU() {
+            const nameEl    = document.getElementById('rfu-name');
+            const emailEl   = document.getElementById('rfu-email');
+            const collegeEl = document.getElementById('rfu-college');
+            const btn       = document.getElementById('rfuBtn');
+            const msg       = document.getElementById('rfuMsg');
+
+            const name    = nameEl.value.trim();
+            const email   = emailEl.value.trim();
+            const college = collegeEl.value.trim();
+
+            [nameEl, emailEl, collegeEl].forEach(el => el.classList.remove('rfu-err'));
+            let ok = true;
+            if (!name)    { nameEl.classList.add('rfu-err');    ok = false; }
+            if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                emailEl.classList.add('rfu-err'); ok = false;
+            }
+            if (!college) { collegeEl.classList.add('rfu-err'); ok = false; }
+            if (!ok) {
+                msg.className   = 'rfu-msg error';
+                msg.textContent = '◈ PLEASE FILL IN ALL REQUIRED FIELDS';
+                return;
+            }
+
+            btn.disabled    = true;
+            btn.textContent = 'TRANSMITTING…';
+            msg.className   = 'rfu-msg';
+            msg.textContent = '';
+
+            const FORM_ACTION = 'https://docs.google.com/forms/d/e/1FAIpQLSdIxbaPWGyD2DXsM5vEOed0vypY85NxwrTxDNK7xHBcho5WmQ/formResponse';
+
+            let iframe = document.getElementById('rfu-iframe');
+            if (!iframe) {
+                iframe = document.createElement('iframe');
+                iframe.id   = 'rfu-iframe';
+                iframe.name = 'rfu-iframe';
+                iframe.style.cssText = 'display:none;position:absolute;width:0;height:0;border:none;';
+                document.body.appendChild(iframe);
+            }
+
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = FORM_ACTION;
+            form.target = 'rfu-iframe';
+            form.style.display = 'none';
+
+            [['entry.1237079190', name], ['entry.1350324163', college], ['entry.520866578', email]].forEach(([n, v]) => {
+                const inp = document.createElement('input');
+                inp.type = 'hidden'; inp.name = n; inp.value = v;
+                form.appendChild(inp);
+            });
+
+            document.body.appendChild(form);
+            form.submit();
+            document.body.removeChild(form);
+
+            setTimeout(() => {
+                btn.textContent  = 'REGISTERED ✓';
+                msg.className    = 'rfu-msg success';
+                msg.textContent  = '◈ YOU\'RE ON THE LIST — UPDATES INCOMING!';
+                nameEl.value     = '';
+                emailEl.value    = '';
+                collegeEl.value  = '';
+                setTimeout(() => {
+                    btn.disabled    = false;
+                    btn.textContent = 'NOTIFY ME ›';
+                    msg.className   = 'rfu-msg';
+                }, 4000);
+            }, 1200);
+        }
+
+        /* ── Ship BG: two-layer scroll crossfade ── */
+        (function initShipBg() {
+            const bg1 = document.getElementById('ship-bg');
+            const bg2 = document.getElementById('ship-bg2');
+            if (!bg1 || !bg2) return;
+            let ticking = false;
+
+            function update() {
+                ticking = false;
+                const scrollY = window.scrollY || window.pageYOffset;
+                const vh      = window.innerHeight;
+
+                /* --- Layer 1: fades in 40vh→120vh, then fades OUT 260vh→340vh --- */
+                const l1Start = vh * 0.4,  l1End = vh * 1.2;
+                const l1Raw   = Math.max(0, Math.min(1, (scrollY - l1Start) / (l1End - l1Start)));
+                const l1In    = l1Raw * l1Raw;
+
+                const l1FadeStart = vh * 2.6, l1FadeEnd = vh * 3.4;
+                const l1FadeRaw   = Math.max(0, Math.min(1, (scrollY - l1FadeStart) / (l1FadeEnd - l1FadeStart)));
+                const l1Out       = 1 - l1FadeRaw * l1FadeRaw;
+
+                bg1.style.opacity = (l1In * l1Out).toFixed(4);
+
+                /* --- Layer 2: fades in 260vh→360vh (as layer 1 fades out) --- */
+                const l2Start = vh * 2.6, l2End = vh * 3.6;
+                const l2Raw   = Math.max(0, Math.min(1, (scrollY - l2Start) / (l2End - l2Start)));
+                const l2In    = l2Raw * l2Raw;
+                bg2.style.opacity = l2In.toFixed(4);
+            }
+
+            window.addEventListener('scroll', function () {
+                if (!ticking) { requestAnimationFrame(update); ticking = true; }
+            }, { passive: true });
+
+            update();
+        })();
+    </script>
+    <!-- GOOGLE FORM MODAL -->
+    <div id="gform-overlay" onclick="handleOverlayClick(event)">
+        <div id="gform-box">
+            <div class="gform-header">
+                <span class="gform-title">◈ &nbsp; REGISTER FOR UPDATES</span>
+                <button class="gform-close" onclick="closeGFormModal()" aria-label="Close">✕</button>
+            </div>
+            <iframe
+                id="gform-frame"
+                src="https://docs.google.com/forms/d/e/1FAIpQLSdIxbaPWGyD2DXsM5vEOed0vypY85NxwrTxDNK7xHBcho5WmQ/viewform?embedded=true"
+                frameborder="0"
+                marginheight="0"
+                marginwidth="0"
+                loading="lazy"
+                title="Register for Anchorage 2026 Updates">
+                Loading…
+            </iframe>
+        </div>
+    </div>
+
+</body>
+</html>

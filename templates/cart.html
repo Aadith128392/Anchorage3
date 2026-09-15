@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart — Anchorage 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --cyan: #00f2ff;
+            --cyan-glass: rgba(0,242,255,0.07);
+            --ocean: #00050a;
+            --ocean-card: #00111e;
+            --border: rgba(0,242,255,0.15);
+            --border-bright: rgba(0,242,255,0.4);
+            --gold: #ffd166;
+            --coral: #ff6b6b;
+            --green: #06d6a0;
+            --error: #ff4466;
+            --expo: cubic-bezier(0.19,1,0.22,1);
+        }
+        html { scroll-behavior: smooth; }
+        body { background: var(--ocean); color: #fff; font-family: 'Rajdhani', sans-serif; min-height: 100vh; overflow-x: hidden; }
+
+        #bg { position: fixed; inset: 0; z-index: -1; background: #000810; overflow: hidden; }
+        .grid-bg { position: absolute; inset: 0; background-image: linear-gradient(rgba(0,242,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,242,255,0.025) 1px,transparent 1px); background-size: 60px 60px; }
+        .glow { position: absolute; border-radius: 50%; filter: blur(120px); pointer-events: none; }
+        .g1 { width: 600px; height: 600px; background: rgba(0,80,120,0.14); top: -150px; right: -150px; }
+        .g2 { width: 400px; height: 400px; background: rgba(0,50,100,0.1); bottom: 0; left: -100px; }
+        .scan-line { position: absolute; left: 0; right: 0; height: 1px; background: linear-gradient(90deg,transparent,rgba(0,242,255,0.3),transparent); animation: scan 8s ease-in-out infinite; }
+        @keyframes scan { 0%{top:-5%;opacity:0} 10%{opacity:1} 90%{opacity:.3} 100%{top:105%;opacity:0} }
+
+        /* NAV */
+        :root { --nav-h: 60px; }
+        @media (max-width: 480px) { :root { --nav-h: 108px; } }
+        nav { position: fixed; top: 0; left: 0; right: 0; min-height: var(--nav-h); z-index: 999; background: rgba(0,5,10,0.97); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; padding: 0 14px; gap: 0; }
+        .nav-brand { font-family: 'Orbitron'; font-size: 0.82rem; letter-spacing: 2px; color: var(--cyan); text-decoration: none; text-shadow: 0 0 14px rgba(0,242,255,0.4); flex-shrink: 0; padding: 10px 0; font-weight: 600; }
+        .nav-right { display: flex; gap: 0; align-items: center; flex-shrink: 0; }
+        .nav-link { font-family: 'Orbitron'; font-size: 0.7rem; letter-spacing: 1px; text-decoration: none; color: rgba(255,255,255,0.68); padding: 10px 12px; border: 1px solid transparent; transition: all 0.3s; white-space: nowrap; min-height: 44px; display: flex; align-items: center; font-weight: 600; }
+        .nav-link:hover { color: var(--cyan); border-color: var(--border); }
+        .nav-link.active { color: var(--cyan); border-color: var(--border); background: var(--cyan-glass); }
+        .nav-link.danger { color: var(--coral); }
+        .nav-link.danger:hover { border-color: rgba(255,107,107,0.3); background: rgba(255,107,107,0.06); }
+        .nav-cart-badge { display: inline-flex; align-items: center; justify-content: center; width: 19px; height: 19px; background: var(--cyan); color: #000; border-radius: 50%; font-family: 'Share Tech Mono'; font-size: 0.65rem; font-weight: 700; margin-left: 5px; }
+        /* On small screens: brand takes full top row, links wrap to second row */
+        @media (max-width: 480px) {
+            nav { align-items: flex-start; padding-top: 4px; }
+            .nav-brand { width: 100%; padding: 8px 2px 4px; font-size: 0.68rem; }
+            .nav-right { width: 100%; border-top: 1px solid var(--border); }
+            .nav-link { font-size: 0.65rem; padding: 8px 10px; letter-spacing: 0.5px; flex: 1; justify-content: center; }
+        }
+
+        /* LAYOUT */
+        .page-wrap { max-width: 1000px; margin: 0 auto; padding: calc(var(--nav-h) + 36px) 14px 100px; }
+        @media (min-width: 600px) { .page-wrap { padding: calc(var(--nav-h) + 44px) 28px 100px; } }
+
+        /* FLASH */
+        .flash-list { list-style: none; margin-bottom: 20px; }
+        .flash-list li { padding: 11px 16px; border: 1px solid var(--border); background: var(--cyan-glass); font-family: 'Share Tech Mono'; font-size: 0.75rem; letter-spacing: 1.5px; color: var(--cyan); margin-bottom: 7px; word-break: break-word; }
+
+        /* HERO */
+        .page-hero { margin-bottom: 36px; }
+        .page-tag { font-family: 'Share Tech Mono'; font-size: 0.65rem; letter-spacing: 2px; color: var(--cyan); opacity: 0.85; display: block; margin-bottom: 10px; word-break: break-word; white-space: normal; overflow-wrap: break-word; }
+        @media (max-width: 480px) { .page-tag { font-size: 0.55rem; letter-spacing: 1px; } }
+        .page-title { font-family: 'Orbitron'; font-size: clamp(1.6rem,6vw,2.8rem); font-weight: 900; letter-spacing: 4px; background: linear-gradient(135deg,#fff 30%,var(--cyan) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1.1; }
+        .page-sub { font-size: 0.85rem; color: rgba(255,255,255,0.62); letter-spacing: 1px; margin-top: 7px; font-family: 'Share Tech Mono'; word-break: break-word; }
+
+        /* GRID */
+        .cart-layout { display: grid; grid-template-columns: 1fr; gap: 20px; }
+        @media (min-width: 700px) { .cart-layout { grid-template-columns: 1fr 310px; align-items: start; } }
+        @media (min-width: 900px) { .cart-layout { grid-template-columns: 1fr 350px; } }
+
+        /* CART CARDS */
+        .cart-items { display: flex; flex-direction: column; gap: 10px; }
+        .cart-card { background: var(--ocean-card); border: 1px solid var(--border); padding: 16px 18px; display: grid; grid-template-columns: 48px 1fr auto; gap: 14px; align-items: center; position: relative; overflow: hidden; transition: border-color 0.3s, box-shadow 0.3s; animation: slideUp 0.4s var(--expo) both; }
+        .cart-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg,transparent,var(--cyan),transparent); opacity: 0; transition: opacity 0.3s; }
+        .cart-card:hover { border-color: var(--border-bright); box-shadow: 0 0 22px rgba(0,242,255,0.06); }
+        .cart-card:hover::before { opacity: 1; }
+        @keyframes slideUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:none} }
+        @media (max-width: 560px) {
+            .cart-card { grid-template-columns: 46px 1fr; padding: 14px; gap: 12px; }
+            .cart-card-right { grid-column: 1/-1; display: flex; justify-content: space-between; align-items: center; padding-top: 10px; border-top: 1px solid rgba(0,242,255,0.08); }
+        }
+        .cart-card-icon { font-size: 1.85rem; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; background: rgba(0,242,255,0.14); border: 1px solid var(--border-bright); border-radius: 6px; box-shadow: 0 0 14px rgba(0,242,255,0.18), inset 0 0 10px rgba(0,242,255,0.08); filter: drop-shadow(0 0 5px rgba(0,242,255,0.45)); flex-shrink: 0; }
+        @media (max-width: 560px) { .cart-card-icon { width: 46px; height: 46px; font-size: 1.7rem; } }
+        .cart-card-info { min-width: 0; }
+        .cart-card-name { font-family: 'Orbitron'; font-size: 0.85rem; letter-spacing: 1px; color: #fff; margin-bottom: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 600; }
+        @media (max-width: 560px) { .cart-card-name { font-size: 0.78rem; letter-spacing: 0.5px; } }
+        .cart-card-meta { display: flex; flex-wrap: wrap; gap: 5px; }
+        .meta-tag { font-family: 'Share Tech Mono'; font-size: 0.68rem; letter-spacing: 0.5px; padding: 4px 8px; border: 1px solid var(--border); color: rgba(0,242,255,0.85); background: rgba(0,242,255,0.04); white-space: normal; word-break: break-word; max-width: 100%; }
+        .meta-tag.type-competition { border-color: rgba(255,209,102,0.25); color: var(--gold);  background: rgba(255,209,102,0.05); }
+        .meta-tag.type-workshop    { border-color: rgba(6,214,160,0.25);   color: var(--green); background: rgba(6,214,160,0.05); }
+        .meta-tag.type-cultural    { border-color: rgba(181,107,255,0.25); color: #b56bff;      background: rgba(181,107,255,0.05); }
+        .meta-tag.type-session     { border-color: rgba(0,242,255,0.2);    color: var(--cyan);  background: rgba(0,242,255,0.04); }
+        .meta-tag.type-exhibition  { border-color: rgba(255,107,107,0.25); color: var(--coral); background: rgba(255,107,107,0.05); }
+        .cart-card-right { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; flex-shrink: 0; }
+        .cart-price { font-family: 'Orbitron'; font-size: 0.88rem; letter-spacing: 2px; white-space: nowrap; }
+        .cart-price.free { color: var(--green); }
+        .cart-price.paid { color: var(--gold); }
+        /* Early-bird price: old figure crossed out in red, new figure beside it */
+        .fee-eb { display: inline-flex; align-items: baseline; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+        .fee-old { position: relative; color: var(--coral); opacity: 0.75; font-weight: 600; font-size: 0.82em; text-decoration: line-through; text-decoration-color: var(--coral); text-decoration-thickness: 2px; }
+        .fee-old-x { color: var(--coral); margin-right: 2px; font-weight: 900; }
+        .fee-new { color: var(--green); }
+
+        /* SUMMARY PANEL */
+        .summary { background: var(--ocean-card); border: 1px solid var(--border); padding: 22px; position: sticky; top: calc(var(--nav-h) + 14px); overflow: hidden; }
+        @media (max-width: 699px) { .summary { position: static; } }
+        .summary::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg,transparent,var(--cyan),transparent); }
+        .summary-title { font-family: 'Orbitron'; font-size: 0.7rem; letter-spacing: 2.5px; color: var(--cyan); opacity: 0.95; margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
+        .summary-title::before { content: '◈'; }
+        .summary-lines { display: flex; flex-direction: column; margin-bottom: 4px; }
+        .summary-line { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid rgba(0,242,255,0.05); font-size: 0.85rem; color: rgba(255,255,255,0.75); gap: 10px; }
+        .summary-line:last-child { border-bottom: none; }
+        .summary-line strong { color: rgba(255,255,255,0.8); font-weight: 500; font-size: 0.82rem; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: min(155px, 55vw); }
+        .summary-line span { font-family: 'Orbitron'; font-size: 0.7rem; letter-spacing: 1px; flex-shrink: 0; }
+        .summary-line span.free { color: var(--green); }
+        .summary-line span.paid { color: var(--gold); }
+        .summary-line .fee-eb { justify-content: flex-end; }
+        
+        /* PROMO STYLES */
+        .promo-box { display: flex; gap: 8px; margin: 16px 0 10px; }
+        .promo-input { flex: 1; background: rgba(0,0,0,0.3); border: 1px solid var(--border); color: var(--cyan); font-family: 'Share Tech Mono'; padding: 12px 12px; outline: none; text-transform: uppercase; letter-spacing: 2px; font-size: 0.75rem; transition: border-color 0.3s; min-width: 0; min-height: 44px; }
+        .promo-input:focus { border-color: var(--cyan); }
+        .promo-input::placeholder { color: rgba(0,242,255,0.55); }
+        .promo-btn { background: var(--cyan-glass); border: 1px solid var(--border); color: var(--cyan); padding: 0 16px; font-family: 'Orbitron'; cursor: pointer; transition: all 0.3s; font-size: 0.7rem; letter-spacing: 1.5px; clip-path: polygon(10% 0,100% 0,90% 100%,0 100%); min-height: 44px; white-space: nowrap; font-weight: 600; }
+        .promo-btn:hover:not(:disabled) { background: var(--cyan); border-color: var(--cyan); color: #000; }
+        .promo-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .promo-msg { font-family: 'Share Tech Mono'; font-size: 0.65rem; margin-bottom: 12px; letter-spacing: 1px; display: none; color: var(--coral); }
+        .promo-applied { display: flex; justify-content: space-between; align-items: center; border: 1px dashed var(--green); padding: 10px 14px; margin: 16px 0 10px; background: rgba(6,214,160,0.05); }
+        .promo-applied-text { font-family: 'Share Tech Mono'; font-size: 0.68rem; color: var(--green); letter-spacing: 1px; }
+        .promo-applied-text strong { font-family: 'Orbitron'; font-size: 0.75rem; letter-spacing: 2px; margin-left: 6px; }
+
+        /* REFERRAL CODE STYLES */
+        .referral-section-label { font-family: 'Share Tech Mono'; font-size: 0.62rem; letter-spacing: 2px; color: rgba(0,242,255,0.55); margin: 18px 0 8px; padding-top: 14px; border-top: 1px solid rgba(0,242,255,0.07); display: flex; align-items: center; gap: 7px; }
+        .referral-section-label::before { content: '◈'; color: var(--gold); }
+        .referral-box { display: flex; gap: 8px; margin: 0 0 8px; }
+        .referral-input { flex: 1; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,209,102,0.25); color: var(--gold); font-family: 'Share Tech Mono'; padding: 12px 12px; outline: none; text-transform: uppercase; letter-spacing: 2px; font-size: 0.75rem; transition: border-color 0.3s; min-width: 0; min-height: 44px; }
+        .referral-input:focus { border-color: var(--gold); }
+        .referral-input::placeholder { color: rgba(255,209,102,0.4); }
+        .referral-btn { background: rgba(255,209,102,0.07); border: 1px solid rgba(255,209,102,0.25); color: var(--gold); padding: 0 16px; font-family: 'Orbitron'; cursor: pointer; transition: all 0.3s; font-size: 0.7rem; letter-spacing: 1.5px; clip-path: polygon(10% 0,100% 0,90% 100%,0 100%); min-height: 44px; white-space: nowrap; font-weight: 600; }
+        .referral-btn:hover:not(:disabled) { background: var(--gold); border-color: var(--gold); color: #000; }
+        .referral-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .referral-msg { font-family: 'Share Tech Mono'; font-size: 0.65rem; margin-bottom: 10px; letter-spacing: 1px; display: none; }
+        .referral-applied { display: flex; justify-content: space-between; align-items: center; border: 1px dashed rgba(255,209,102,0.45); padding: 10px 14px; margin: 0 0 10px; background: rgba(255,209,102,0.05); }
+        .referral-applied-text { font-family: 'Share Tech Mono'; font-size: 0.68rem; color: var(--gold); letter-spacing: 1px; }
+        .referral-applied-text strong { font-family: 'Orbitron'; font-size: 0.75rem; letter-spacing: 2px; margin-left: 6px; }
+        .referral-note { font-family: 'Share Tech Mono'; font-size: 0.62rem; letter-spacing: 0.5px; color: rgba(255,255,255,0.45); line-height: 1.6; margin-top: 4px; }
+
+        .summary-divider { border: none; border-top: 1px solid rgba(0,242,255,0.1); margin: 14px 0; }
+
+        /* ── CHECKOUT BUTTON — simple link, no JS payment ── */
+        .btn-checkout {
+            display: flex; align-items: center; justify-content: center;
+            width: 100%; padding: 17px; gap: 8px;
+            border: 1px solid var(--cyan); background: transparent; color: var(--cyan);
+            font-family: 'Orbitron'; font-size: 0.7rem; letter-spacing: 2.5px;
+            text-decoration: none;
+            clip-path: polygon(4% 0,100% 0,96% 100%,0 100%);
+            position: relative; overflow: hidden; transition: color 0.4s; min-height: 52px;
+        }
+        .btn-checkout::before { content: ''; position: absolute; inset: 0; background: var(--cyan); transform: scaleX(0); transform-origin: left; transition: transform 0.4s var(--expo); z-index: 0; }
+        .btn-checkout:hover { color: #000; }
+        .btn-checkout:hover::before { transform: scaleX(1); }
+        .btn-checkout span { position: relative; z-index: 1; pointer-events: none; }
+        @media (max-width: 400px) { .btn-checkout { font-size: 0.6rem; letter-spacing: 1.5px; padding: 15px 10px; } }
+
+        /* LOGIN CTA */
+        .btn-login { display: flex; align-items: center; justify-content: center; width: 100%; padding: 17px; border: 1px solid rgba(255,255,255,0.15); background: transparent; color: rgba(255,255,255,0.72); font-family: 'Orbitron'; font-size: 0.68rem; letter-spacing: 2px; text-decoration: none; transition: all 0.3s; clip-path: polygon(4% 0,100% 0,96% 100%,0 100%); min-height: 52px; }
+        .btn-login:hover { border-color: var(--cyan); color: var(--cyan); background: var(--cyan-glass); }
+
+        /* INFO STRIP below button */
+        .info-strip { display: flex; align-items: flex-start; gap: 9px; margin-top: 12px; padding: 10px 12px; background: rgba(0,242,255,0.025); border: 1px solid rgba(0,242,255,0.07); }
+        .info-strip-icon { font-size: 0.9rem; flex-shrink: 0; margin-top: 1px; }
+        .info-strip-text { font-family: 'Share Tech Mono'; font-size: 0.72rem; letter-spacing: 0.5px; color: rgba(255,255,255,0.65); line-height: 1.7; }
+
+        .secure-note { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 12px; font-family: 'Share Tech Mono'; font-size: 0.68rem; letter-spacing: 1px; color: rgba(255,255,255,0.65); text-align: center; flex-wrap: wrap; }
+
+        /* STEPS HINT */
+        .steps-hint { display: flex; flex-direction: column; gap: 6px; margin-bottom: 18px; }
+        .step-hint-item { display: flex; align-items: center; gap: 10px; font-family: 'Share Tech Mono'; font-size: 0.65rem; letter-spacing: 1px; color: rgba(255,255,255,0.62); word-break: break-word; }
+        .step-hint-num { width: 24px; height: 24px; min-width: 24px; border-radius: 50%; border: 1px solid rgba(0,242,255,0.4); display: flex; align-items: center; justify-content: center; font-size: 0.68rem; color: rgba(0,242,255,0.75); flex-shrink: 0; }
+        .step-hint-arrow { font-size: 0.65rem; color: rgba(0,242,255,0.4); margin: 2px 0 2px 11px; }
+
+        /* EMPTY */
+        .empty { text-align: center; padding: 80px 20px; }
+        .empty-icon { font-size: 3.5rem; margin-bottom: 20px; opacity: 0.3; display: block; }
+        .empty-title { font-family: 'Orbitron'; font-size: clamp(1rem, 4vw, 1.2rem); letter-spacing: 4px; color: rgba(255,255,255,0.75); margin-bottom: 10px; }
+        .empty-sub { font-family: 'Share Tech Mono'; font-size: 0.75rem; letter-spacing: 1.5px; color: rgba(255,255,255,0.6); margin-bottom: 30px; }
+        .btn-browse { display: inline-flex; align-items: center; gap: 10px; font-family: 'Orbitron'; font-size: 0.7rem; letter-spacing: 3px; color: var(--cyan); text-decoration: none; border: 1px solid var(--border); padding: 15px 26px; clip-path: polygon(5% 0,100% 0,95% 100%,0 100%); transition: all 0.3s; min-height: 50px; }
+        .btn-browse:hover { border-color: var(--cyan); background: var(--cyan-glass); }
+
+        /* TOAST */
+        .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: rgba(0,13,26,0.97); border: 1px solid var(--border-bright); padding: 14px 24px; font-family: 'Orbitron'; font-size: 0.68rem; letter-spacing: 2px; color: var(--cyan); z-index: 9999; pointer-events: none; transition: transform 0.5s var(--expo),opacity 0.5s; opacity: 0; white-space: nowrap; max-width: 90vw; text-align: center; }
+        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+        .toast.success { border-color: var(--green); color: var(--green); }
+        .toast.error { border-color: var(--coral); color: var(--coral); }
+
+        .success-banner { background: rgba(6,214,160,0.08); border: 1px solid rgba(6,214,160,0.3); border-left: 3px solid var(--green); padding: 18px 20px; margin-bottom: 28px; display: none; }
+        .success-banner.show { display: block; }
+        .success-banner-title { font-family: 'Orbitron'; font-size: 0.78rem; letter-spacing: 2px; color: var(--green); margin-bottom: 6px; }
+        .success-banner-sub { font-family: 'Share Tech Mono'; font-size: 0.68rem; letter-spacing: 1.5px; color: rgba(6,214,160,0.6); }
+
+        /* CONFETTI */
+        .confetti-dot { position: fixed; pointer-events: none; border-radius: 50%; z-index: 8000; animation: confettiFall 1.8s ease-out forwards; }
+
+        /* ── STICKY MOBILE CTA BAR — always-visible Proceed + Codes shortcut ── */
+        .mobile-cta-bar { display: none; }
+        @media (max-width: 699px) {
+            .page-wrap { padding-bottom: 168px; } /* room so content never hides behind the bar */
+            .mobile-cta-bar {
+                display: flex; gap: 8px; align-items: stretch;
+                position: fixed; left: 0; right: 0; bottom: 0; z-index: 950;
+                padding: 10px 12px calc(10px + env(safe-area-inset-bottom, 0px));
+                background: rgba(0,5,10,0.98); backdrop-filter: blur(20px);
+                border-top: 1px solid var(--border-bright);
+                box-shadow: 0 -6px 28px rgba(0,0,0,0.55), 0 -2px 26px rgba(0,242,255,0.14);
+            }
+            .mobile-cta-bar.hidden { display: none; }
+            .toast { bottom: 84px; }
+        }
+        .mobile-cta-codes {
+            flex-shrink: 0; display: flex; align-items: center; gap: 6px;
+            background: rgba(255,209,102,0.1); border: 1px solid var(--gold); color: var(--gold);
+            font-family: 'Share Tech Mono'; font-size: 0.62rem; letter-spacing: 0.5px;
+            padding: 0 12px; cursor: pointer; white-space: nowrap; border-radius: 3px;
+            animation: codePulse 2.4s ease-in-out infinite;
+        }
+        .mobile-cta-btn {
+            flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px;
+            background: var(--cyan); color: #000; border: none;
+            font-family: 'Orbitron'; font-size: 0.72rem; font-weight: 700; letter-spacing: 1.5px;
+            min-height: 48px; cursor: pointer;
+            clip-path: polygon(4% 0,100% 0,96% 100%,0 100%);
+            box-shadow: 0 0 22px rgba(0,242,255,0.4);
+        }
+        @keyframes codePulse {
+            0%, 100% { box-shadow: 0 0 0 rgba(255,209,102,0); }
+            50%      { box-shadow: 0 0 14px rgba(255,209,102,0.45); }
+        }
+        @keyframes highlightFlash {
+            0%, 100% { box-shadow: none; border-color: rgba(0,242,255,0.15); }
+            15%, 55% { box-shadow: 0 0 0 3px rgba(255,209,102,0.55), 0 0 24px rgba(255,209,102,0.35); border-color: var(--gold); }
+        }
+        #codesSection.highlight-flash { animation: highlightFlash 1.7s ease; border-radius: 4px; }
+        @keyframes confettiFall { 0%{transform:translateY(-20px) rotate(0deg);opacity:1} 100%{transform:translateY(100vh) rotate(720deg);opacity:0} }
+
+        /* REMOVE BUTTON */
+        .remove-btn { font-family: 'Orbitron'; font-size: 0.65rem; letter-spacing: 1px; padding: 8px 14px; border: 1px solid rgba(255,107,107,0.5); background: transparent; color: var(--coral); cursor: pointer; transition: background .3s, border-color .3s; margin-top: 4px; white-space: nowrap; min-height: 40px; font-weight: 600; }
+        .remove-btn:hover { background: rgba(255,107,107,0.12); border-color: var(--coral); }
+    </style>
+</head>
+<body>
+
+<div id="bg">
+    <div class="grid-bg"></div>
+    <div class="glow g1"></div>
+    <div class="glow g2"></div>
+    <div class="scan-line"></div>
+</div>
+
+<nav>
+    <a href="{{ url_for('home') }}" class="nav-brand">⚓ ANCHORAGE 2026</a>
+    <div class="nav-right">
+        <a href="{{ url_for('events') }}" class="nav-link">EVENTS</a>
+        <a href="{{ url_for('cart') }}" class="nav-link active">
+            CART{% if cart_items %}<span class="nav-cart-badge">{{ cart_items|length }}</span>{% endif %}
+        </a>
+    </div>
+</nav>
+
+<div class="page-wrap">
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class="flash-list">
+                {% for msg in messages %}<li>◈ {{ msg }}</li>{% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <!-- shown when user returns from event-register after successful payment -->
+    <div class="success-banner" id="successBanner">
+        <div class="success-banner-title">✓ REGISTRATION CONFIRMED</div>
+        <div class="success-banner-sub">// Tickets registered. Check your email for confirmation.</div>
+    </div>
+
+    <div class="page-hero">
+        <span class="page-tag">◈ ANCHORAGE 2026 · DEPT OF SHIP TECHNOLOGY ◈</span>
+        <h1 class="page-title">YOUR CART</h1>
+        <p class="page-sub">// Review events, then complete registration &amp; payment</p>
+    </div>
+
+    <!-- Filled dynamically from localStorage by JS below -->
+    <div id="cartFilled" class="cart-layout" style="display:none">
+        <div class="cart-items" id="cartItemsList"></div>
+        <div class="summary">
+            <div class="summary-title">ORDER SUMMARY</div>
+            <div class="summary-lines" id="summaryLines"></div>
+            
+            <div id="codesSection">
+            <!-- PROMO CODE BLOCK -->
+            <div class="referral-section-label" style="margin-top:14px; border-top:none; padding-top:0;">PROMO CODE (IF ANY)</div>
+            <div id="promoBox" class="promo-box" style="margin-top:0;">
+                <input type="text" id="promoInput" class="promo-input" placeholder="PROMO CODE" autocomplete="off">
+                <button onclick="applyPromo()" class="promo-btn" id="promoBtn">APPLY</button>
+            </div>
+            <div id="promoMessage" class="promo-msg"></div>
+            
+            <div id="promoAppliedBlock" class="promo-applied" style="display:none">
+                <span class="promo-applied-text">APPLIED: <strong id="promoLabel"></strong></span>
+                <button onclick="removePromo()" class="remove-btn" style="margin:0; padding: 4px 8px;">✕</button>
+            </div>
+            <!-- END PROMO CODE BLOCK -->
+
+            <!-- REFERRAL CODE BLOCK (Campus Ambassador) -->
+            <div class="referral-section-label">CAMPUS REFERRAL CODE(IF ANY)</div>
+            <div id="referralBox" class="referral-box">
+                <input type="text" id="referralInput" class="referral-input" placeholder="REFERRAL CODE" autocomplete="off">
+                <button onclick="applyReferral()" class="referral-btn" id="referralBtn">APPLY</button>
+            </div>
+            <div id="referralMessage" class="referral-msg"></div>
+
+            <div id="referralAppliedBlock" class="referral-applied" style="display:none">
+                <span class="referral-applied-text">🎓 ONBOARDING: <strong id="referralLabel"></strong></span>
+                <button onclick="removeReferral()" class="remove-btn" style="margin:0; padding: 4px 8px; border-color:rgba(255,209,102,0.5); color:var(--gold);">✕</button>
+            </div>
+            <div class="referral-note">// Referral codes may give you HUGE DISCOUNTS!!.</div>
+            <!-- END REFERRAL CODE BLOCK -->
+            </div>
+
+            <hr class="summary-divider">
+            <div class="steps-hint">
+                <div class="step-hint-item"><div class="step-hint-num">1</div>PARTICIPANT &amp; TEAM DETAILS</div>
+                <div class="step-hint-arrow">↓</div>
+                <div class="step-hint-item"><div class="step-hint-num">2</div>REVIEW &amp; TERMS</div>
+                <div class="step-hint-arrow">↓</div>
+                <div class="step-hint-item"><div class="step-hint-num">3</div>UPI/Card/Net Banking</div>
+            </div>
+            <div id="checkoutArea"></div>
+            <div class="secure-note">🔒 SECURED BY TiQr · 256-BIT SSL</div>
+        </div>
+    </div>
+
+    <div id="cartEmpty" class="empty" style="display:none">
+        <span class="empty-icon">⚓</span>
+        <div class="empty-title">CART IS EMPTY</div>
+        <div class="empty-sub">// No events selected yet. Browse and add events to register.</div>
+        <a href="{{ url_for('events') }}" class="btn-browse">← BROWSE EVENTS</a>
+    </div>
+
+</div>
+
+<!-- Always-visible mobile action bar — keeps checkout + codes reachable without scrolling -->
+<div class="mobile-cta-bar hidden" id="mobileCtaBar">
+    <button class="mobile-cta-codes" onclick="scrollToCodes()" type="button">
+        <span>🏷️</span><span>CODES</span>
+    </button>
+    <button class="mobile-cta-btn" onclick="proceedToRegister()" type="button">
+        <span>PROCEED TO REGISTER</span><span>›</span>
+    </button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const EVENT_REGISTER_URL = "{{ url_for('event_register') }}";
+
+let activePromoData = null; // Store fetched promo discount
+
+// Reset any lingering server-side promo + referral state on page load
+window.addEventListener('DOMContentLoaded', () => {
+    fetch('/remove-promo',     { method: 'POST' }).catch(()=>{});
+    fetch('/remove-referral',  { method: 'POST' }).catch(()=>{});
+});
+
+// ── EARLY BIRD OFFER — mirrors events.html; offer live up to and including 20 August ──
+const EARLY_BIRD_DEADLINE = new Date('2026-09-13T23:59:59+05:30');
+const EARLY_BIRD_EXCLUDE_IDS = new Set(['campus-ambassador']); // The Voyage Corps
+function isEarlyBirdActive(){ return new Date() <= EARLY_BIRD_DEADLINE; }
+function eventHasEarlyBird(ev){
+  return ev.fee==='paid' && !EARLY_BIRD_EXCLUDE_IDS.has(ev.id) &&
+         ev.earlyFee!=null && Number(ev.earlyFee)!==Number(ev.feeAmt) && isEarlyBirdActive();
+}
+// Returns {label, cssClass} for a price figure, applying the early-bird
+// old/new price treatment when eligible. `suffix` is '/member' or ''.
+function feePriceParts(ev, suffix){
+  if (ev.feeAmt === 0) return { label: 'FREE', cssClass: 'free' };
+  if (eventHasEarlyBird(ev)){
+    const label = `<span class="fee-eb"><span class="fee-old"><span class="fee-old-x">✕</span>₹${ev.feeAmt}</span>`
+                + `<span class="fee-new">₹${ev.earlyFee}${suffix}</span></span>`;
+    return { label, cssClass: 'paid' };
+  }
+  return { label: `₹${ev.feeAmt}${suffix}`, cssClass: 'paid' };
+}
+
+// Full event catalogue — mirrors EVENTS array in events.html
+// perMember:true  → fee is charged per team member; total depends on team size entered on the next page.
+// minTeam/maxTeam → used to show an estimated price range in the cart.
+const EVENTS = [
+    {id:'inaugural',          dbId:1,  day:1, type:'session',     name:'Inaugural Ceremony',       icon:'🎓', fee:'free', feeAmt:0,   venue:'Seminar Complex Main Hall',      team:'Solo'},
+    {id:'interactive-session',dbId:2,  day:1, type:'session',     name:'Interactive Session with Chief Guest', icon:'💬', fee:'paid', feeAmt:50,  venue:'Seminar Complex Main Hall', team:'Solo'},
+    {id:'navy-expo-d1',       dbId:3,  day:1, type:'exhibition',  name:'Maritime Defence Expo',          icon:'⚓', fee:'paid', feeAmt:200, venue:'Students Amenity Centre',        team:'Solo'},
+    {id:'ship-model-d1',      dbId:4,  day:1, type:'exhibition',  name:'The Maritime Pavilion',           icon:'🚢', fee:'paid', feeAmt:200, venue:'Department of Ship Technology',  team:'Solo'},
+    {id:'paper-presentation', dbId:5,  day:1, type:'competition', name:'Naval Frontiers',        icon:'📄', fee:'paid', feeAmt:249, venue:'Department of Ship Technology',  team:'Solo / Duo', perMember:true, minTeam:1, maxTeam:2},
+    {id:'boat-wars',          dbId:6,  day:1, type:'competition', name:'Hydro Clash',                 icon:'⛵', fee:'paid', feeAmt:749, earlyFee:450, venue:'Department of Ship Technology',  team:'2-3 Members', minTeam:2, maxTeam:3},
+    {id:'autocad-workshop',   dbId:7,  day:3, type:'workshop',    name:'AutoCAD Workshop',          icon:'📐', fee:'paid', feeAmt:349, venue:'Department of Ship Technology',  team:'Solo'},
+    {id:'ev-vr-ws',           dbId:8,  day:1, type:'workshop',    name:'EV Vehicle Design Workshop', icon:'🥽', fee:'paid', feeAmt:300, venue:'Seminar Complex Mini Hall', team:'Solo'},
+    {id:'mentalism',          dbId:9,  day:1, type:'session',     name:'Deep Sea Telepathy',         icon:'🧠', fee:'paid', feeAmt:100, venue:'Seminar Complex Main Hall',      team:'Solo'},
+    {id:'national-conference',dbId:11, day:2, type:'session',     name:'Navigators Panel', icon:'🎤', fee:'paid', feeAmt:100, venue:'Seminar Complex Main Hall', team:'Solo'},
+    {id:'motivational-talk',  dbId:12, day:2, type:'session',     name:'Sailing Beyond Limits',  icon:'🌟', fee:'paid', feeAmt:75,  venue:'Seminar Complex Main Hall',      team:'Solo'},
+    {id:'navy-expo-d2',       dbId:13, day:2, type:'exhibition',  name:'Maritime Defence Expo (Day 2)',  icon:'⚓', fee:'paid', feeAmt:200, venue:'Students Amenity Centre',        team:'Solo'},
+    {id:'ship-model-d2',      dbId:14, day:2, type:'exhibition',  name:'The Maritime Pavilion (Day 2)',   icon:'🚢', fee:'paid', feeAmt:200, venue:'Department of Ship Technology',  team:'Solo'},
+    {id:'debate',             dbId:15, day:2, type:'competition', name:'Turning Tides', icon:'🗣️', fee:'paid', feeAmt:149, venue:'Department of Ship Technology',  team:'4 Members', perMember:true, minTeam:4, maxTeam:4},
+    {id:'quiz',               dbId:16, day:2, type:'competition', name:'nautiq',                      icon:'❓', fee:'paid', feeAmt:149, venue:'Department of Ship Technology',  team:'1–2 Members', perMember:true, minTeam:1, maxTeam:2},
+    {id:'ml-workshop',        dbId:17, day:1, type:'workshop',    name:'Machine Learning', icon:'🤖', fee:'paid', feeAmt:349, venue:'Department of Ship Technology',  team:'Solo'},
+    {id:'engine-tuning-workshop', dbId:18, day:2, type:'workshop', name:'Engine Management and Tuning', icon:'🔧', fee:'paid', feeAmt:349, venue:'Seminar Complex Mini Hall', team:'Solo'},
+    {id:'navy-expo-d3',       dbId:19, day:3, type:'exhibition',  name:'Maritime Defence Expo (Day 3)',  icon:'⚓', fee:'paid', feeAmt:200, venue:'Students Amenity Centre',        team:'Solo'},
+    {id:'ship-model-d3',      dbId:20, day:3, type:'exhibition',  name:'The Maritime Pavilion (Day 3)',   icon:'🚢', fee:'paid', feeAmt:200, venue:'Department of Ship Technology',  team:'Solo'},
+    {id:'treasure-hunt',      dbId:21, day:3, type:'competition', name:'The Lost Voyage',             icon:'🪙', fee:'paid', feeAmt:99, venue:'Department of Ship Technology (HQ)', team:'2–4 Members', perMember:true, minTeam:2, maxTeam:4},
+    {id:'shark-tank',         dbId:22, day:3, type:'competition', name:'The Pitch Deck',                icon:'🦈', fee:'paid', feeAmt:249,earlyFee:150, venue:'Department of Ship Technology',  team:'1–3 Members', perMember:true, minTeam:1, maxTeam:3},
+    {id:'python-ws',          dbId:23, day:3, type:'workshop',    name:'Code Afloat',           icon:'🐍', fee:'paid', feeAmt:250, venue:'Department of Ship Technology',  team:'Solo'},
+    {id:'pro-show',           dbId:24, day:3, type:'session',     name:'Pro Show Night',            icon:'🎤', fee:'paid', feeAmt:199, venue:'Open Auditorium',                team:'Solo'},
+    {id:'closing',            dbId:25, day:3, type:'session',     name:'Closing Ceremony',          icon:'🏆', fee:'paid', feeAmt:200, venue:'Open Auditorium',                team:'Solo'},
+    {id:'IMO',            dbId:26, day:1, type:'competition',     name:'The IMO Chamber',          icon:'🎓', fee:'paid', feeAmt:249,  venue:'Photonics Seminar Hall',                  team:'3-4 members', perMember:true, minTeam:3, maxTeam:4},
+    {id:'CEO',            dbId:27, day:2, type:'session',     name:'Command Deck',          icon:'🎓', fee:'paid', feeAmt:249, earlyFee:150, venue:'Seminar Complex',                  team:'Solo'},
+    {id:'reel-making',    dbId:28, day:0, type:'competition', name:'VisionEd',          icon:'🎬', fee:'paid', feeAmt:99, earlyFee:60, venue:'Online',                       team:'Team', perMember:true},
+    {id:'photography',    dbId:29, day:0, type:'competition', name:'Voyage in Frames',          icon:'📸', fee:'paid', feeAmt:99, earlyFee:60, venue:'Online',                       team:'Solo'},
+    {id:'campus-ambassador', dbId:30, day:0, type:'competition', name:'The Voyage Corps',      icon:'⚓', fee:'paid', feeAmt:99, venue:'Online / Pan-India (Campus-based)', team:'Solo'},
+    {id:'wireless-robot-workshop', dbId:32, day:1, type:'workshop', name:'Wireless Robotic Car', icon:'🚗', fee:'paid', feeAmt:349, venue:'Department of Ship Technology, CUSAT', team:'Solo'},
+    {id:'pcb-workshop',            dbId:33, day:2, type:'workshop', name:'PCB Design Workshop',  icon:'🔌', fee:'paid', feeAmt:349, venue:'Department of Ship Technology, CUSAT', team:'Solo'},
+];
+
+// ── Sync cart to server then navigate to register ──
+async function proceedToRegister() {
+    const items = getCart();
+    if (!items.length) { showToast('◈ CART IS EMPTY', 'error'); return; }
+
+    // Collect dbIds to sync with server session cart
+    const dbIds = items.map(ci => {
+        const ev = EVENTS.find(e => e.id === ci.id || e.dbId === ci.id || e.dbId === Number(ci.id));
+        return ev ? ev.dbId : null;
+    }).filter(Boolean);
+
+    try {
+        // Sync localStorage cart to the server so event-register sees correct CART_ITEMS
+        await fetch('/api/cart/sync', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ event_ids: dbIds })
+        });
+    } catch (e) {
+        // Non-fatal: server may not have this endpoint; navigate anyway
+        console.warn('Cart sync skipped:', e);
+    }
+
+    window.location.href = EVENT_REGISTER_URL;
+}
+
+function showToast(msg, type = '') {
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.className = 'toast show ' + (type === 'success' ? 'success' : (type === 'error' ? 'error' : ''));
+    setTimeout(() => toast.className = 'toast', 3000);
+}
+
+function getCart() {
+    try {
+        const raw = JSON.parse(localStorage.getItem('anch_cart') || '[]');
+        // Normalize: handle both raw string IDs ['boat-wars'] and object entries [{id:'boat-wars'}]
+        return raw.map(entry => (typeof entry === 'string' ? { id: entry } : entry));
+    } catch { return []; }
+}
+function saveCart(c) { localStorage.setItem('anch_cart', JSON.stringify(c)); }
+
+function removeFromCart(id) {
+    if (activePromoData) removePromo(true); // Drop promo to re-evaluate accurate cart costs safely
+
+    const ev = EVENTS.find(e => e.id === id);
+    saveCart(getCart().filter(i => i.id !== id));
+    if (ev) fetch('/api/cart/remove/' + ev.dbId, {method:'POST'}).catch(()=>{});
+    renderCart();
+}
+
+// ── PROMO CODE LOGIC ──
+
+async function applyPromo() {
+    const codeInput = document.getElementById('promoInput');
+    const code = codeInput.value.trim();
+    if (!code) return;
+
+    const btn = document.getElementById('promoBtn');
+    const msgEl = document.getElementById('promoMessage');
+
+    btn.textContent = "WAIT...";
+    btn.disabled = true;
+    msgEl.style.display = 'none';
+
+    // Sync localStorage cart → server DB before validating promo,
+    // so the backend always sees the correct numeric event IDs.
+    try {
+        const cartItems = getCart();
+        const dbIds = cartItems.map(ci => {
+            const ev = EVENTS.find(e => e.id === ci.id || e.dbId === ci.id || e.dbId === Number(ci.id));
+            return ev ? ev.dbId : null;
+        }).filter(Boolean);
+        if (dbIds.length) {
+            await fetch('/api/cart/sync', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ event_ids: dbIds })
+            });
+        }
+    } catch (e) {
+        console.warn('Pre-promo cart sync skipped:', e);
+    }
+
+    try {
+        const res = await fetch('/validate-promo', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ code })
+        });
+
+        let data;
+        try {
+            data = await res.json();
+        } catch (parseErr) {
+            // Server responded, but not with JSON (e.g. a 500/429 error page).
+            // This is NOT a connectivity problem — log the real status so it's
+            // easy to diagnose, and show an honest message to the user.
+            console.error('validate-promo: non-JSON response', res.status, await res.text().catch(() => ''));
+            msgEl.textContent = res.status === 429
+                ? '◈ Too many attempts — please wait a moment and try again.'
+                : '◈ Something went wrong on our end. Please try again.';
+            msgEl.style.color = 'var(--coral)';
+            msgEl.style.display = 'block';
+            return;
+        }
+
+        if (data.valid) {
+            activePromoData = {
+                code: code.toUpperCase(),
+                discount: data.discount_amount
+            };
+            
+            document.getElementById('promoBox').style.display = 'none';
+            document.getElementById('promoAppliedBlock').style.display = 'flex';
+            document.getElementById('promoLabel').textContent = code.toUpperCase();
+            
+            showToast(data.message || '◈ PROMO CODE APPLIED', 'success');
+            renderCart(); // Re-render to show updated subtotal/total
+        } else {
+            msgEl.textContent = '◈ ' + (data.message || 'Invalid promo code');
+            msgEl.style.color = 'var(--coral)';
+            msgEl.style.display = 'block';
+        }
+    } catch (e) {
+        // fetch() itself threw — this is the actual "no connection" case.
+        console.error('validate-promo: network error', e);
+        msgEl.textContent = '◈ Failed to validate. Check your connection.';
+        msgEl.style.color = 'var(--coral)';
+        msgEl.style.display = 'block';
+    } finally {
+        btn.textContent = "APPLY";
+        btn.disabled = false;
+    }
+}
+
+async function removePromo(silent = false) {
+    activePromoData = null;
+    document.getElementById('promoInput').value = '';
+    document.getElementById('promoBox').style.display = 'flex';
+    document.getElementById('promoAppliedBlock').style.display = 'none';
+    document.getElementById('promoMessage').style.display = 'none';
+
+    try { await fetch('/remove-promo', { method: 'POST' }); } catch(e) {}
+    
+    if (!silent) showToast("Promo code removed.");
+    renderCart();
+}
+
+
+// ── REFERRAL CODE LOGIC ──
+
+async function applyReferral() {
+    const codeInput = document.getElementById('referralInput');
+    const code = codeInput.value.trim();
+    if (!code) return;
+
+    const btn   = document.getElementById('referralBtn');
+    const msgEl = document.getElementById('referralMessage');
+
+    btn.textContent = "WAIT...";
+    btn.disabled    = true;
+    msgEl.style.display = 'none';
+
+    try {
+        const res  = await fetch('/validate-referral', {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify({ code })
+        });
+
+        let data;
+        try {
+            data = await res.json();
+        } catch (parseErr) {
+            // Server responded, but not with JSON (e.g. a 500/429 error page).
+            // This is NOT a connectivity problem — log the real status so it's
+            // easy to diagnose, and show an honest message to the user.
+            console.error('validate-referral: non-JSON response', res.status, await res.text().catch(() => ''));
+            msgEl.textContent = res.status === 429
+                ? '◈ Too many attempts — please wait a moment and try again.'
+                : '◈ Something went wrong on our end. Please try again.';
+            msgEl.style.color = 'var(--coral)';
+            msgEl.style.display = 'block';
+            return;
+        }
+
+        if (data.valid) {
+            document.getElementById('referralBox').style.display          = 'none';
+            document.getElementById('referralAppliedBlock').style.display = 'flex';
+            document.getElementById('referralLabel').textContent           = code.toUpperCase();
+            showToast(data.message || '◈ REFERRAL CODE APPLIED', 'success');
+        } else {
+            msgEl.textContent    = '◈ ' + (data.message || 'Invalid referral code');
+            msgEl.style.color    = 'var(--coral)';
+            msgEl.style.display  = 'block';
+        }
+    } catch (e) {
+        // fetch() itself threw — this is the actual "no connection" case.
+        console.error('validate-referral: network error', e);
+        msgEl.textContent   = '◈ Failed to validate. Check your connection.';
+        msgEl.style.color   = 'var(--coral)';
+        msgEl.style.display = 'block';
+    } finally {
+        btn.textContent = "APPLY";
+        btn.disabled    = false;
+    }
+}
+
+async function removeReferral() {
+    document.getElementById('referralInput').value                    = '';
+    document.getElementById('referralBox').style.display              = 'flex';
+    document.getElementById('referralAppliedBlock').style.display     = 'none';
+    document.getElementById('referralMessage').style.display          = 'none';
+
+    try { await fetch('/remove-referral', { method: 'POST' }); } catch(e) {}
+    showToast("Referral code removed.");
+}
+
+// ── RENDER ENGINE ──
+
+function renderCart() {
+    const cartIds = getCart();
+    const items = cartIds.map(ci => {
+        // Match by string id, or by numeric dbId (in case events page stores DB ids)
+        return EVENTS.find(e => e.id === ci.id || e.dbId === ci.id || e.dbId === Number(ci.id));
+    }).filter(Boolean);
+
+    if (!items.length) {
+        document.getElementById('cartFilled').style.display = 'none';
+        document.getElementById('cartEmpty').style.display = 'block';
+        document.getElementById('mobileCtaBar').classList.add('hidden');
+        return;
+    }
+
+    document.getElementById('cartFilled').style.display = 'grid';
+    document.getElementById('cartEmpty').style.display = 'none';
+    document.getElementById('mobileCtaBar').classList.remove('hidden');
+
+    // Cart item cards — show ₹X/member for per-member events, flat ₹X otherwise
+    document.getElementById('cartItemsList').innerHTML = items.map((ev, i) => {
+        const { label: priceLabel, cssClass: priceClass } = feePriceParts(ev, ev.perMember ? '/member' : '');
+        return `<div class="cart-card" style="animation-delay:${i * 0.07}s">
+            <div class="cart-card-icon">${ev.icon}</div>
+            <div class="cart-card-info">
+                <div class="cart-card-name">${ev.name}</div>
+                <div class="cart-card-meta">
+                    <span class="meta-tag type-${ev.type}">${ev.type.toUpperCase()}</span>
+                    <span class="meta-tag">📅 DAY ${ev.day}</span>
+                    <span class="meta-tag">📍 ${ev.venue}</span>
+                    <span class="meta-tag">👥 ${ev.team}</span>
+                </div>
+            </div>
+            <div class="cart-card-right">
+                <span class="cart-price ${priceClass}">${priceLabel}</span>
+                <button onclick="removeFromCart('${ev.id}')" class="remove-btn">✕ REMOVE</button>
+            </div>
+        </div>`;
+    }).join('');
+
+    // Summary lines — same logic: ₹X/member for team events, flat for solo, FREE
+    let summaryHTML = items.map(ev => {
+        const { label: amtLabel, cssClass: amtClass } = feePriceParts(ev, ev.perMember ? '/member' : '');
+        return `<div class="summary-line">
+            <strong title="${ev.name}">${ev.name}</strong>
+            <span class="${amtClass}">${amtLabel}</span>
+        </div>`;
+    }).join('');
+
+    // Promo discount row (no running total — just show the discount code applied)
+    if (activePromoData) {
+        summaryHTML += `
+        <div class="summary-line" style="margin-top:6px; padding-top:6px; border-top: 1px dashed rgba(6,214,160,0.3);">
+            <strong style="color:var(--green)">DISCOUNT (${activePromoData.code})</strong>
+            <span class="free" style="color:var(--green)">-₹${activePromoData.discount}</span>
+        </div>`;
+    }
+
+    document.getElementById('summaryLines').innerHTML = summaryHTML;
+
+    // Checkout area
+    document.getElementById('checkoutArea').innerHTML =
+        `<button onclick="proceedToRegister()" class="btn-checkout"><span>PROCEED TO REGISTER ›</span></button>
+           <div class="info-strip">
+               <div class="info-strip-icon">ℹ️</div>
+               <div class="info-strip-text">Fill in your participant details and team info on the next page, then complete secure payment via TiQr.</div>
+           </div>`;
+}
+
+// Jump to promo/referral fields and flash-highlight them so they're easy to spot
+function scrollToCodes() {
+    const el = document.getElementById('codesSection');
+    if (!el) return;
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    el.classList.remove('highlight-flash');
+    void el.offsetWidth; // restart animation
+    el.classList.add('highlight-flash');
+}
+
+// Initialise
+renderCart();
+
+// Show success banner when returning after confirmed payment
+if (new URLSearchParams(location.search).get('paid') === '1') {
+    // Defensive fallback: renderCart() above already ran off the (possibly
+    // stale) localStorage cart before this check, so clear it and re-render
+    // in case anything ever lands here post-payment instead of the
+    // event-register success view.
+    try { localStorage.removeItem('anch_cart'); } catch(e) {}
+    renderCart();
+    document.getElementById('successBanner').classList.add('show');
+    history.replaceState({}, '', '{{ url_for("cart") }}');
+    launchConfetti();
+}
+
+function launchConfetti() {
+    const colors = ['#00f2ff','#ffd166','#06d6a0','#ff6b6b','#b56bff','#ffffff'];
+    for (let i = 0; i < 60; i++) {
+        setTimeout(() => {
+            const dot = document.createElement('div');
+            dot.className = 'confetti-dot';
+            const s = 5 + Math.random() * 9;
+            dot.style.cssText = `width:${s}px;height:${s}px;background:${colors[Math.floor(Math.random()*colors.length)]};left:${Math.random()*100}vw;top:0;animation-duration:${1.2+Math.random()}s;animation-delay:${Math.random()*0.4}s`;
+            document.body.appendChild(dot);
+            setTimeout(() => dot.remove(), 2800);
+        }, i * 22);
+    }
+}
+</script>
+</body>
+</html>

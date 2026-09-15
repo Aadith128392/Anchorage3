@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Partners | Anchorage 2026</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --cyan:#00f2ff;
+  --cyan-dim:rgba(0,242,255,0.07);
+  --ocean:#00050a;
+  --ocean-mid:#000d15;
+  --ocean-card:#00111e;
+  --border:rgba(0,242,255,0.15);
+  --border-hi:rgba(0,242,255,0.4);
+  --gold:#ffd166;
+  --coral:#ff6b6b;
+  --green:#06d6a0;
+  --expo:cubic-bezier(0.19,1,0.22,1);
+  --nav-h:60px;
+  --t-tag:  .6rem;
+  --t-sm:   .68rem;
+  --t-ui:   .72rem;
+  --t-body: .78rem;
+  --t-md:   .88rem;
+  --t-day:  clamp(1.3rem,3.5vw,2rem);
+  --t-hero: clamp(2.4rem,8vw,5.2rem);
+  --lsp-tight:1px;
+  --lsp-mid:  2px;
+  --lsp-wide: 3.5px;
+  --lsp-xw:   5px;
+}
+
+@media(max-width:599px){
+  :root{
+    --t-tag:  .52rem;
+    --t-sm:   .58rem;
+    --t-ui:   .62rem;
+    --t-body: .68rem;
+    --t-md:   .78rem;
+    --t-day:  clamp(.95rem,5.5vw,1.25rem);
+    --t-hero: clamp(1.7rem,12vw,2.6rem);
+    --nav-h:   52px;
+    --lsp-mid: 1.5px;
+    --lsp-wide:2.5px;
+    --lsp-xw:  3.5px;
+  }
+  .nav-brand{font-size:.52rem;letter-spacing:2px;gap:5px}
+  .nav-brand img{height:22px}
+  .cart-btn{padding:5px 10px}
+  .nav-user{padding:5px 10px}
+}
+
+html{scroll-behavior:smooth}
+body{background:var(--ocean);color:#fff;font-family:'Rajdhani',sans-serif;min-height:100vh;overflow-x:hidden;position:relative}
+
+#bg{position:fixed;inset:0;z-index:-1;pointer-events:none}
+.grid-bg{position:absolute;inset:0;
+  background-image:linear-gradient(rgba(0,242,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,242,255,.04) 1px,transparent 1px);
+  background-size:42px 42px;mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,#000 0%,transparent 70%)}
+.radar{position:absolute;top:-220px;left:50%;width:900px;height:900px;margin-left:-450px;
+  background:radial-gradient(circle,rgba(0,242,255,.10) 0%,transparent 60%);border-radius:50%}
+
+nav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);z-index:200;
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:0 26px;background:rgba(0,5,10,.78);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.nav-brand{font-family:'Orbitron';font-weight:700;font-size:.85rem;letter-spacing:3px;color:var(--cyan);
+  text-decoration:none;display:flex;align-items:center;gap:8px;white-space:nowrap;
+  text-shadow:0 0 14px rgba(0,242,255,.4)}
+.nav-brand img{height:26px;width:auto;display:block}
+.nav-center{display:flex;gap:26px;flex:1;justify-content:center}
+.nav-center a{font-family:'Orbitron';font-size:var(--t-ui);letter-spacing:2px;color:rgba(255,255,255,.6);
+  text-decoration:none;transition:color .25s;white-space:nowrap}
+.nav-center a:hover,.nav-center a.active{color:var(--cyan)}
+.nav-right{display:flex;align-items:center;gap:10px}
+.cart-btn{font-family:'Orbitron';font-size:var(--t-ui);letter-spacing:1.5px;color:var(--cyan);
+  text-decoration:none;border:1px solid var(--border-hi);padding:7px 14px;display:flex;align-items:center;gap:6px;
+  background:rgba(0,242,255,.05);white-space:nowrap;transition:all .25s}
+.cart-btn:hover{background:rgba(0,242,255,.12)}
+.cart-badge{background:var(--cyan);color:#000;font-size:.62rem;font-weight:700;border-radius:50%;
+  width:16px;height:16px;display:flex;align-items:center;justify-content:center}
+.nav-user{font-family:'Orbitron';font-size:var(--t-ui);letter-spacing:1.5px;color:#fff;text-decoration:none;
+  border:1px solid var(--border);padding:7px 14px;white-space:nowrap;transition:all .25s}
+.nav-user:hover{border-color:var(--cyan);color:var(--cyan)}
+@media(max-width:760px){.nav-center{display:none}}
+
+.page-hero{padding:calc(var(--nav-h) + 44px) 20px 28px;text-align:center}
+.hero-tag{font-family:'Share Tech Mono';font-size:var(--t-sm);letter-spacing:var(--lsp-xw);
+  color:var(--cyan);opacity:.85;margin-bottom:12px;display:block;text-shadow:0 0 12px rgba(0,242,255,.5);
+  animation:tagDrop .7s var(--expo) both}
+@keyframes tagDrop{from{opacity:0;transform:translateY(-14px)}to{opacity:1;transform:none}}
+.page-hero h1{font-family:'Orbitron';font-size:var(--t-hero);font-weight:900;letter-spacing:6px;color:var(--cyan);
+  text-shadow:0 0 28px rgba(0,242,255,.8),0 0 56px rgba(0,242,255,.4),0 0 90px rgba(0,242,255,.18);
+  animation:h1Rise .9s .18s var(--expo) both, hPulse 3s 1.2s ease-in-out infinite}
+@keyframes h1Rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+@keyframes hPulse{
+  0%,100%{text-shadow:0 0 28px rgba(0,242,255,.8),0 0 56px rgba(0,242,255,.4),0 0 90px rgba(0,242,255,.18)}
+  50%{text-shadow:0 0 38px rgba(0,242,255,1),0 0 72px rgba(0,242,255,.6),0 0 120px rgba(0,242,255,.28)}}
+.page-hero p{margin-top:10px;font-size:var(--t-body);color:rgba(255,255,255,.6);letter-spacing:.8px;
+  max-width:520px;margin-inline:auto;line-height:1.65;animation:subFade .8s .5s ease both}
+@keyframes subFade{from{opacity:0}to{opacity:1}}
+
+.partners-container{max-width:1300px;margin:0 auto;padding:0 20px 110px}
+
+.tier{margin-top:54px}
+.tier:first-child{margin-top:10px}
+.tier-hdr{display:flex;align-items:center;gap:14px;margin-bottom:28px;flex-wrap:wrap}
+.tier-rank{font-family:'Orbitron';font-size:var(--t-tag);letter-spacing:var(--lsp-wide);
+  border:1px solid var(--border-hi);color:var(--cyan);padding:5px 12px;white-space:nowrap;
+  background:rgba(0,242,255,.05)}
+.tier-title-wrap{flex:1;min-width:0}
+.tier-title{font-family:'Orbitron';font-size:var(--t-day);font-weight:900;letter-spacing:5px;
+  color:var(--cyan);text-shadow:0 0 18px rgba(0,242,255,.7),0 0 36px rgba(0,242,255,.3);
+  text-transform:uppercase}
+.tier-sub{font-family:'Share Tech Mono';font-size:var(--t-tag);letter-spacing:var(--lsp-mid);
+  color:rgba(0,242,255,.6);margin-top:3px}
+
+/* ── MAGAZINE PARTNER — gold accent to distinguish from sponsor tiers ── */
+.tier-magazine .tier-rank{
+  border-color:rgba(255,209,102,.45);
+  color:var(--gold);
+  background:rgba(255,209,102,.06)}
+.tier-magazine .tier-title{
+  color:var(--gold);
+  text-shadow:0 0 18px rgba(255,209,102,.7),0 0 36px rgba(255,209,102,.3)}
+.tier-magazine .tier-sub{color:rgba(255,209,102,.6)}
+.tier-magazine .logo-card{border-color:rgba(255,209,102,.18)}
+.tier-magazine .logo-card:hover{
+  border-color:var(--gold);
+  box-shadow:0 18px 40px rgba(0,0,0,.5),0 0 28px rgba(255,209,102,.15)}
+.tier-magazine .logo-name{color:var(--gold)}
+.tier-magazine .logo-ph{color:rgba(255,209,102,.5)}
+
+.tier-divider{display:flex;align-items:center;gap:12px;margin-top:54px}
+.tdl{flex:1;height:1px;background:linear-gradient(to right,var(--border),transparent)}
+.tdr{flex:1;height:1px;background:linear-gradient(to left,var(--border),transparent)}
+.tdd{width:5px;height:5px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan)}
+
+.logo-grid{display:grid;gap:28px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.logo-grid.tier-xl{grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+.logo-grid.tier-sm{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+@media(max-width:599px){
+  .logo-grid{grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px}
+  .logo-grid.tier-xl{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+  .logo-grid.tier-sm{grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+}
+
+.logo-card{position:relative;border:1px solid var(--border);background:var(--ocean-card);
+  padding:34px 28px 30px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;
+  transition:border-color .3s,transform .3s,box-shadow .3s;
+  clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,0 100%)}
+.logo-card:hover{border-color:var(--cyan);transform:translateY(-4px);
+  box-shadow:0 18px 40px rgba(0,0,0,.5),0 0 28px rgba(0,242,255,.12)}
+
+.logo-img-wrap{width:100%;height:140px;display:flex;align-items:center;justify-content:center;position:relative;padding:12px}
+.tier-xl .logo-img-wrap{height:170px}
+.tier-sm .logo-img-wrap{height:140px}
+.logo-img-wrap img{max-width:90%;max-height:90%;width:auto;height:auto;object-fit:contain;
+  display:block;margin:0 auto;filter:drop-shadow(0 0 14px rgba(0,242,255,.08));transition:filter .3s}
+.logo-card:hover .logo-img-wrap img{filter:drop-shadow(0 0 18px rgba(0,242,255,.22))}
+.logo-img-wrap img.broken{display:none}
+.logo-img-wrap img.broken~.logo-ph{display:flex}
+.logo-ph{display:none;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+  width:100%;height:100%;color:rgba(0,242,255,.35)}
+.logo-ph-icon{font-size:1.8rem;line-height:1}
+.logo-ph-text{font-family:'Share Tech Mono';font-size:var(--t-tag);letter-spacing:var(--lsp-wide)}
+.logo-link{position:absolute;inset:0;z-index:2}
+.logo-name{font-family:'Orbitron';font-size:var(--t-ui);letter-spacing:var(--lsp-mid);
+  color:rgba(0,242,255,.9);text-align:center;line-height:1.4;width:100%;margin-top:auto}
+
+.partner-cta{margin-top:72px;border:1px solid var(--border);background:var(--ocean-card);
+  padding:42px 32px;text-align:center;position:relative;overflow:hidden}
+.partner-cta::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 50% at 50% 100%,rgba(0,242,255,.06),transparent);pointer-events:none}
+.partner-cta-tag{font-family:'Share Tech Mono';font-size:var(--t-sm);letter-spacing:var(--lsp-xw);
+  color:var(--cyan);opacity:.7;display:block;margin-bottom:12px}
+.partner-cta h2{font-family:'Orbitron';font-size:clamp(1rem,3vw,1.6rem);font-weight:900;
+  letter-spacing:4px;color:#fff;margin-bottom:14px}
+.partner-cta p{font-size:var(--t-md);color:rgba(255,255,255,.6);max-width:500px;
+  margin-inline:auto;line-height:1.7;margin-bottom:28px}
+.partner-cta-btn{display:inline-block;font-family:'Orbitron';font-size:var(--t-ui);
+  letter-spacing:var(--lsp-wide);color:#000;background:var(--cyan);padding:14px 32px;
+  text-decoration:none;transition:opacity .25s,box-shadow .25s}
+.partner-cta-btn:hover{opacity:.88;box-shadow:0 0 24px rgba(0,242,255,.4)}
+</style>
+</head>
+<body>
+
+<div id="bg">
+  <div class="grid-bg"></div>
+  <div class="radar"></div>
+</div>
+
+<nav>
+  <a class="nav-brand" href="/">
+    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Anchorage 2026" onerror="this.style.display='none'">
+    ANCHORAGE 2026
+  </a>
+  <div class="nav-center">
+    <a href="/events">EVENTS</a>
+    <a href="/partners" class="active">PARTNERS</a>
+    <a href="/about">ABOUT</a>
+  </div>
+  <div class="nav-right">
+    <a class="cart-btn" href="/cart">
+      🛒 CART <span class="cart-badge" id="cartBadge">0</span>
+    </a>
+  </div>
+</nav>
+
+<header class="page-hero">
+  <span class="hero-tag">// ANCHORAGE 2026 · OFFICIAL PARTNERSHIPS</span>
+  <h1>PARTNERS</h1>
+  <p>The brands and organisations making Anchorage 2026 possible — from title sponsors to media partners.</p>
+</header>
+
+<div class="partners-container">
+
+  <!-- ════════════════════════════════════
+       TIER 01 — EVENTS SPONSOR
+  ════════════════════════════════════ -->
+  <section class="tier" id="tier-powered">
+    <div class="tier-hdr">
+      <div class="tier-title-wrap">
+        <div class="tier-title">Events Sponsor</div>
+        <div class="tier-sub">// OFFICIAL EVENTS SPONSOR</div>
+      </div>
+    </div>
+    <div class="logo-grid tier-sm">
+      <div class="logo-card">
+        <a class="logo-link" href="https://www.grse.in/" target="_blank" rel="noopener" aria-label="Visit GRSE website"></a>
+        <div class="logo-img-wrap">
+          <img src="{{ url_for('static', filename='images/GRSE.jpg') }}" alt="GRSE logo" onerror="this.classList.add('broken')">
+          <div class="logo-ph"><span class="logo-ph-icon">⚓</span><span class="logo-ph-text">GRSE</span></div>
+        </div>
+        <div class="logo-name">Garden Reach Ship Builders &amp; Engineers</div>
+      </div>
+      <div class="logo-card">
+        <a class="logo-link" href="https://www.ariesgroupglobal.com/" target="_blank" rel="noopener" aria-label="Visit Aries Energy website"></a>
+        <div class="logo-img-wrap">
+          <img src="{{ url_for('static', filename='images/ariesenergy.png') }}" alt="Aries Energy logo" onerror="this.classList.add('broken')">
+          <div class="logo-ph"><span class="logo-ph-icon">⚡</span><span class="logo-ph-text">ARIES ENERGY</span></div>
+        </div>
+        <div class="logo-name">Aries Energy</div>
+      </div>
+            <div class="logo-card">
+        <a class="logo-link" href="https://napa.fi/" target="_blank" rel="noopener" aria-label="Visit NAPA"></a>
+        <div class="logo-img-wrap">
+          <img src="{{ url_for('static', filename='images/Napa.PNG') }}" alt="NAPA logo" onerror="this.classList.add('broken')">
+          <div class="logo-ph"><span class="logo-ph-icon">⚡</span><span class="logo-ph-text">NAPA</span></div>
+        </div>
+        <div class="logo-name">NAPA</div>
+      </div>
+                  <div class="logo-card">
+        <a class="logo-link" href="https://napa.fi/" target="_blank" rel="noopener" aria-label="Visit C-Marine"></a>
+        <div class="logo-img-wrap">
+          <img src="{{ url_for('static', filename='images/C-marine.png') }}" alt="C-Marine logo" onerror="this.classList.add('broken')">
+          <div class="logo-ph"><span class="logo-ph-icon">⚡</span><span class="logo-ph-text">C-marine</span></div>
+        </div>
+        <div class="logo-name">C-Marine</div>
+      </div>
+                 <div class="logo-card">
+        <a class="logo-link" href="https://www.idnetwork.co.in/" target="_blank" rel="noopener" aria-label="Visit Indywood"></a>
+        <div class="logo-img-wrap">
+          <img src="{{ url_for('static', filename='images/indywood.webp') }}" alt="C-Marine logo" onerror="this.classList.add('broken')">
+          <div class="logo-ph"><span class="logo-ph-icon">⚡</span><span class="logo-ph-text">Indywood Distribution Network</span></div>
+        </div>
+        <div class="logo-name">Indywood Distribution Network</div>
+      </div>
+       <div class="logo-card">
+        <div class="logo-img-wrap">
+          <img src="{{ url_for('static', filename='images/chow.png') }}" alt="Chow logo" onerror="this.classList.add('broken')">
+          <div class="logo-ph"><span class="logo-ph-icon">🍜</span><span class="logo-ph-text">CHOWGLUE</span></div>
+        </div>
+        <div class="logo-name">Chowgule</div>
+      </div>
+       <div class="logo-card">
+        <div class="logo-img-wrap">
+          <img src="{{ url_for('static', filename='images/rac.jpeg') }}" alt="Chow logo" onerror="this.classList.add('broken')">
+          <div class="logo-ph"><span class="logo-ph-icon">🍜</span><span class="logo-ph-text">RAC</span></div>
+        </div>
+        <div class="logo-name">RAC GLOBAL</div>
+      </div>
+                       <div class="logo-card">
+        <a class="logo-link" href="" target="_blank" rel="noopener" aria-label="Visit Green Ship Technologies"></a>
+        <div class="logo-img-wrap">
+          <img src="{{ url_for('static', filename='images/green.jpeg') }}" alt="C-Marine logo" onerror="this.classList.add('broken')">
+          <div class="logo-ph"><span class="logo-ph-icon">⚡</span><span class="logo-ph-text"> Green Ship Technologies</span></div>
+        </div>
+        <div class="logo-name"> Green Ship Technologies</div>
+      </div>
+      
+
+                       <div class="logo-card">
+        <a class="logo-link" href="" target="_blank" rel="noopener" aria-label="Visit Green Ship Technologies"></a>
+        <div class="logo-img-wrap">
+          <img src="{{ url_for('static', filename='images/sea.jpeg') }}" alt="C-Marine logo" onerror="this.classList.add('broken')">
+          <div class="logo-ph"><span class="logo-ph-icon">⚡</span><span class="logo-ph-text"> Sea Delta</span></div>
+        </div>
+        <div class="logo-name">Sea Delta</div>
+      </div>
+                 <div class="logo-card">
+        <a class="logo-link" href="https://www.idnetwork.co.in/" target="_blank" rel="noopener" aria-label="Visit Navtech"></a>
+        <div class="logo-img-wrap">
+          <img src="{{ url_for('static', filename='images/navtech.jpg') }}" alt="C-Marine logo" onerror="this.classList.add('broken')">
+          <div class="logo-ph"><span class="logo-ph-icon">⚡</span><span class="logo-ph-text">NAVTECH</span></div>
+        </div>
+        <div class="logo-name">NAVTECH</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="tier-divider"><div class="tdl"></div><div class="tdd"></div><div class="tdr"></div></div>
+
+  <!-- ════════════════════════════════════
+       TIER 02 — MAGAZINE PARTNER
+  ════════════════════════════════════ -->
+  <section class="tier tier-magazine" id="tier-magazine">
+    <div class="tier-hdr">
+      <div class="tier-title-wrap">
+        <div class="tier-title">Magazine Partner</div>
+        <div class="tier-sub">// OFFICIAL MEDIA &amp; PRINT PARTNERS</div>
+      </div>
+    </div>
+
+    <div class="logo-grid tier-sm">
+
+      <div class="logo-card">
+        <a class="logo-link" href="https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://greatwatersenergy.com/&ved=2ahUKEwihg-Pr2dGVAxXA2DgGHcUBEMoQFnoECCUQAQ&sqi=2&usg=AOvVaw3O2BUUT_YPPHlsRkkd_2OR" target="_blank" rel="noopener" aria-label="Visit Great Waters website"></a>
+        <div class="logo-img-wrap">
+          <img src="{{ url_for('static', filename='assets/great_waters.JPG') }}" alt="Great Waters logo" onerror="this.classList.add('broken')">
+          <div class="logo-ph"><span class="logo-ph-icon">📰</span><span class="logo-ph-text">GREAT WATERS</span></div>
+        </div>
+        <div class="logo-name">Great Waters</div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="tier-divider"><div class="tdl"></div><div class="tdd"></div><div class="tdr"></div></div>
+
+  <!-- ════════════════════════════════════
+       TIER 03 — SUPPORTING PARTNERS
+  ════════════════════════════════════ -->
+  <section class="tier" id="tier-supporting">
+    <div class="tier-hdr">
+      <div class="tier-title-wrap">
+        <div class="tier-title">Supporting Partners</div>
+        <div class="tier-sub">// OFFICIAL SUPPORTING PARTNERS</div>
+      </div>
+    </div>
+    <div class="logo-grid tier-sm">
+      
+
+      <div class="logo-card">
+        <div class="logo-img-wrap">
+          <img src="{{ url_for('static', filename='images/21.jpeg') }}" alt="Supporting Partner logo" onerror="this.classList.add('broken')">
+          <div class="logo-ph"><span class="logo-ph-icon">⚓</span><span class="logo-ph-text">SUPPORTING PARTNER</span></div>
+        </div>
+        <div class="logo-name">21 Knots</div>
+      </div>
+                       <div class="logo-card">
+        <a class="logo-link" href="" target="_blank" rel="noopener" aria-label="Visit Green Ship Technologies"></a>
+        <div class="logo-img-wrap">
+          <img src="{{ url_for('static', filename='images/fu.jpeg') }}" alt="C-Marine logo" onerror="this.classList.add('broken')">
+          <div class="logo-ph"><span class="logo-ph-icon">⚡</span><span class="logo-ph-text"> Green Ship Technologies</span></div>
+        </div>
+        <div class="logo-name"> Fusie Engineers</div>
+      </div>
+      <div class="logo-card">
+        <div class="logo-img-wrap">
+          <img src="{{ url_for('static', filename='images/mechanfo.jpeg') }}" alt="Mechanfo logo" onerror="this.classList.add('broken')">
+          <div class="logo-ph"><span class="logo-ph-icon">⚙️</span><span class="logo-ph-text">MECHANFO INTELLECT</span></div>
+        </div>
+        <div class="logo-name">Mechanfo</div>
+      </div>
+
+      <div class="logo-card">
+        <div class="logo-img-wrap">
+          <img src="{{ url_for('static', filename='images/dakar.jpeg') }}" alt="Dakar logo" onerror="this.classList.add('broken')">
+          <div class="logo-ph"><span class="logo-ph-icon">🏁</span><span class="logo-ph-text">DAKAR</span></div>
+        </div>
+        <div class="logo-name">Dakar Class</div>
+      </div>
+
+     
+
+      <div class="logo-card">
+        <div class="logo-img-wrap">
+          <img src="{{ url_for('static', filename='images/vedam.png') }}" alt="Vedam logo" onerror="this.classList.add('broken')">
+          <div class="logo-ph"><span class="logo-ph-icon">✨</span><span class="logo-ph-text">VEDAM</span></div>
+        </div>
+        <div class="logo-name">Vedam</div>
+      </div>
+      <div class="logo-card">
+        <div class="logo-img-wrap">
+          <img src="{{ url_for('static', filename='images/class.jpeg') }}" alt="Vedam logo" onerror="this.classList.add('broken')">
+          <div class="logo-ph"><span class="logo-ph-icon">✨</span><span class="logo-ph-text">ClassNK</span></div>
+        </div>
+        <div class="logo-name">ClassNK</div>
+      </div>
+       <div class="logo-card">
+        <div class="logo-img-wrap">
+          <img src="{{ url_for('static', filename='images/so.png') }}" alt="Vedam logo" onerror="this.classList.add('broken')">
+          <div class="logo-ph"><span class="logo-ph-icon">✨</span><span class="logo-ph-text">S&O Maritime</span></div>
+        </div>
+        <div class="logo-name">S&O Maritime</div>
+      </div>
+
+      <div class="logo-card">
+        <div class="logo-img-wrap">
+          <img src="{{ url_for('static', filename='images/GOG.png') }}" alt="GOG logo" onerror="this.classList.add('broken')">
+          <div class="logo-ph"><span class="logo-ph-icon">🎮</span><span class="logo-ph-text">GOG</span></div>
+        </div>
+        <div class="logo-name">GO GAUGE MARINE</div>
+      </div>
+
+    </div>
+  </section>
+  
+
+  <div class="tier-divider"><div class="tdl"></div><div class="tdd"></div><div class="tdr"></div></div>
+
+  <!-- ════════════════════════════════════
+       TIER 04 — MEDICAL PARTNER
+  ════════════════════════════════════ -->
+  <section class="tier" id="tier-medical">
+    <div class="tier-hdr">
+      <div class="tier-title-wrap">
+        <div class="tier-title">Medical Partner</div>
+        <div class="tier-sub">// OFFICIAL MEDICAL PARTNER</div>
+      </div>
+    </div>
+    <div class="logo-grid tier-sm">
+
+      <div class="logo-card">
+        <div class="logo-img-wrap">
+          <img src="{{ url_for('static', filename='images/medical.jpeg') }}" alt="Medical Partner logo" onerror="this.classList.add('broken')">
+          <div class="logo-ph"><span class="logo-ph-icon">🏥</span><span class="logo-ph-text">MEDICAL PARTNER</span></div>
+        </div>
+        <div class="logo-name">Medical Partner</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── BECOME A PARTNER CTA ── -->
+  <div class="partner-cta">
+    <span class="partner-cta-tag">// JOIN US</span>
+    <h2>Want to partner with Anchorage 2026?</h2>
+    <p>We're onboarding sponsors across every tier. Reach out and let's talk about putting your brand in front of thousands of attendees.</p>
+    <a href="mailto:info@anchoragecusat.com" class="partner-cta-btn">GET IN TOUCH</a>
+  </div>
+
+</div>
+
+<script>
+function updateCartBadgeFromStorage(){
+  try{
+    const badge = document.getElementById('cartBadge');
+    if(!badge) return;
+  }catch(e){}
+}
+document.addEventListener('DOMContentLoaded', updateCartBadgeFromStorage);
+</script>
+
+</body>
+</html>

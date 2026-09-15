@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart | Ship's Store | Anchorage 2026</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap');
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --cyan: #00f2ff; --cyan-glass: rgba(0,242,255,0.06);
+            --ocean: #00050a; --ocean-card: #00111e;
+            --border: rgba(0,242,255,0.15); --border-hi: rgba(0,242,255,0.4);
+            --gold: #ffd166; --green: #06d6a0; --coral: #ff6b6b; --error: #ff4466;
+            --expo: cubic-bezier(0.19,1,0.22,1); --nav-h: 57.6px; --radius: 1.8px;
+        }
+        body { background: var(--ocean); color: #fff; font-family: 'Rajdhani', sans-serif; min-height: 100vh; overflow-x: hidden; font-size: 14.4px; }
+        #bg { position: fixed; inset: 0; z-index: -1; background: #000810; }
+        .grid-bg { position: absolute; inset: 0; background-image: linear-gradient(rgba(0,242,255,0.022) 1px,transparent 1px),linear-gradient(90deg,rgba(0,242,255,0.022) 1px,transparent 1px); background-size: 60px 60px; }
+        .glow { position: absolute; border-radius: 50%; filter: blur(110px); pointer-events: none; }
+        .g1 { width: 495px; height: 495px; background: rgba(0,80,120,0.13); top: -108px; right: -108px; }
+
+        nav { position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h); z-index: 999; background: rgba(0,5,10,0.97); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 16.2px; }
+        .nav-brand { font-family: 'Orbitron'; font-size: clamp(0.585rem, 2.5vw, 0.738rem); letter-spacing: 2.7px; color: var(--cyan); text-decoration: none; }
+        .nav-right { display: flex; gap: 3.6px; align-items: center; }
+        .nav-link { font-family: 'Orbitron'; font-size: clamp(0.585rem, 1.8vw, 0.684rem); letter-spacing: 1.8px; text-decoration: none; color: rgba(255,255,255,0.75); padding: 7.2px 10.8px; border-radius: var(--radius); }
+        .nav-link:hover { color: var(--cyan); background: rgba(0,242,255,0.04); }
+        .nav-link.active { color: var(--gold); }
+
+        .page-wrap { max-width: 640px; margin: 0 auto; padding: calc(var(--nav-h) + 43.2px) 14.4px 90px; }
+        .page-hero { text-align: center; margin-bottom: 30px; }
+        .page-tag { font-family: 'Share Tech Mono'; font-size: 0.68rem; letter-spacing: 2.7px; color: var(--cyan); opacity: 0.85; display: block; margin-bottom: 10.8px; }
+        .page-title { font-family: 'Orbitron'; font-size: clamp(1.3rem, 6vw, 1.9rem); font-weight: 900; letter-spacing: 3.6px; background: linear-gradient(135deg, #fff 30%, var(--cyan) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        .cart-line { display: flex; gap: 14px; align-items: center; background: var(--ocean-card); border: 1px solid var(--border); border-radius: 5px; padding: 14px; margin-bottom: 12px; }
+        .cart-img { width: 56px; height: 56px; border-radius: 4px; background: linear-gradient(135deg, rgba(0,242,255,0.08), rgba(0,50,100,0.15)); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; border: 1px solid var(--border); overflow: hidden; }
+        .cart-img img { width: 100%; height: 100%; object-fit: cover; }
+        .cart-info { flex: 1; min-width: 0; }
+        .cart-name { font-weight: 600; font-size: 0.92rem; }
+        .cart-meta { font-size: 0.76rem; color: rgba(255,255,255,0.5); margin-top: 2px; }
+        .cart-qty { display: flex; align-items: center; gap: 8px; }
+        .qty-btn { width: 24px; height: 24px; border-radius: 3px; border: 1px solid var(--border); background: transparent; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; }
+        .qty-btn:hover { border-color: var(--border-hi); }
+        .cart-qty-val { font-family: 'Share Tech Mono'; min-width: 18px; text-align: center; font-size: 0.85rem; }
+        .cart-price { font-family: 'Orbitron'; font-weight: 700; color: var(--gold); font-size: 0.9rem; min-width: 64px; text-align: right; }
+        .remove-btn { background: none; border: none; color: rgba(255,107,107,0.6); cursor: pointer; font-size: 1rem; padding: 4px; }
+        .remove-btn:hover { color: var(--coral); }
+
+        .cart-summary { background: var(--ocean-card); border: 1px solid var(--border-hi); border-radius: 5px; padding: 18px; margin-top: 20px; }
+        .summary-row { display: flex; justify-content: space-between; font-family: 'Orbitron'; font-size: 1rem; font-weight: 700; }
+        .summary-row .label { color: rgba(255,255,255,0.7); font-size: 0.75rem; letter-spacing: 1.8px; align-self: center; }
+        .summary-row .value { color: var(--gold); font-size: 1.3rem; }
+
+        .checkout-btn { display: block; width: 100%; margin-top: 16px; text-align: center; text-decoration: none; font-family: 'Orbitron'; font-size: 0.78rem; letter-spacing: 2px; padding: 14px; border-radius: 4px; background: var(--cyan); color: #001018; font-weight: 700; transition: all 0.25s; }
+        .checkout-btn:hover { box-shadow: 0 0 24px rgba(0,242,255,0.35); transform: translateY(-1px); }
+        .checkout-btn.disabled { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.35); pointer-events: none; }
+
+        .empty-cart { text-align: center; padding: 60px 20px; color: rgba(255,255,255,0.55); }
+        .empty-cart a { color: var(--cyan); text-decoration: none; font-family: 'Orbitron'; font-size: 0.78rem; letter-spacing: 1.8px; display: inline-block; margin-top: 16px; border: 1px solid var(--border); padding: 10px 20px; border-radius: 4px; }
+        .empty-cart a:hover { border-color: var(--border-hi); }
+
+        .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--ocean-card); border: 1px solid var(--border-hi); padding: 12px 22px; border-radius: 4px; font-size: 0.82rem; opacity: 0; pointer-events: none; transition: all 0.35s var(--expo); z-index: 2000; }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+        .toast.error { border-color: rgba(255,68,102,0.5); color: var(--coral); }
+    </style>
+</head>
+<body>
+
+<div id="bg"><div class="grid-bg"></div><div class="glow g1"></div></div>
+
+<nav>
+    <a href="{{ url_for('home') }}" class="nav-brand">⚓ ANCHORAGE 2026</a>
+    <div class="nav-right">
+        <a href="{{ url_for('events') }}" class="nav-link">EVENTS</a>
+        <a href="{{ url_for('merch_shop') }}" class="nav-link">STORE</a>
+        <a href="{{ url_for('merch_cart') }}" class="nav-link active">CART</a>
+    </div>
+</nav>
+
+<div class="page-wrap">
+    <div class="page-hero">
+        <span class="page-tag">◈ YOUR CARGO</span>
+        <h1 class="page-title">CART</h1>
+    </div>
+
+    {% if items %}
+    <div id="cartLines">
+        {% for it in items %}
+        <div class="cart-line" data-product-id="{{ it.product_id }}" data-size="{{ it.size or '' }}">
+            <div class="cart-img">{% if it.image_url %}<img src="{{ it.image_url }}" alt="{{ it.name }}">{% else %}⚓{% endif %}</div>
+            <div class="cart-info">
+                <div class="cart-name">{{ it.name }}{% if it.size %} <span style="color:var(--cyan)">({{ it.size }})</span>{% endif %}</div>
+                <div class="cart-meta">₹{{ "%.0f"|format(it.price) }} each{% if it.available < it.quantity %} · only {{ it.available }} left{% endif %}</div>
+            </div>
+            <div class="cart-qty">
+                <button type="button" class="qty-btn qty-minus">−</button>
+                <span class="cart-qty-val">{{ it.quantity }}</span>
+                <button type="button" class="qty-btn qty-plus">+</button>
+            </div>
+            <div class="cart-price">₹{{ "%.0f"|format(it.line_total) }}</div>
+            <button type="button" class="remove-btn" title="Remove">✕</button>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="cart-summary">
+        <div class="summary-row">
+            <span class="label">TOTAL</span>
+            <span class="value" id="cartTotal">₹{{ "%.0f"|format(total) }}</span>
+        </div>
+        <a href="{{ url_for('merch_checkout') }}" class="checkout-btn" id="checkoutBtn">PROCEED TO CHECKOUT →</a>
+    </div>
+    {% else %}
+    <div class="empty-cart">
+        Your cart is empty.
+        <br><a href="{{ url_for('merch_shop') }}">← BACK TO STORE</a>
+    </div>
+    {% endif %}
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+function showToast(msg, kind) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast show' + (kind ? ' ' + kind : '');
+    clearTimeout(window._toastTimer);
+    window._toastTimer = setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+async function sendUpdate(productId, size, action, quantity) {
+    const res = await fetch('{{ url_for("merch_cart_update") }}', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ product_id: productId, size: size || null, action, quantity })
+    });
+    return res.json();
+}
+
+function refreshTotal(items) {
+    const total = items.reduce((s, i) => s + i.line_total, 0);
+    const totalEl = document.getElementById('cartTotal');
+    if (totalEl) totalEl.textContent = '₹' + Math.round(total);
+    if (items.length === 0) location.reload();
+}
+
+document.querySelectorAll('.cart-line').forEach(line => {
+    const productId = parseInt(line.dataset.productId, 10);
+    const size = line.dataset.size || null;
+    const qtyVal = line.querySelector('.cart-qty-val');
+    const priceEl = line.querySelector('.cart-price');
+
+    line.querySelector('.qty-minus').addEventListener('click', async () => {
+        let qty = parseInt(qtyVal.textContent, 10) - 1;
+        if (qty < 1) { line.querySelector('.remove-btn').click(); return; }
+        const data = await sendUpdate(productId, size, 'set_quantity', qty);
+        if (data.error) { showToast(data.error, 'error'); return; }
+        qtyVal.textContent = qty;
+        const item = data.items.find(i => i.product_id === productId && (i.size || null) === size);
+        if (item) priceEl.textContent = '₹' + Math.round(item.line_total);
+        refreshTotal(data.items);
+    });
+
+    line.querySelector('.qty-plus').addEventListener('click', async () => {
+        let qty = parseInt(qtyVal.textContent, 10) + 1;
+        const data = await sendUpdate(productId, size, 'set_quantity', qty);
+        if (data.error) { showToast(data.error, 'error'); return; }
+        const item = data.items.find(i => i.product_id === productId && (i.size || null) === size);
+        if (item) {
+            qtyVal.textContent = item.quantity;
+            priceEl.textContent = '₹' + Math.round(item.line_total);
+            if (item.quantity < qty) showToast('Only ' + item.available + ' available', 'error');
+        }
+        refreshTotal(data.items);
+    });
+
+    line.querySelector('.remove-btn').addEventListener('click', async () => {
+        const data = await sendUpdate(productId, size, 'remove', 1);
+        if (data.error) { showToast(data.error, 'error'); return; }
+        line.remove();
+        refreshTotal(data.items);
+    });
+});
+</script>
+
+</body>
+</html>

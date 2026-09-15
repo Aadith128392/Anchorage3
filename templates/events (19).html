@@ -1,0 +1,1344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Events | Anchorage 2026</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+/* ═══════════════════════════════════════════════════════════
+   DESIGN TOKENS
+   Desktop base: 16px root. Scale targets a 1080p+ monitor.
+   Mobile override below bumps readable sizes up for fingers.
+═══════════════════════════════════════════════════════════ */
+:root{
+  /* palette */
+  --cyan:#00f2ff;
+  --cyan-dim:rgba(0,242,255,0.07);
+  --ocean:#00050a;
+  --ocean-mid:#000d15;
+  --ocean-card:#00111e;
+  --border:rgba(0,242,255,0.15);
+  --border-hi:rgba(0,242,255,0.4);
+  --gold:#ffd166;
+  --coral:#ff6b6b;
+  --green:#06d6a0;
+  --expo:cubic-bezier(0.19,1,0.22,1);
+
+  /* layout */
+  --nav-h:60px;
+  --daybar-h:52px;
+  --fbar-h:46px;
+
+  /* ── TYPE SCALE ──────────────────────────────────────────
+     Orbitron & Share Tech Mono render large — values here
+     are intentionally small to feel refined, not cramped.
+
+     label    rem    px @16   use
+     -------  -----  -------  ---------------------------------
+     --t-tag  .6rem  9.6px    type badges, mono meta, counters
+     --t-sm   .68rem 10.9px   sub-dates, gf-count, dot labels
+     --t-ui   .72rem 11.5px   nav links, filter btns, card btns
+     --t-body .78rem 12.5px   card name, prize line, modal body
+     --t-md   .88rem 14.1px   modal title min, section headers
+     --t-day  clamp  —        day section title (responsive)
+     --t-hero clamp  —        page H1 (responsive)
+  ── */
+  --t-tag:  .6rem;
+  --t-sm:   .68rem;
+  --t-ui:   .72rem;
+  --t-body: .78rem;
+  --t-md:   .88rem;
+  --t-day:  clamp(1.3rem,3.5vw,2rem);
+  --t-hero: clamp(2.4rem,8vw,5.2rem);
+
+  /* letter-spacing */
+  --lsp-tight:1px;
+  --lsp-mid:  2px;
+  --lsp-wide: 3.5px;
+  --lsp-xw:   5px;
+}
+
+/* Mobile ≤599px — smaller, tighter, premium -------------------- */
+@media(max-width:599px){
+  :root{
+    --t-tag:  .52rem;
+    --t-sm:   .58rem;
+    --t-ui:   .62rem;
+    --t-body: .68rem;
+    --t-md:   .78rem;
+    --t-day:  clamp(.95rem,5.5vw,1.25rem);
+    --t-hero: clamp(1.7rem,12vw,2.6rem);
+    --nav-h:   52px;
+    --daybar-h:42px;
+    --fbar-h:  38px;
+    --lsp-mid: 1.5px;
+    --lsp-wide:2.5px;
+    --lsp-xw:  3.5px;
+  }
+  nav{padding:0 12px;gap:6px}
+  .nav-brand{font-size:.52rem;letter-spacing:2px;gap:5px}
+  .nav-brand img{height:22px}
+  .cart-btn{padding:5px 10px}
+  .nav-user{padding:5px 10px}
+  .day-selector-inner{padding:0 10px}
+  .day-btn{padding:0 14px}
+  .global-filter-bar{padding:0 10px}
+  .gf-btn{padding:0 12px}
+  .gf-label{margin-right:8px;font-size:.46rem}
+  .page-hero{padding:calc(var(--nav-h) + 26px) 14px 16px}
+  .page-hero h1{letter-spacing:3px}
+  .hero-tag{letter-spacing:3px;margin-bottom:7px}
+  .page-hero p{margin-top:6px}
+  .days-container{padding:0 12px 80px}
+  .day-section{margin-top:30px}
+  .day-divider{margin:36px 0 0}
+  .day-hdr{gap:8px;margin-bottom:14px;padding-bottom:10px}
+  .day-num-badge{padding:3px 8px}
+  .day-title{letter-spacing:3px}
+  .day-count{display:none}
+  .carousel-wrap{padding:0 26px;margin-bottom:24px}
+  .carousel-stage{height:350px}
+  .c-slide{width:128px}
+  .c-slide[data-pos="1"]{transform:translate(calc(-50% + 118px),-50%) translateZ(-58px) scale(.78) rotateY(-12deg)}
+  .c-slide[data-pos="-1"]{transform:translate(calc(-50% - 118px),-50%) translateZ(-58px) scale(.78) rotateY(12deg)}
+  .c-slide[data-pos="2"],.c-slide[data-pos="-2"],
+  .c-slide[data-pos="3"],.c-slide[data-pos="-3"]{opacity:0;pointer-events:none}
+  .c-arrow{width:28px;height:28px;font-size:.7rem}
+  .slide-info{padding:6px 9px 4px}
+  .slide-name{font-size:clamp(.62rem,3.8vw,.78rem);margin-bottom:3px}
+  .slide-prize{font-size:var(--t-tag)}
+  .slide-acts{padding:0 9px 8px;gap:4px}
+  .slide-btn-det,.slide-btn-cart{padding:8px 7px;font-size:clamp(.54rem,3vw,.64rem);letter-spacing:1px}
+  .carousel-foot{gap:8px;margin-top:10px}
+  .events-grid{gap:7px}
+  .type-filters{gap:3px;margin-bottom:10px}
+  .type-btn{padding:4px 8px;font-size:var(--t-tag);letter-spacing:1px}
+  .sub-lbl{margin-bottom:8px}
+  .ph-icon{font-size:1.2rem}
+  .ph-name{font-size:.36rem}
+  .slide-ph-icon{font-size:1.5rem}
+  .ev-body{padding:8px 8px 6px;gap:4px}
+  .ev-name{font-size:clamp(.62rem,3.8vw,.78rem);letter-spacing:1px}
+  .ev-prize{font-size:var(--t-tag)}
+  .ev-free{font-size:var(--t-tag);padding:1px 5px}
+  .ev-type-tag{font-size:.42rem;padding:1px 5px;top:4px;left:4px}
+  .ev-footer{padding:7px 8px 9px;gap:4px}
+  .ev-det-btn{padding:8px 6px;font-size:clamp(.54rem,3vw,.66rem);letter-spacing:1px}
+  .ev-cart-btn{padding:8px 6px;font-size:clamp(.54rem,3vw,.66rem);letter-spacing:1px}
+  .ev-open-tag{font-size:var(--t-tag)}
+  #event-modal{padding:58px 14px 32px}
+  .modal-poster-wrap{max-width:160px;margin-bottom:16px}
+  .modal-poster-ph{font-size:2.8rem}
+  .modal-title{letter-spacing:1.8px;margin-bottom:14px}
+  .modal-meta-strip{margin-bottom:16px}
+  .modal-prize-banner{padding:11px 14px;gap:10px;margin-bottom:16px}
+  .modal-actions{flex-direction:column;align-items:stretch}
+  .modal-cart-btn{text-align:center;padding:14px 16px;font-size:.66rem}
+  .coming-soon{padding:36px 14px;gap:9px}
+  .cs-ico{font-size:1.5rem}
+  .cs-ttl{letter-spacing:3px}
+  .cart-fab{padding:8px 12px;font-size:var(--t-tag);bottom:12px;right:10px}
+  .fab-count{width:15px;height:15px;font-size:.52rem}
+  .toast{padding:7px 14px;font-size:var(--t-tag)}
+}
+
+html{scroll-behavior:smooth}
+body{background:var(--ocean);color:#fff;font-family:'Rajdhani',sans-serif;overflow-x:hidden;min-height:100vh}
+
+/* ── BACKGROUND ── */
+#bg{position:fixed;inset:0;z-index:-1;overflow:hidden;
+  background:radial-gradient(ellipse 140% 60% at 50% -10%,rgba(0,70,100,.28) 0%,var(--ocean) 65%)}
+.grid-bg{position:absolute;inset:0;
+  background-image:linear-gradient(rgba(0,242,255,.025) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(0,242,255,.025) 1px,transparent 1px);
+  background-size:50px 50px}
+.radar{position:absolute;top:50%;left:50%;width:130vw;height:130vw;border-radius:50%;
+  border:1px solid rgba(0,242,255,.04);transform:translate(-50%,-50%) scale(0);
+  animation:rping 12s infinite linear}
+@keyframes rping{to{transform:translate(-50%,-50%) scale(1.5);opacity:0}}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);z-index:999;
+  background:rgba(0,5,10,.96);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 20px;gap:8px;
+  animation:navDown .6s var(--expo) both}
+@keyframes navDown{from{transform:translateY(-100%);opacity:0}to{transform:none;opacity:1}}
+.nav-brand{font-family:'Orbitron';font-size:clamp(.55rem,1.8vw,.7rem);letter-spacing:3px;
+  color:var(--cyan);text-decoration:none;text-shadow:0 0 16px rgba(0,242,255,.4);
+  flex-shrink:0;display:flex;align-items:center;gap:8px}
+.nav-brand img{height:28px;width:auto;filter:drop-shadow(0 0 5px var(--cyan))}
+.nav-center{display:none}
+@media(min-width:700px){
+  .nav-center{display:flex;gap:24px}
+  .nav-center a{font-family:'Orbitron';font-size:var(--t-ui);letter-spacing:var(--lsp-mid);
+    text-decoration:none;color:rgba(255,255,255,.38);transition:color .3s}
+  .nav-center a:hover,.nav-center a.active{color:var(--cyan)}
+}
+.nav-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.cart-btn{position:relative;font-family:'Orbitron';font-size:var(--t-ui);letter-spacing:var(--lsp-mid);
+  color:var(--cyan);border:1px solid var(--border);padding:6px 14px;
+  text-decoration:none;clip-path:polygon(8% 0,100% 0,92% 100%,0 100%);
+  white-space:nowrap;transition:background .3s,border-color .3s}
+.cart-btn:hover{background:rgba(0,242,255,.08);border-color:var(--cyan)}
+.cart-badge{position:absolute;top:-6px;right:-6px;width:17px;height:17px;
+  background:var(--cyan);color:#000;border-radius:50%;
+  font-family:'Share Tech Mono';font-size:.6rem;font-weight:700;
+  display:none;align-items:center;justify-content:center}
+.cart-badge.show{display:flex;animation:pop .3s var(--expo)}
+@keyframes pop{from{transform:scale(0)}to{transform:scale(1)}}
+.nav-user{font-family:'Orbitron';font-size:var(--t-ui);letter-spacing:var(--lsp-mid);
+  color:var(--cyan);border:1px solid var(--cyan);padding:6px 14px;
+  text-decoration:none;clip-path:polygon(8% 0,100% 0,92% 100%,0 100%);
+  white-space:nowrap;transition:background .3s,color .3s}
+.nav-user:hover{background:var(--cyan);color:#000}
+
+/* ── DAY SELECTOR BAR ── */
+.day-selector-bar{position:sticky;top:var(--nav-h);z-index:800;
+  background:rgba(0,5,10,.98);backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--border);height:var(--daybar-h);
+  animation:barDown .5s .2s var(--expo) both}
+@keyframes barDown{from{transform:translateY(-16px);opacity:0}to{transform:none;opacity:1}}
+.day-selector-inner{max-width:1300px;margin:0 auto;height:100%;
+  display:flex;align-items:stretch;justify-content:center;
+  padding:0 16px;overflow-x:auto;scrollbar-width:none}
+.day-selector-inner::-webkit-scrollbar{display:none}
+.day-btn{font-family:'Orbitron';font-size:var(--t-ui);letter-spacing:var(--lsp-mid);
+  padding:0 22px;border:none;background:none;color:rgba(255,255,255,.3);
+  cursor:pointer;position:relative;white-space:nowrap;transition:color .3s;
+  flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.day-btn::after{content:'';position:absolute;bottom:0;left:50%;width:0;height:2px;
+  background:var(--cyan);transform:translateX(-50%);
+  transition:width .4s var(--expo);box-shadow:0 0 10px var(--cyan)}
+.day-btn.active{color:var(--cyan)}
+.day-btn.active::after{width:70%}
+.day-date-sub{font-family:'Share Tech Mono';font-size:var(--t-tag);letter-spacing:var(--lsp-tight);
+  color:rgba(0,242,255,.4);margin-top:2px}
+
+/* ── GLOBAL FILTER BAR ── */
+.global-filter-bar{position:sticky;top:calc(var(--nav-h) + var(--daybar-h));z-index:700;
+  background:rgba(0,5,10,.97);backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--border);padding:0 20px;
+  animation:barDown .5s .35s var(--expo) both}
+@media(min-width:1024px){.global-filter-bar,.days-container{padding-left:40px;padding-right:40px}}
+.global-filter-inner{max-width:1300px;margin:0 auto;
+  display:flex;align-items:center;justify-content:center;overflow-x:auto;scrollbar-width:none;height:var(--fbar-h)}
+.global-filter-inner::-webkit-scrollbar{display:none}
+.gf-label{display:none}
+.gf-btn{font-family:'Orbitron';font-size:var(--t-ui);letter-spacing:var(--lsp-mid);
+  padding:0 18px;height:100%;
+  border:none;border-right:1px solid var(--border);
+  background:none;color:rgba(255,255,255,.3);
+  cursor:pointer;white-space:nowrap;flex-shrink:0;
+  position:relative;transition:color .3s,background .3s,transform .2s var(--expo);
+  display:flex;align-items:center;gap:6px}
+.gf-btn:first-of-type{border-left:1px solid var(--border)}
+.gf-btn::after{content:'';position:absolute;bottom:0;left:50%;
+  width:0;height:2px;background:var(--cyan);
+  transform:translateX(-50%);transition:width .4s var(--expo)}
+.gf-btn:hover{color:rgba(0,242,255,.7);background:rgba(0,242,255,.03);transform:translateY(-1px)}
+.gf-btn.active{color:var(--cyan);background:rgba(0,242,255,.05)}
+.gf-btn.active::after{width:80%}
+.gf-dot{width:4px;height:4px;border-radius:50%;background:var(--cyan);
+  opacity:0;box-shadow:0 0 5px var(--cyan);transition:opacity .3s;flex-shrink:0}
+.gf-btn.active .gf-dot{opacity:1}
+.gf-count{font-family:'Share Tech Mono';font-size:var(--t-tag);letter-spacing:.5px;
+  color:rgba(0,242,255,.45)}
+
+/* ── PAGE HERO ── */
+.page-hero{padding:calc(var(--nav-h) + 44px) 20px 28px;text-align:center}
+.hero-tag{font-family:'Share Tech Mono';font-size:var(--t-sm);letter-spacing:var(--lsp-xw);
+  color:var(--cyan);opacity:.85;margin-bottom:12px;display:block;
+  text-shadow:0 0 12px rgba(0,242,255,.5);
+  animation:tagDrop .7s var(--expo) both}
+@keyframes tagDrop{from{opacity:0;transform:translateY(-14px)}to{opacity:1;transform:none}}
+.page-hero h1{font-family:'Orbitron';font-size:var(--t-hero);font-weight:900;letter-spacing:6px;
+  color:var(--cyan);
+  text-shadow:0 0 28px rgba(0,242,255,.8),0 0 56px rgba(0,242,255,.4),0 0 90px rgba(0,242,255,.18);
+  animation:h1Rise .9s .18s var(--expo) both, hPulse 3s 1.2s ease-in-out infinite}
+@keyframes h1Rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+@keyframes hPulse{0%,100%{text-shadow:0 0 28px rgba(0,242,255,.8),0 0 56px rgba(0,242,255,.4),0 0 90px rgba(0,242,255,.18)}
+  50%{text-shadow:0 0 38px rgba(0,242,255,1),0 0 72px rgba(0,242,255,.6),0 0 120px rgba(0,242,255,.28)}}
+.page-hero p{margin-top:10px;font-size:var(--t-body);color:rgba(255,255,255,.48);letter-spacing:.8px;
+  max-width:480px;margin-inline:auto;line-height:1.65;
+  animation:subFade .8s .5s ease both}
+@keyframes subFade{from{opacity:0}to{opacity:1}}
+
+/* filter notice */
+.filter-notice{text-align:center;padding:10px 0 0;
+  font-family:'Share Tech Mono';font-size:var(--t-sm);letter-spacing:var(--lsp-wide);
+  color:rgba(0,242,255,.45);display:none}
+.filter-notice.show{display:block}
+.filter-notice span{color:var(--cyan)}
+
+/* ── DAYS CONTAINER ── */
+.days-container{max-width:1300px;margin:0 auto;padding:0 20px 100px}
+
+.day-section{margin-top:44px;padding-top:8px}
+.day-section.gf-hidden{display:none}
+
+.day-divider{display:flex;align-items:center;gap:12px;margin:56px 0 0}
+.day-divider.gf-hidden{display:none}
+.ddl{flex:1;height:1px;background:linear-gradient(to right,var(--border),transparent)}
+.ddr{flex:1;height:1px;background:linear-gradient(to left,var(--border),transparent)}
+.ddd{width:5px;height:5px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan)}
+
+/* ── DAY SECTION HEADER ── */
+.day-hdr{display:flex;align-items:center;gap:12px;
+  margin-bottom:24px;padding-bottom:14px;border-bottom:1px solid var(--border);flex-wrap:wrap}
+.day-num-badge{font-family:'Orbitron';font-size:var(--t-tag);letter-spacing:var(--lsp-wide);
+  border:1px solid var(--border-hi);color:var(--cyan);padding:5px 12px;
+  white-space:nowrap;background:rgba(0,242,255,.05)}
+.day-title-wrap{flex:1;min-width:0}
+.day-title{font-family:'Orbitron';font-size:var(--t-day);font-weight:900;letter-spacing:5px;
+  color:var(--cyan);text-shadow:0 0 18px rgba(0,242,255,.7),0 0 36px rgba(0,242,255,.3)}
+.day-date{font-family:'Share Tech Mono';font-size:var(--t-tag);letter-spacing:var(--lsp-mid);
+  color:rgba(0,242,255,.5);margin-top:2px}
+.day-count{font-family:'Share Tech Mono';font-size:var(--t-tag);letter-spacing:var(--lsp-mid);
+  color:rgba(255,255,255,.22)}
+
+/* ══════════════════════════════════════════════════════════
+   CAROUSEL
+   Stage has overflow:visible — the .carousel-wrap clips it
+   with padding + overflow:hidden so arrows stay visible.
+══════════════════════════════════════════════════════════ */
+.carousel-wrap{position:relative;margin-bottom:40px;padding:0 44px;overflow:hidden}
+@media(max-width:599px){.carousel-wrap{padding:0 32px}}
+
+.carousel-lbl{font-family:'Share Tech Mono';font-size:var(--t-tag);letter-spacing:var(--lsp-xw);
+  color:var(--cyan);opacity:.45;margin-bottom:14px;display:block}
+
+.carousel-stage{
+  position:relative;
+  height:520px;         /* desktop: tall enough for poster + info + 2 btns */
+  perspective:1200px;
+  display:flex;align-items:center;justify-content:center;
+  overflow:visible;
+}
+@media(max-width:599px){.carousel-stage{height:430px}}
+@media(min-width:600px) and (max-width:1023px){.carousel-stage{height:480px}}
+
+/* ── slide card ── */
+.c-slide{
+  position:absolute;top:50%;left:50%;
+  width:190px;
+  transform-origin:center;
+  transform:translate(-50%,-50%);
+  transition:all .6s cubic-bezier(.23,1,.32,1);
+  cursor:pointer;
+}
+@media(max-width:599px){.c-slide{width:148px}}
+@media(min-width:600px) and (max-width:1023px){.c-slide{width:170px}}
+
+.slide-inner{width:100%;position:relative;border:1px solid var(--border);
+  background:var(--ocean-mid);overflow:hidden;display:flex;flex-direction:column}
+
+/* poster area */
+.slide-poster-wrap{width:100%;aspect-ratio:9/16;position:relative;overflow:hidden;flex-shrink:0}
+.slide-poster{width:100%;height:100%;object-fit:cover;display:block}
+.slide-ph{width:100%;height:100%;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:8px;
+  background:linear-gradient(160deg,#001a2c 0%,#000d15 60%,#001520 100%);position:relative}
+.slide-ph::before{content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(45deg,transparent,transparent 18px,rgba(0,242,255,.01) 18px,rgba(0,242,255,.01) 19px)}
+.slide-ph-icon{font-size:1.9rem;position:relative;z-index:1;
+  filter:drop-shadow(0 0 12px var(--cyan));animation:floatY 3s ease-in-out infinite}
+.slide-ph-name{font-family:'Orbitron';font-size:var(--t-tag);letter-spacing:1px;
+  color:var(--cyan);text-align:center;padding:0 8px;position:relative;z-index:1;line-height:1.3}
+.slide-type-tag{position:absolute;top:7px;left:7px;z-index:2;
+  font-family:'Orbitron';font-size:var(--t-tag);letter-spacing:1.5px;
+  padding:2px 6px;background:rgba(0,5,10,.9);border:1px solid var(--border);color:var(--cyan)}
+
+/* info block — CENTRE SLIDE ONLY: name + prize */
+.slide-info{width:100%;padding:10px 12px 6px;
+  background:var(--ocean-mid);border-top:1px solid var(--border);display:none}
+.c-slide[data-pos="0"] .slide-info{display:block}
+
+.slide-name{font-family:'Orbitron';font-size:clamp(.72rem,2vw,.9rem);letter-spacing:1.5px;
+  color:#fff;margin-bottom:5px;line-height:1.3;font-weight:700}
+.slide-prize{font-family:'Share Tech Mono';font-size:var(--t-tag);letter-spacing:1px;
+  color:var(--gold);display:flex;align-items:center;gap:4px}
+.slide-prize-ico{font-size:.7rem}
+
+/* action row — CENTRE SLIDE ONLY: DETAILS + ADD TO CART */
+.slide-acts{display:none;flex-direction:column;gap:5px;
+  padding:0 12px 10px;background:var(--ocean-mid);width:100%}
+.c-slide[data-pos="0"] .slide-acts{display:flex}
+.c-slide:not([data-pos="0"]) .slide-info,
+.c-slide:not([data-pos="0"]) .slide-acts{display:none !important}
+
+.slide-btn-det{font-family:'Orbitron';font-size:clamp(.58rem,1.5vw,.72rem);letter-spacing:1.8px;
+  padding:10px 10px;border:1px solid var(--cyan);background:rgba(0,5,10,.85);
+  color:var(--cyan);cursor:pointer;width:100%;text-align:center;
+  clip-path:polygon(6% 0,100% 0,94% 100%,0 100%);transition:all .3s}
+.slide-btn-det:hover{background:var(--cyan);color:var(--ocean)}
+
+.slide-btn-cart{font-family:'Orbitron';font-size:clamp(.58rem,1.5vw,.72rem);letter-spacing:1.8px;
+  padding:9px 10px;border:1px solid var(--green);background:rgba(0,5,10,.85);
+  color:var(--green);cursor:pointer;width:100%;text-align:center;
+  clip-path:polygon(6% 0,100% 0,94% 100%,0 100%);transition:all .3s}
+.slide-btn-cart:hover,.slide-btn-cart.in-cart{background:rgba(6,214,160,.12);color:var(--green)}
+.slide-open-lbl{font-family:'Share Tech Mono';font-size:var(--t-tag);letter-spacing:1.5px;
+  color:rgba(255,255,255,.3);text-align:center;padding:5px 0}
+
+/* 3-D fan positions */
+.c-slide[data-pos="0"]{
+  transform:translate(-50%,-50%) translateZ(0) scale(1);
+  z-index:10;filter:brightness(1);
+  box-shadow:0 28px 64px rgba(0,0,0,.6),0 0 36px rgba(0,242,255,.1);
+  animation:slideIn .55s var(--expo) both}
+@keyframes slideIn{from{opacity:0;transform:translate(-50%,-50%) scale(.82) rotateY(12deg)}
+  to{opacity:1;transform:translate(-50%,-50%) translateZ(0) scale(1) rotateY(0)}}
+.c-slide[data-pos="1"]{transform:translate(calc(-50% + 200px),-50%) translateZ(-90px) scale(.82) rotateY(-15deg);z-index:8;filter:brightness(.58)}
+.c-slide[data-pos="-1"]{transform:translate(calc(-50% - 200px),-50%) translateZ(-90px) scale(.82) rotateY(15deg);z-index:8;filter:brightness(.58)}
+.c-slide[data-pos="2"]{transform:translate(calc(-50% + 348px),-50%) translateZ(-200px) scale(.65) rotateY(-26deg);z-index:6;filter:brightness(.32)}
+.c-slide[data-pos="-2"]{transform:translate(calc(-50% - 348px),-50%) translateZ(-200px) scale(.65) rotateY(26deg);z-index:6;filter:brightness(.32)}
+.c-slide[data-pos="3"],.c-slide[data-pos="-3"]{transform:translate(-50%,-50%) translateZ(-330px) scale(.44);z-index:1;filter:brightness(.1);opacity:.2}
+.c-slide[data-pos="far"]{transform:translate(-50%,-50%) translateZ(-480px) scale(.26);z-index:0;opacity:0;pointer-events:none}
+
+@media(max-width:480px){
+  .c-slide[data-pos="1"]{transform:translate(calc(-50% + 148px),-50%) translateZ(-70px) scale(.8) rotateY(-13deg)}
+  .c-slide[data-pos="-1"]{transform:translate(calc(-50% - 148px),-50%) translateZ(-70px) scale(.8) rotateY(13deg)}
+  .c-slide[data-pos="2"],.c-slide[data-pos="-2"],
+  .c-slide[data-pos="3"],.c-slide[data-pos="-3"]{opacity:0;pointer-events:none}
+}
+
+/* arrows — inside padded .carousel-wrap, so always visible */
+.c-arrow{position:absolute;top:50%;
+  transform:translateY(calc(-50% - 18px)); /* offset upward toward poster centre */
+  width:36px;height:36px;
+  border:1px solid var(--border);background:rgba(0,5,10,.92);
+  color:var(--cyan);font-size:.85rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .25s var(--expo);backdrop-filter:blur(10px);
+  clip-path:polygon(14% 0,100% 0,86% 100%,0 100%);z-index:30}
+.c-arrow:hover{background:rgba(0,242,255,.14);border-color:var(--cyan);
+  transform:translateY(calc(-50% - 18px)) scale(1.08)}
+.c-arrow.prev{left:2px}
+.c-arrow.next{right:2px}
+
+/* footer: dots + counter */
+.carousel-foot{display:flex;align-items:center;justify-content:center;
+  gap:12px;margin-top:14px;position:relative;z-index:20}
+.c-dots{display:flex;gap:5px}
+.c-dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.16);cursor:pointer;transition:all .3s}
+.c-dot.active{background:var(--cyan);box-shadow:0 0 5px var(--cyan);width:15px;border-radius:3px}
+.c-counter{font-family:'Share Tech Mono';font-size:var(--t-tag);letter-spacing:2px;color:rgba(255,255,255,.25)}
+.c-counter span{color:var(--cyan)}
+.c-empty{height:70px;display:flex;align-items:center;justify-content:center;
+  font-family:'Share Tech Mono';font-size:var(--t-sm);letter-spacing:3px;color:rgba(255,255,255,.15)}
+
+/* ══════════════════════════════════════════════════════════
+   EVENT CARDS GRID
+   Card shows: poster | name | prize | [DETAILS] [+ CART]
+   No description, no meta rows.
+══════════════════════════════════════════════════════════ */
+.events-sub{margin-top:8px}
+.sub-lbl{font-family:'Share Tech Mono';font-size:var(--t-tag);letter-spacing:var(--lsp-xw);
+  color:rgba(255,255,255,.22);margin-bottom:14px;display:block}
+
+.type-filters{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:18px}
+.type-btn{font-family:'Orbitron';font-size:var(--t-ui);letter-spacing:var(--lsp-mid);
+  padding:6px 12px;border:1px solid var(--border);background:transparent;
+  color:rgba(255,255,255,.38);cursor:pointer;transition:all .3s;white-space:nowrap;
+  position:relative;
+  animation:btnPop .4s var(--expo) both}
+@keyframes btnPop{from{opacity:0;transform:scale(.88) translateY(7px)}to{opacity:1;transform:none}}
+.type-btn:nth-child(1){animation-delay:.04s}
+.type-btn:nth-child(2){animation-delay:.1s}
+.type-btn:nth-child(3){animation-delay:.16s}
+.type-btn:nth-child(4){animation-delay:.22s}
+.type-btn:nth-child(5){animation-delay:.28s}
+.type-btn:hover,.type-btn.active{border-color:var(--cyan);color:var(--cyan);background:var(--cyan-dim)}
+.type-btn.active::after{content:'';position:absolute;bottom:-1px;left:50%;
+  width:55%;height:2px;background:var(--cyan);transform:translateX(-50%);border-radius:1px}
+
+/* grid layout */
+.events-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:11px;width:100%}
+@media(min-width:600px){.events-grid{gap:13px}}
+@media(min-width:768px){.events-grid{grid-template-columns:repeat(3,1fr);gap:15px}}
+@media(min-width:1100px){.events-grid{grid-template-columns:repeat(5,1fr);gap:16px}}
+
+/* card shell */
+.event-card{position:relative;background:var(--ocean-card);border:1px solid var(--border);
+  overflow:hidden;cursor:pointer;display:flex;flex-direction:column;
+  clip-path:polygon(0 0,calc(100% - 9px) 0,100% 9px,100% 100%,0 100%);
+  transition:border-color .3s,box-shadow .35s,transform .35s var(--expo);
+  animation:cardUp .5s var(--expo) both;animation-play-state:paused}
+.event-card.anim-ready{animation-play-state:running}
+@keyframes cardUp{from{opacity:0;transform:translateY(28px) scale(.96)}to{opacity:1;transform:none}}
+.event-card:hover{border-color:var(--border-hi);transform:translateY(-4px);
+  box-shadow:0 0 0 1px rgba(0,242,255,.07),0 14px 44px rgba(0,0,0,.5),0 0 28px rgba(0,242,255,.07)}
+
+/* corner cut accent */
+.event-card::before{content:'';position:absolute;top:0;right:0;z-index:3;
+  width:9px;height:9px;background:var(--cyan);
+  clip-path:polygon(0 0,100% 0,100% 100%);opacity:.65;transition:opacity .3s}
+.event-card:hover::before{opacity:1}
+
+/* scan line */
+.card-scan{position:absolute;top:-100%;left:0;width:100%;height:30%;pointer-events:none;z-index:4;
+  background:linear-gradient(to bottom,transparent,rgba(0,242,255,.025),transparent);
+  animation:scanMove 5s infinite linear}
+@keyframes scanMove{to{top:200%}}
+
+/* shimmer on hover */
+.event-card::after{content:'';position:absolute;top:0;left:0;width:38%;height:100%;
+  background:linear-gradient(108deg,transparent 28%,rgba(0,242,255,.05) 50%,transparent 72%);
+  transform:translateX(-100%);pointer-events:none;z-index:5}
+.event-card:hover::after{animation:shimmer .6s ease forwards}
+@keyframes shimmer{to{transform:translateX(280%)}}
+
+/* poster */
+.ev-poster{width:100%;aspect-ratio:9/16;overflow:hidden;position:relative;flex-shrink:0}
+.ev-poster img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .65s var(--expo)}
+.event-card:hover .ev-poster img{transform:scale(1.055)}
+.poster-ph{width:100%;height:100%;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:7px;position:relative;overflow:hidden}
+.type-competition .poster-ph{background:linear-gradient(160deg,#001a2c 0%,#000d15 45%,#001a1a 100%)}
+.type-workshop   .poster-ph{background:linear-gradient(160deg,#0d001a 0%,#000d15 45%,#001530 100%)}
+.type-exhibition .poster-ph{background:linear-gradient(160deg,#001a10 0%,#000d15 45%,#001a28 100%)}
+.type-session    .poster-ph{background:linear-gradient(160deg,#1a1000 0%,#0d0800 45%,#001015 100%)}
+.poster-ph::before{content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 26px,rgba(0,242,255,.035) 26px,rgba(0,242,255,.035) 27px),
+             repeating-linear-gradient(90deg,transparent,transparent 26px,rgba(0,242,255,.035) 26px,rgba(0,242,255,.035) 27px)}
+.ph-icon{font-size:clamp(1.4rem,3.5vw,2rem);position:relative;z-index:1;
+  filter:drop-shadow(0 0 10px currentColor);animation:floatY 3s ease-in-out infinite}
+.ph-name{font-family:'Orbitron';font-size:clamp(.4rem,1.1vw,.52rem);letter-spacing:1.2px;
+  color:rgba(255,255,255,.65);text-align:center;padding:0 7px;
+  position:relative;z-index:1;line-height:1.4;max-width:90%}
+.ev-type-tag{position:absolute;top:6px;left:6px;z-index:2;
+  font-family:'Orbitron';font-size:var(--t-tag);letter-spacing:1.2px;
+  padding:2px 6px;background:rgba(0,5,10,.9);border:1px solid var(--border);color:var(--cyan)}
+.poster-grad{position:absolute;bottom:0;left:0;right:0;height:38%;
+  background:linear-gradient(to top,rgba(0,13,21,.88) 0%,transparent 100%);
+  z-index:1;pointer-events:none}
+
+/* ── card body: NAME + PRIZE only ── */
+.ev-body{padding:10px 10px 8px;display:flex;flex-direction:column;gap:4px;flex:1}
+.ev-name{font-family:'Orbitron';font-size:clamp(.68rem,1.9vw,.87rem);letter-spacing:1.4px;
+  color:#fff;line-height:1.3;font-weight:700;
+  text-shadow:0 0 18px rgba(255,255,255,.12)}
+.ev-prize{font-family:'Share Tech Mono';font-size:var(--t-tag);letter-spacing:1px;
+  color:var(--gold);display:flex;align-items:center;gap:4px}
+.ev-prize-ico{font-size:.68rem}
+/* free / open badge */
+.ev-free{font-family:'Share Tech Mono';font-size:var(--t-tag);letter-spacing:1px;
+  color:var(--green);border:1px solid rgba(6,214,160,.3);
+  background:rgba(6,214,160,.06);padding:2px 6px;display:inline-block;width:fit-content}
+
+/* ── card footer: DETAILS + ADD TO CART ── */
+.ev-footer{display:flex;gap:5px;align-items:center;padding:9px 10px 11px;
+  border-top:1px solid rgba(0,242,255,.06)}
+.ev-det-btn{font-family:'Orbitron';font-size:clamp(.55rem,1.3vw,.68rem);letter-spacing:1.7px;
+  padding:8px 9px;border:1px solid var(--border);background:transparent;
+  color:rgba(255,255,255,.55);cursor:pointer;transition:all .28s;flex:1;text-align:center}
+.ev-det-btn:hover{border-color:var(--cyan);color:var(--cyan)}
+.ev-cart-btn{font-family:'Orbitron';font-size:clamp(.55rem,1.3vw,.68rem);letter-spacing:1.7px;
+  padding:8px 9px;border:1px solid var(--cyan);background:rgba(0,242,255,.06);
+  color:var(--cyan);cursor:pointer;transition:all .28s;flex:1.2;text-align:center;
+  clip-path:polygon(5% 0,100% 0,95% 100%,0 100%)}
+.ev-cart-btn:hover{background:var(--cyan);color:var(--ocean)}
+.ev-cart-btn.in-cart{border-color:var(--green);background:rgba(6,214,160,.1);color:var(--green)}
+.ev-cart-btn.registered,.slide-btn-cart.registered,.modal-cart-btn.registered{
+  border-color:var(--green)!important;background:rgba(6,214,160,.08)!important;
+  color:var(--green)!important;cursor:default!important;opacity:.8}
+.ev-open-tag{font-family:'Share Tech Mono';font-size:var(--t-tag);letter-spacing:1px;
+  color:rgba(255,255,255,.22);flex:1;text-align:center}
+.empty-state{font-family:'Share Tech Mono';font-size:var(--t-sm);letter-spacing:3px;
+  color:rgba(255,255,255,.15);padding:36px;text-align:center;
+  border:1px dashed rgba(255,255,255,.07);grid-column:1/-1}
+
+/* ── SOLD OUT ── */
+/* card-level overlay tint */
+.event-card.sold-out{opacity:.75}
+.event-card.sold-out .ev-poster::after{
+  content:'';position:absolute;inset:0;z-index:3;
+  background:repeating-linear-gradient(
+    -45deg,rgba(255,50,80,.06),rgba(255,50,80,.06) 8px,
+    transparent 8px,transparent 16px)}
+/* sold out badge in footer */
+.ev-soldout-btn{
+  font-family:'Orbitron';font-size:clamp(.54rem,1.3vw,.68rem);letter-spacing:1.8px;
+  padding:9px 10px;border:1px solid rgba(255,68,102,.5);
+  background:rgba(255,68,102,.08);color:var(--coral);
+  flex:1.2;text-align:center;cursor:default;
+  clip-path:polygon(5% 0,100% 0,95% 100%,0 100%)}
+/* poster sold-out ribbon */
+.soldout-ribbon{
+  position:absolute;top:0;left:0;right:0;z-index:4;
+  background:rgba(255,68,102,.88);
+  font-family:'Orbitron';font-size:var(--t-tag);letter-spacing:3px;
+  color:#fff;text-align:center;padding:5px 0;
+  clip-path:polygon(0 0,100% 0,100% 70%,50% 100%,0 70%)}
+/* carousel sold-out btn */
+.slide-btn-sold{
+  font-family:'Orbitron';font-size:clamp(.54rem,1.5vw,.68rem);letter-spacing:1.8px;
+  padding:9px 10px;border:1px solid rgba(255,68,102,.5);background:rgba(255,68,102,.08);
+  color:var(--coral);cursor:default;width:100%;text-align:center;
+  clip-path:polygon(6% 0,100% 0,94% 100%,0 100%)}
+/* modal sold-out block */
+.modal-soldout-banner{
+  display:flex;align-items:center;gap:14px;
+  padding:14px 18px;margin-bottom:0;
+  border:1px solid rgba(255,68,102,.4);border-left:3px solid var(--coral);
+  background:rgba(255,68,102,.06)}
+.modal-soldout-icon{font-size:1.3rem;flex-shrink:0}
+.modal-soldout-lbl{font-family:'Share Tech Mono';font-size:.58rem;letter-spacing:2px;
+  color:var(--coral);opacity:.7;margin-bottom:3px}
+.modal-soldout-val{font-family:'Orbitron';font-size:.82rem;color:var(--coral);
+  letter-spacing:1.5px;font-weight:700}
+
+/* ══════════════════════════════════════════════════════════
+   EVENT MODAL  — full detail view
+══════════════════════════════════════════════════════════ */
+#event-modal{position:fixed;inset:0;z-index:9999;
+  background:rgba(0,5,10,.97);backdrop-filter:blur(24px);
+  overflow-y:auto;padding:72px 20px 56px;opacity:0;pointer-events:none;transition:opacity .3s}
+#event-modal.open{opacity:1;pointer-events:all}
+#event-modal.open .modal-inner{animation:mRise .42s var(--expo) both}
+@keyframes mRise{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+
+.modal-close{position:fixed;top:14px;right:14px;
+  font-family:'Orbitron';font-size:.65rem;letter-spacing:2.5px;
+  background:rgba(0,5,10,.92);border:1px solid rgba(255,255,255,.18);
+  color:rgba(255,255,255,.45);padding:9px 18px;cursor:pointer;transition:all .3s;z-index:2}
+.modal-close:hover{border-color:var(--coral);color:var(--coral)}
+
+/* ── Two-column layout on desktop: poster left, info right ── */
+.modal-inner{
+  max-width:860px;margin:0 auto;
+  display:grid;
+  grid-template-columns:300px 1fr;
+  gap:40px;align-items:start;
+}
+@media(max-width:660px){
+  .modal-inner{grid-template-columns:1fr;gap:20px}
+}
+
+/* poster */
+.modal-poster-wrap{
+  width:100%;aspect-ratio:9/16;
+  overflow:hidden;border:1px solid var(--border-hi);
+  position:sticky;top:16px;
+}
+@media(max-width:660px){
+  .modal-poster-wrap{max-width:200px;margin:0 auto;position:static}
+}
+.modal-poster{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
+.modal-poster-ph{
+  width:100%;height:100%;display:flex;align-items:center;justify-content:center;
+  font-size:4.5rem;background:linear-gradient(135deg,#001520,#000d15)}
+
+/* right-side info panel */
+.modal-info{display:flex;flex-direction:column;gap:0}
+
+.modal-type-tag{
+  font-family:'Share Tech Mono';font-size:.64rem;letter-spacing:var(--lsp-xw);
+  color:var(--cyan);opacity:.70;display:block;margin-bottom:12px}
+
+.modal-title{
+  font-family:'Orbitron';
+  font-size:clamp(1.25rem,3.8vw,2rem);
+  font-weight:900;letter-spacing:3.5px;
+  margin-bottom:26px;line-height:1.15;color:#fff}
+
+/* meta grid */
+.modal-meta-strip{
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:0;
+  border:1px solid var(--border);
+  margin-bottom:26px}
+.modal-meta-item{
+  display:flex;flex-direction:column;gap:7px;
+  padding:18px 20px;
+  border-right:1px solid var(--border);
+  border-bottom:1px solid var(--border)}
+.modal-meta-item:nth-child(even){border-right:none}
+.modal-meta-item:nth-last-child(-n+2){border-bottom:none}
+.modal-meta-lbl{
+  font-family:'Share Tech Mono';font-size:.60rem;letter-spacing:var(--lsp-mid);
+  color:rgba(255,255,255,.30);text-transform:uppercase}
+.modal-meta-val{
+  font-size:1.05rem;font-weight:600;color:rgba(255,255,255,.92);
+  font-family:'Rajdhani';letter-spacing:.6px}
+
+/* prize banner */
+.modal-prize-banner{
+  background:rgba(255,209,102,.04);
+  border:1px solid rgba(255,209,102,.25);border-left:3px solid var(--gold);
+  padding:18px 22px;margin-bottom:26px;
+  display:flex;align-items:center;gap:16px;
+  animation:pShimmer 2.5s ease infinite}
+@keyframes pShimmer{0%,100%{background:rgba(255,209,102,.04)}50%{background:rgba(255,209,102,.09)}}
+.mp-icon{font-size:1.6rem;flex-shrink:0}
+.mp-lbl{font-family:'Share Tech Mono';font-size:.60rem;letter-spacing:var(--lsp-mid);
+  color:var(--gold);opacity:.65;margin-bottom:4px}
+.mp-val{font-family:'Orbitron';font-size:1.2rem;color:var(--gold);letter-spacing:2.5px;font-weight:700}
+
+/* about + rules */
+.modal-sec{margin-bottom:26px}
+.modal-sec-ttl{
+  font-family:'Share Tech Mono';font-size:.62rem;letter-spacing:var(--lsp-wide);
+  color:var(--cyan);opacity:.65;margin-bottom:14px;
+  padding-bottom:10px;border-bottom:1px solid var(--border)}
+.modal-sec p{font-size:.96rem;line-height:1.82;color:rgba(255,255,255,.62)}
+.modal-rules{list-style:none;display:flex;flex-direction:column;gap:12px}
+.modal-rules li{
+  font-size:.96rem;color:rgba(255,255,255,.58);
+  padding-left:20px;position:relative;line-height:1.65}
+.modal-rules li::before{content:'›';position:absolute;left:0;color:var(--cyan);font-size:1.1rem}
+
+/* actions row */
+.modal-actions{
+  display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+  margin-top:28px;padding-top:22px;border-top:1px solid var(--border)}
+.modal-cart-btn{
+  font-family:'Orbitron';font-size:.74rem;letter-spacing:2.5px;
+  padding:16px 32px;border:1px solid var(--cyan);background:rgba(0,242,255,.07);
+  color:var(--cyan);cursor:pointer;text-decoration:none;display:inline-block;
+  clip-path:polygon(5% 0,100% 0,95% 100%,0 100%);transition:all .3s}
+.modal-cart-btn:hover{background:var(--cyan);color:var(--ocean)}
+.modal-cart-btn.in-cart{border-color:var(--green);background:rgba(6,214,160,.1);color:var(--green)}
+.modal-open-tag{font-family:'Share Tech Mono';font-size:.66rem;letter-spacing:2.5px;color:rgba(255,255,255,.32)}
+.modal-fee-badge{
+  font-family:'Share Tech Mono';font-size:.68rem;letter-spacing:1.5px;
+  padding:10px 18px;border:1px solid}
+
+@media(max-width:660px){
+  .modal-title{font-size:clamp(1.05rem,6vw,1.35rem);letter-spacing:2px;margin-bottom:18px}
+  .modal-meta-strip{grid-template-columns:repeat(2,1fr)}
+  .modal-meta-item{padding:13px 14px;gap:5px}
+  .modal-meta-lbl{font-size:.56rem}
+  .modal-meta-val{font-size:.92rem}
+  .modal-sec p,.modal-rules li{font-size:.88rem}
+  .modal-rules{gap:10px}
+  .modal-cart-btn{width:100%;text-align:center;padding:15px 20px;font-size:.68rem}
+  .modal-actions{flex-direction:column;align-items:stretch;gap:10px;margin-top:22px;padding-top:18px}
+  .modal-fee-badge{text-align:center;font-size:.64rem;padding:10px 14px}
+  .mp-val{font-size:1rem}
+  .mp-icon{font-size:1.4rem}
+  .modal-prize-banner{padding:14px 16px;gap:12px;margin-bottom:20px}
+  .modal-type-tag{font-size:.58rem}
+}
+
+/* ── COMING SOON ── */
+.coming-soon{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:14px;padding:64px 24px;border:1px dashed rgba(0,242,255,.15);
+  background:rgba(0,242,255,.02);margin-bottom:40px;position:relative;overflow:hidden}
+.coming-soon::before{content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(45deg,transparent,transparent 22px,rgba(0,242,255,.015) 22px,rgba(0,242,255,.015) 23px)}
+.cs-ico{font-size:2rem;filter:drop-shadow(0 0 12px rgba(0,242,255,.45));
+  animation:csPulse 2.4s ease-in-out infinite;position:relative;z-index:1}
+@keyframes csPulse{0%,100%{opacity:.55;transform:scale(1)}50%{opacity:1;transform:scale(1.08)}}
+.cs-ttl{font-family:'Orbitron';font-size:clamp(.95rem,2.8vw,1.5rem);font-weight:900;
+  letter-spacing:5px;color:var(--cyan);
+  text-shadow:0 0 20px rgba(0,242,255,.6),0 0 40px rgba(0,242,255,.28);position:relative;z-index:1}
+.cs-sub{font-family:'Share Tech Mono';font-size:var(--t-tag);letter-spacing:var(--lsp-wide);
+  color:rgba(0,242,255,.4);position:relative;z-index:1}
+
+/* ── CART FAB + TOAST ── */
+.cart-fab{display:none;position:fixed;bottom:16px;right:14px;z-index:900;
+  background:var(--cyan);color:#000;border:none;
+  font-family:'Orbitron';font-size:var(--t-ui);letter-spacing:2px;
+  padding:11px 16px;cursor:pointer;
+  clip-path:polygon(8% 0,100% 0,92% 100%,0 100%);
+  box-shadow:0 0 22px rgba(0,242,255,.32);text-decoration:none;white-space:nowrap}
+.cart-fab.show{display:flex;align-items:center;gap:7px;
+  animation:fabIn .4s var(--expo),floatY 3.5s 1s ease-in-out infinite}
+@keyframes fabIn{from{transform:translateY(58px) scale(.8);opacity:0}to{transform:none;opacity:1}}
+.fab-count{background:#000;color:var(--cyan);border-radius:50%;
+  width:18px;height:18px;display:flex;align-items:center;justify-content:center;
+  font-family:'Share Tech Mono';font-size:.6rem}
+.toast{position:fixed;bottom:76px;left:50%;transform:translateX(-50%) translateY(18px);
+  background:rgba(0,242,255,.08);border:1px solid var(--cyan);
+  font-family:'Share Tech Mono';font-size:var(--t-sm);letter-spacing:2.5px;
+  color:var(--cyan);padding:10px 22px;z-index:99999;opacity:0;transition:all .35s;
+  backdrop-filter:blur(10px);white-space:nowrap;max-width:92vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.added{border-color:var(--green);color:var(--green)}
+.toast.removed{border-color:var(--coral);color:var(--coral)}
+
+/* ── SHARED ANIMATIONS ── */
+@keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+</style>
+</head>
+<body>
+<div id="bg"><div class="grid-bg"></div><div class="radar"></div></div>
+
+<!-- NAV -->
+<nav>
+  <a href="{{ url_for('home') }}" class="nav-brand">
+    <img src="{{ url_for('static', filename='logo1.png') }}" alt="" onerror="this.style.display='none'">
+    ⚓ ANCHORAGE'26
+  </a>
+  <div class="nav-center">
+    <a href="{{ url_for('home') }}">HOME</a>
+    <a href="{{ url_for('events') }}" class="active">EVENTS</a>
+    <a href="{{ url_for('about') }}">ABOUT</a>
+  </div>
+  <div class="nav-right">
+    <a href="{{ url_for('cart') }}" class="cart-btn">
+      🛒 CART <span class="cart-badge" id="cartBadge">0</span>
+    </a>
+    {% if session.get('loggedin') %}
+      <a href="{{ url_for('logout') }}" class="nav-user">{{ session.get('user_name','').split(' ')[0] | upper }}</a>
+    {% else %}
+      <a href="{{ url_for('login') }}" class="nav-user">LOGIN</a>
+    {% endif %}
+  </div>
+</nav>
+
+<!-- DAY SELECTOR -->
+<div class="day-selector-bar">
+  <div class="day-selector-inner" id="daySelectorBar">
+    <button class="day-btn active" data-target="day-1" onclick="scrollToDay('day-1',this)">
+      DAY 1<span class="day-date-sub">10 OCT · FRI</span>
+    </button>
+    <button class="day-btn" data-target="day-2" onclick="scrollToDay('day-2',this)">
+      DAY 2<span class="day-date-sub">11 OCT · SAT</span>
+    </button>
+    <button class="day-btn" data-target="day-3" onclick="scrollToDay('day-3',this)">
+      DAY 3<span class="day-date-sub">12 OCT · SUN</span>
+    </button>
+  </div>
+</div>
+
+<!-- GLOBAL FILTER BAR -->
+<div class="global-filter-bar" id="globalFilterBar">
+  <div class="global-filter-inner">
+    <span class="gf-label">// FILTER BY</span>
+    <button class="gf-btn active" data-gf="all" onclick="setGF('all',this)">
+      <span class="gf-dot"></span>ALL EVENTS
+    </button>
+    <button class="gf-btn" data-gf="workshop" onclick="setGF('workshop',this)">
+      <span class="gf-dot"></span>WORKSHOPS<span class="gf-count" id="gfc-workshop"></span>
+    </button>
+    <button class="gf-btn" data-gf="competition" onclick="setGF('competition',this)">
+      <span class="gf-dot"></span>COMPETITIONS<span class="gf-count" id="gfc-competition"></span>
+    </button>
+    <button class="gf-btn" data-gf="lecture" onclick="setGF('lecture',this)">
+      <span class="gf-dot"></span>LECTURES<span class="gf-count" id="gfc-lecture"></span>
+    </button>
+  </div>
+</div>
+
+<!-- HERO -->
+<header class="page-hero">
+  <span class="hero-tag">// ANCHORAGE 2026 · 10–12 OCTOBER</span>
+  <h1>EVENTS</h1>
+  <p>Three days. Competitions. Workshops. Exhibitions. Endless possibilities.</p>
+</header>
+
+<div class="filter-notice" id="filterNotice">SHOWING: <span id="filterLabel">ALL EVENTS</span></div>
+
+<!-- DAYS -->
+<div class="days-container">
+
+  <!-- DAY 1 -->
+  <section class="day-section" id="day-1">
+    <div class="day-hdr">
+      <span class="day-num-badge">DAY 01</span>
+      <div class="day-title-wrap">
+        <div class="day-title">IGNITION</div>
+        <div class="day-date">10 OCTOBER 2026 · FRIDAY</div>
+      </div>
+      <div class="day-count" id="count-1"></div>
+    </div>
+
+    <div class="carousel-wrap">
+      <span class="carousel-lbl">// FEATURED — COMPETITIONS &amp; WORKSHOPS</span>
+      <div class="carousel-stage" id="stage-1"></div>
+      <div class="carousel-foot">
+        <button class="c-arrow prev" id="prev-1">&#8592;</button>
+        <div class="c-dots" id="dots-1"></div>
+        <div class="c-counter"><span id="cur-1">1</span> / <span id="tot-1">1</span></div>
+        <button class="c-arrow next" id="next-1">&#8594;</button>
+      </div>
+    </div>
+
+    <div class="events-sub">
+      <span class="sub-lbl">// ALL EVENTS — DAY 1</span>
+      <div class="type-filters" id="tf-1">
+        <button class="type-btn active" data-filter="all">ALL</button>
+        <button class="type-btn" data-filter="competition">COMPETITION</button>
+        <button class="type-btn" data-filter="workshop">WORKSHOP</button>
+        <button class="type-btn" data-filter="exhibition">EXHIBITION</button>
+        <button class="type-btn" data-filter="session">SESSION</button>
+      </div>
+      <div class="events-grid" id="grid-1"></div>
+    </div>
+  </section>
+
+  <div class="day-divider"><div class="ddl"></div><div class="ddd"></div><div class="ddr"></div></div>
+
+  <!-- DAY 2 — Coming Soon -->
+  <section class="day-section" id="day-2">
+    <div class="day-hdr">
+      <span class="day-num-badge">DAY 02</span>
+      <div class="day-title-wrap">
+        <div class="day-title">MERIDIAN</div>
+        <div class="day-date">11 OCTOBER 2026 · SATURDAY</div>
+      </div>
+    </div>
+    <div class="coming-soon">
+      <div class="cs-ico">⏳</div>
+      <div class="cs-ttl">COMING SOON</div>
+      <div class="cs-sub">// DAY 2 EVENTS WILL BE ANNOUNCED SHORTLY</div>
+    </div>
+  </section>
+
+  <div class="day-divider"><div class="ddl"></div><div class="ddd"></div><div class="ddr"></div></div>
+
+  <!-- DAY 3 — Coming Soon -->
+  <section class="day-section" id="day-3">
+    <div class="day-hdr">
+      <span class="day-num-badge">DAY 03</span>
+      <div class="day-title-wrap">
+        <div class="day-title">CULMINATION</div>
+        <div class="day-date">12 OCTOBER 2026 · SUNDAY</div>
+      </div>
+    </div>
+    <div class="coming-soon">
+      <div class="cs-ico">⏳</div>
+      <div class="cs-ttl">COMING SOON</div>
+      <div class="cs-sub">// DAY 3 EVENTS WILL BE ANNOUNCED SHORTLY</div>
+    </div>
+  </section>
+
+</div>
+
+<!-- MODAL -->
+<div id="event-modal">
+  <button class="modal-close" id="modalClose">✕ CLOSE</button>
+  <div class="modal-inner" id="modalContent"></div>
+</div>
+
+<!-- CART FAB -->
+<a href="{{ url_for('cart') }}" class="cart-fab" id="cartFab">
+  🛒 VIEW CART <span class="fab-count" id="fabCount">0</span>
+</a>
+<div class="toast" id="toast"></div>
+
+<!-- ═══════════════════════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════════════════════ -->
+<script>
+const LOGGED_IN      = {{ 'true' if session.get('loggedin') else 'false' }};
+const LOGIN_URL      = "{{ url_for('login') }}";
+const REGISTERED_IDS = new Set({{ registered_event_ids | tojson | safe }});
+/* Sold-out event dbIds — passed from Flask events() route.
+   In app.py events() add:
+     cursor.execute("SELECT id FROM events WHERE max_tickets IS NOT NULL AND tickets_sold >= max_tickets")
+     sold_out_ids = [r['id'] for r in cursor.fetchall()]
+   Then: render_template('events.html', ..., sold_out_ids=sold_out_ids)
+*/
+const SOLD_OUT_IDS = new Set({{ sold_out_ids | tojson | safe }});
+
+/* ── EVENTS DATA ── */
+const EVENTS = [
+  {
+    id:'paper-presentation', dbId:5, day:1, type:'competition',
+    name:'Paper Presentation',
+    shortDesc:'Present innovative research aligned with "Reimagining the Possibilities" before a panel of experts.',
+    fullDesc:'A platform for students to present innovative research and ideas, encouraging knowledge sharing aligned with the theme. Participants present technical papers before a panel of experts.',
+    venue:'Department of Ship Technology', team:'Solo / Duo',
+    fee:'paid', feeAmt:150, registration:true, icon:'📄', poster:'/static/images/paper.webp',
+    prize:'₹10,000',
+    rules:[
+      'Abstract submission required 7 days before the event.',
+      'Presentation: 8 minutes + 3 minutes Q&A.',
+      'Maximum 2 members per team.',
+      'Plagiarism leads to disqualification.'
+    ]
+  },
+  {
+    id:'boat-wars', dbId:6, day:1, type:'competition',
+    name:'Boat Wars',
+    shortDesc:'Design and test boat models — evaluating maneuverability, stability, and performance in action.',
+    fullDesc:'A competitive event where participants design and test boat models, evaluating their maneuverability, stability, and overall performance. Teams bring pre-built boats and compete in head-to-head challenges.',
+    venue:'Department of Ship Technology', team:'2 Members',
+    fee:'paid', feeAmt:200, registration:true, icon:'⛵', poster:'/static/images/boatwars.webp',
+    prize:'₹10,000',
+    rules:[
+      'Boat must be designed and built by the team.',
+      'Max dimensions: 60cm × 30cm × 30cm.',
+      'Battery-operated or wind-powered only.',
+      'Each team gets 2 attempts — best attempt counts.',
+      'Team size: exactly 2 members.'
+    ]
+  },
+];
+
+/* ── STATE ── */
+const cState  = {'1':0,'2':0,'3':0};
+const aFilter = {'1':'all','2':'all','3':'all'};
+
+/* ── CART ── */
+const getCart   = ()=>{ try{ return JSON.parse(localStorage.getItem('anch_cart')||'[]') }catch{ return [] } };
+const saveCart  = c => localStorage.setItem('anch_cart',JSON.stringify(c));
+const isInCart  = id => getCart().some(i=>i.id===id);
+const isReg     = id => { const e=EVENTS.find(ev=>ev.id===id); return e ? REGISTERED_IDS.has(e.dbId) : false; };
+const isSoldOut = id => { const e=EVENTS.find(ev=>ev.id===id); return e ? SOLD_OUT_IDS.has(e.dbId) : false; };
+
+function toggleCart(id,e){
+  if(e) e.stopPropagation();
+  if(!LOGGED_IN){ showToast('◈ LOGIN TO ADD EVENTS','removed'); setTimeout(()=>location.href=LOGIN_URL,900); return; }
+  const ev=EVENTS.find(ev=>ev.id===id); if(!ev) return;
+  if(isSoldOut(id)){ showToast('◈ REGISTRATIONS CLOSED — SOLD OUT','removed'); return; }
+  if(isReg(id)){ showToast('◈ ALREADY REGISTERED','removed'); return; }
+  if(isInCart(id)){
+    saveCart(getCart().filter(i=>i.id!==id));
+    refreshAll(); updateModalBtn(id); updateCartUI();
+    showToast('◈ REMOVED FROM CART','removed');
+    fetch('/api/cart/remove/'+ev.dbId,{method:'POST'}).catch(()=>{});
+  } else {
+    const c=getCart(); c.push({id:ev.id,dbId:ev.dbId,name:ev.name}); saveCart(c);
+    refreshAll(); updateModalBtn(id); updateCartUI();
+    showToast('◈ ADDED TO CART','added');
+    fetch('/add-to-cart/'+ev.dbId,{method:'POST'}).catch(()=>{});
+  }
+}
+
+function updateCartUI(){
+  const n=getCart().length;
+  const badge=document.getElementById('cartBadge');
+  const fab=document.getElementById('cartFab');
+  badge.textContent=n; badge.classList.toggle('show',n>0);
+  fab.classList.toggle('show',n>0);
+  const fc=document.getElementById('fabCount'); if(fc) fc.textContent=n;
+}
+
+function updateModalBtn(id){
+  const btn=document.getElementById('modalCartBtn'); if(!btn) return;
+  if(isReg(id)){ btn.textContent='✓ REGISTERED'; btn.className='modal-cart-btn registered'; btn.onclick=null; return; }
+  const ic=isInCart(id);
+  btn.textContent=ic?'✓ IN CART':'+ ADD TO CART';
+  btn.className='modal-cart-btn'+(ic?' in-cart':'');
+}
+
+/* ── DAY SCROLL ── */
+function scrollToDay(sid,btn){
+  document.querySelectorAll('.day-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const el=document.getElementById(sid); if(!el) return;
+  const offset=60+52+46+14;
+  window.scrollTo({top:el.getBoundingClientRect().top+scrollY-offset,behavior:'smooth'});
+}
+window.addEventListener('scroll',()=>{
+  const sh=60+52+46+36;
+  ['1','2','3'].forEach(d=>{
+    const el=document.getElementById('day-'+d); if(!el) return;
+    const r=el.getBoundingClientRect();
+    if(r.top<=sh&&r.bottom>sh)
+      document.querySelectorAll('.day-btn').forEach(b=>b.classList.toggle('active',b.dataset.target==='day-'+d));
+  });
+},{passive:true});
+
+/* ── CAROUSEL ── */
+const getCE = day => EVENTS.filter(e=>e.day===+day&&(e.type==='competition'||e.type==='workshop'));
+
+function buildCarousel(day){
+  const evs=getCE(day);
+  const stage=document.getElementById('stage-'+day);
+  const dots=document.getElementById('dots-'+day);
+  document.getElementById('tot-'+day).textContent=evs.length||1;
+  if(!evs.length){
+    stage.innerHTML='<div class="c-empty">// NO FEATURED EVENTS //</div>';
+    document.getElementById('prev-'+day).style.display='none';
+    document.getElementById('next-'+day).style.display='none';
+    return;
+  }
+  stage.innerHTML=evs.map((ev,i)=>{
+    const ic=isInCart(ev.id), ir=isReg(ev.id), so=isSoldOut(ev.id), hp=ev.poster&&ev.poster.trim()!=='';
+    const prizeHtml=ev.prize?`<div class="slide-prize"><span class="slide-prize-ico">🏆</span>${ev.prize}</div>`:'';
+    let cartBtn;
+    if(so){
+      cartBtn=`<button class="slide-btn-sold" disabled>⊘ SOLD OUT</button>`;
+    } else if(!ev.registration){
+      cartBtn=`<span class="slide-open-lbl">OPEN TO ALL</span>`;
+    } else if(ir){
+      cartBtn=`<button class="slide-btn-cart registered" disabled>✓ REGISTERED</button>`;
+    } else {
+      cartBtn=`<button class="slide-btn-cart ${ic?'in-cart':''}"
+               onclick="event.stopPropagation();toggleCart('${ev.id}',event);buildCarousel(${day})">
+               ${ic?'✓ IN CART':'+ ADD TO CART'}
+             </button>`;
+    }
+    return `<div class="c-slide" data-idx="${i}" onclick="cClickHandler(${day},${i})">
+      <div class="slide-inner">
+        <div class="slide-poster-wrap">
+          ${hp?`<img class="slide-poster" src="${ev.poster}" alt="${ev.name}">`
+              :`<div class="slide-ph"><div class="slide-ph-icon">${ev.icon}</div><div class="slide-ph-name">${ev.name}</div></div>`}
+          <span class="slide-type-tag">${ev.type.toUpperCase()}</span>
+        </div>
+        <div class="slide-info">
+          <div class="slide-name">${ev.name}</div>
+          ${prizeHtml}
+        </div>
+        <div class="slide-acts">
+          <button class="slide-btn-det" onclick="event.stopPropagation();openModal('${ev.id}')">VIEW DETAILS</button>
+          ${cartBtn}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+  dots.innerHTML=evs.map((_,i)=>`<div class="c-dot${i===0?' active':''}" onclick="goSlide(${day},${i})"></div>`).join('');
+  renderCarousel(day);
+}
+
+function renderCarousel(day){
+  const evs=getCE(day); if(!evs.length) return;
+  const idx=cState[String(day)];
+  document.querySelectorAll(`#stage-${day} .c-slide`).forEach((s,i)=>{
+    const p=i-idx; s.setAttribute('data-pos',p===0?'0':(Math.abs(p)>3?'far':String(p)));
+  });
+  document.querySelectorAll(`#dots-${day} .c-dot`).forEach((d,i)=>d.classList.toggle('active',i===idx));
+  document.getElementById('cur-'+day).textContent=idx+1;
+}
+function cClickHandler(day,idx){ const p=idx-cState[String(day)]; if(p===0)return; cStep(day,p>0?1:-1); }
+function cStep(day,dir){ const e=getCE(day); if(!e.length)return; cState[String(day)]=(cState[String(day)]+dir+e.length)%e.length; renderCarousel(day); }
+function goSlide(day,idx){ cState[String(day)]=idx; renderCarousel(day); }
+
+/* ── EVENT CARD: name + prize + 2 buttons only ── */
+function renderCard(ev){
+  const ic=isInCart(ev.id), ir=isReg(ev.id), so=isSoldOut(ev.id);
+  const hp=ev.poster&&ev.poster.trim()!=='';
+
+  /* prize line or free/open badge */
+  let prizeBlock='';
+  if(ev.prize){
+    prizeBlock=`<div class="ev-prize"><span class="ev-prize-ico">🏆</span>${ev.prize}</div>`;
+  } else if(ev.fee==='free'){
+    prizeBlock=`<span class="ev-free">FREE ENTRY</span>`;
+  }
+
+  /* footer right — priority: sold out > registered > cart/open */
+  let footerRight;
+  if(so){
+    footerRight=`<button class="ev-soldout-btn" disabled>⊘ SOLD OUT</button>`;
+  } else if(!ev.registration){
+    footerRight=`<span class="ev-open-tag">OPEN TO ALL</span>`;
+  } else if(ir){
+    footerRight=`<button class="ev-cart-btn registered" disabled>✓ REGISTERED</button>`;
+  } else {
+    footerRight=`<button class="ev-cart-btn ${ic?'in-cart':''}"
+         onclick="event.stopPropagation();toggleCart('${ev.id}',event)">
+         ${ic?'✓ IN CART':'+ CART'}
+       </button>`;
+  }
+
+  return `<div class="event-card type-${ev.type}${so?' sold-out':''}" onclick="openModal('${ev.id}')">
+    <div class="card-scan"></div>
+    <div class="ev-poster">
+      ${hp?`<img src="${ev.poster}" alt="${ev.name}">`
+          :`<div class="poster-ph"><div class="ph-icon">${ev.icon}</div><div class="ph-name">${ev.name}</div></div>`}
+      <div class="poster-grad"></div>
+      <span class="ev-type-tag">${ev.type.toUpperCase()}</span>
+      ${so?`<div class="soldout-ribbon">SOLD OUT</div>`:''}
+    </div>
+    <div class="ev-body">
+      <div class="ev-name">${ev.name}</div>
+      ${prizeBlock}
+    </div>
+    <div class="ev-footer">
+      <button class="ev-det-btn" onclick="event.stopPropagation();openModal('${ev.id}')">DETAILS</button>
+      ${footerRight}
+    </div>
+  </div>`;
+}
+
+function renderGrid(day){
+  const f=aFilter[day];
+  const evs=EVENTS.filter(e=>e.day===+day&&(f==='all'||e.type===f));
+  const grid=document.getElementById('grid-'+day); if(!grid) return;
+  grid.innerHTML=evs.length?evs.map(renderCard).join(''):`<div class="empty-state">// NO EVENTS MATCH FILTER //</div>`;
+  document.getElementById('count-'+day).textContent=EVENTS.filter(e=>e.day===+day).length+' EVENTS';
+  setTimeout(()=>animCards(grid),30);
+}
+function refreshAll(){ ['1','2','3'].forEach(renderGrid); }
+
+function initTypeFilters(){
+  ['1','2','3'].forEach(day=>{
+    const c=document.getElementById('tf-'+day); if(!c) return;
+    c.querySelectorAll('.type-btn').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        aFilter[day]=btn.dataset.filter;
+        c.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        renderGrid(day);
+      });
+    });
+  });
+}
+
+/* ── MODAL ── */
+function openModal(id){
+  const ev=EVENTS.find(e=>e.id===id); if(!ev) return;
+  const hp=ev.poster&&ev.poster.trim()!=='';
+  const ic=isInCart(id), ir=isReg(id), so=isSoldOut(id);
+  const feeBadge=ev.fee==='free'
+    ?`<span class="modal-fee-badge" style="color:var(--green);border-color:rgba(6,214,160,.3);background:rgba(6,214,160,.06)">FREE ENTRY</span>`
+    :`<span class="modal-fee-badge" style="color:var(--gold);border-color:rgba(255,209,102,.3);background:rgba(255,209,102,.06)">₹${ev.feeAmt} / REGISTRATION</span>`;
+  const dateMap={1:'10 OCT',2:'11 OCT',3:'12 OCT'};
+  const prizeBanner=ev.prize
+    ?`<div class="modal-prize-banner"><div class="mp-icon">🏆</div><div><div class="mp-lbl">// PRIZE POOL</div><div class="mp-val">${ev.prize}</div></div></div>`:'';
+  let actionArea;
+  if(so){
+    actionArea=`<div class="modal-soldout-banner">
+      <div class="modal-soldout-icon">⊘</div>
+      <div>
+        <div class="modal-soldout-lbl">// REGISTRATIONS CLOSED</div>
+        <div class="modal-soldout-val">SOLD OUT</div>
+      </div>
+    </div>`;
+  } else if(!ev.registration){
+    actionArea=`<span class="modal-open-tag">OPEN TO ALL — NO REGISTRATION REQUIRED</span>`;
+  } else if(ir){
+    actionArea=`<button id="modalCartBtn" class="modal-cart-btn registered" disabled>✓ REGISTERED</button>`;
+  } else {
+    actionArea=`<button id="modalCartBtn" class="modal-cart-btn ${ic?'in-cart':''}"
+         onclick="toggleCart('${id}',null);updateModalBtn('${id}')">
+         ${ic?'✓ IN CART':'+ ADD TO CART'}
+       </button>`;
+  }
+
+  document.getElementById('modalContent').innerHTML=`
+    <div class="modal-poster-wrap">
+      ${hp?`<img src="${ev.poster}" class="modal-poster" alt="${ev.name}">`:`<div class="modal-poster-ph">${ev.icon}</div>`}
+    </div>
+    <div class="modal-info">
+      <span class="modal-type-tag">// ${ev.type.toUpperCase()} · DAY ${ev.day}</span>
+      <h2 class="modal-title">${ev.name}</h2>
+      <div class="modal-meta-strip">
+        <div class="modal-meta-item"><span class="modal-meta-lbl">VENUE</span><span class="modal-meta-val">${ev.venue}</span></div>
+        <div class="modal-meta-item"><span class="modal-meta-lbl">TEAM SIZE</span><span class="modal-meta-val">${ev.team}</span></div>
+        <div class="modal-meta-item"><span class="modal-meta-lbl">FEE</span><span class="modal-meta-val">${ev.fee==='free'?'FREE':'₹'+ev.feeAmt+' / REGISTRATION'}</span></div>
+        <div class="modal-meta-item"><span class="modal-meta-lbl">DATE</span><span class="modal-meta-val">${dateMap[ev.day]}</span></div>
+      </div>
+      ${prizeBanner}
+      <div class="modal-sec"><div class="modal-sec-ttl">// ABOUT THE EVENT</div><p>${ev.fullDesc}</p></div>
+      <div class="modal-sec"><div class="modal-sec-ttl">// RULES &amp; GUIDELINES</div>
+        <ul class="modal-rules">${ev.rules.map(r=>`<li>${r}</li>`).join('')}</ul>
+      </div>
+      <div class="modal-actions">${actionArea} ${feeBadge}</div>
+    </div>`;
+
+  const m=document.getElementById('event-modal');
+  m.classList.add('open'); m.scrollTop=0; document.body.style.overflow='hidden';
+}
+function closeModal(){ document.getElementById('event-modal').classList.remove('open'); document.body.style.overflow=''; }
+
+/* ── TOAST ── */
+function showToast(msg,type=''){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.className='toast show '+type;
+  setTimeout(()=>t.className='toast',2600);
+}
+
+/* ── GLOBAL FILTER ── */
+const GF_MAP={all:null,workshop:['workshop'],competition:['competition'],lecture:['session']};
+let activeGF='all';
+
+function setGF(cat,btn){
+  activeGF=cat;
+  document.querySelectorAll('.gf-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const notice=document.getElementById('filterNotice');
+  const lbl=document.getElementById('filterLabel');
+  const lmap={all:'ALL EVENTS',workshop:'WORKSHOPS',competition:'COMPETITIONS',lecture:'LECTURES'};
+  cat==='all'?notice.classList.remove('show'):(notice.classList.add('show'),lbl.textContent=lmap[cat]||cat.toUpperCase());
+  applyGF(); syncTypeFilters(cat);
+  const url=new URL(location); cat==='all'?url.searchParams.delete('category'):url.searchParams.set('category',cat);
+  history.replaceState(null,'',url);
+}
+
+function applyGF(){
+  const types=GF_MAP[activeGF];
+  ['1','2','3'].forEach(day=>{
+    const sec=document.getElementById('day-'+day); if(!sec) return;
+    if(!types){ sec.classList.remove('gf-hidden'); renderGrid(day); }
+    else {
+      const evs=EVENTS.filter(e=>e.day===+day&&types.includes(e.type));
+      const grid=document.getElementById('grid-'+day);
+      if(grid){ grid.innerHTML=evs.length?evs.map(renderCard).join(''):`<div class="empty-state">// NO ${activeGF.toUpperCase()}S ON DAY ${day} //</div>`; setTimeout(()=>animCards(grid),30); }
+      sec.classList.toggle('gf-hidden',evs.length===0);
+    }
+  });
+  updateDividers();
+}
+
+function updateDividers(){
+  const divs=document.querySelectorAll('.day-divider');
+  const secs=['day-1','day-2','day-3'].map(id=>document.getElementById(id));
+  divs.forEach((div,i)=>{
+    const a=secs[i], b=secs[i+1]; if(!a||!b) return;
+    div.classList.toggle('gf-hidden',a.classList.contains('gf-hidden')||b.classList.contains('gf-hidden'));
+  });
+}
+
+function syncTypeFilters(cat){
+  const map={all:'all',workshop:'workshop',competition:'competition',lecture:'session'};
+  const t=map[cat]||'all';
+  ['1','2','3'].forEach(day=>{
+    aFilter[day]=t;
+    const c=document.getElementById('tf-'+day); if(!c) return;
+    c.querySelectorAll('.type-btn').forEach(b=>b.classList.toggle('active',b.dataset.filter===t));
+  });
+}
+
+function updateGFCounts(){
+  ['workshop','competition','lecture'].forEach(cat=>{
+    const types=GF_MAP[cat];
+    const n=types?EVENTS.filter(e=>types.includes(e.type)).length:EVENTS.length;
+    const el=document.getElementById('gfc-'+cat); if(el) el.textContent='('+n+')';
+  });
+}
+
+/* ── CARD ANIMATIONS ── */
+function animCards(container){
+  const cards=container.querySelectorAll('.event-card');
+  cards.forEach((c,i)=>{ c.classList.remove('anim-ready'); c.style.animationDelay=(i*.065)+'s'; });
+  container.offsetHeight;
+  cards.forEach(c=>c.classList.add('anim-ready'));
+}
+
+const cardObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ animCards(e.target); cardObs.unobserve(e.target); } });
+},{threshold:.07,rootMargin:'0px 0px -36px 0px'});
+
+/* ── INIT ── */
+document.addEventListener('DOMContentLoaded',()=>{
+  [1].forEach(d=>{
+    buildCarousel(d); renderGrid(String(d));
+    document.getElementById('prev-'+d)?.addEventListener('click',()=>cStep(d,-1));
+    document.getElementById('next-'+d)?.addEventListener('click',()=>cStep(d,1));
+    const stage=document.getElementById('stage-'+d);
+    if(stage){
+      let sx=0;
+      stage.addEventListener('touchstart',e=>{sx=e.touches[0].clientX},{passive:true});
+      stage.addEventListener('touchend',e=>{ const diff=sx-e.changedTouches[0].clientX; if(Math.abs(diff)>38)cStep(d,diff>0?1:-1); },{passive:true});
+    }
+  });
+
+  initTypeFilters();
+  updateCartUI();
+  updateGFCounts();
+  document.querySelectorAll('.events-grid').forEach(g=>cardObs.observe(g));
+
+  document.getElementById('modalClose').addEventListener('click',closeModal);
+  document.getElementById('event-modal').addEventListener('click',function(e){ if(e.target===this) closeModal(); });
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeModal(); });
+
+  const p=new URLSearchParams(location.search);
+  const dp=p.get('day'); if(dp&&['1','2','3'].includes(dp)) setTimeout(()=>{ const b=document.querySelector(`.day-btn[data-target="day-${dp}"]`); if(b) scrollToDay('day-'+dp,b); },300);
+  const cp=p.get('category'); if(cp&&GF_MAP.hasOwnProperty(cp)&&cp!=='all'){ const gb=document.querySelector(`.gf-btn[data-gf="${cp}"]`); if(gb) setTimeout(()=>setGF(cp,gb),150); }
+  const ep=p.get('event'); if(ep) setTimeout(()=>openModal(ep),300);
+});
+</script>
+</body>
+</html>

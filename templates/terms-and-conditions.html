@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms & Conditions | Anchorage 2026</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;400;500;700&family=Share+Tech+Mono&display=swap');
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --cyan:      #00f2ff;
+            --cyan-dim:  rgba(0,242,255,0.5);
+            --cyan-faint:rgba(0,242,255,0.07);
+            --ocean:     #00050a;
+            --bg:        #000810;
+            --card:      #000d1a;
+            --border:    rgba(0,242,255,0.18);
+            --border-dim:rgba(0,242,255,0.09);
+            --expo:      cubic-bezier(0.19,1,0.22,1);
+            --px:        16px;
+        }
+        @media (min-width: 600px)  { :root { --px: 28px; } }
+        @media (min-width: 1024px) { :root { --px: 48px; } }
+
+        html { scroll-behavior: smooth; }
+        body {
+            background: var(--ocean);
+            color: #fff;
+            font-family: 'Rajdhani', sans-serif;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* ── BACKGROUND ── */
+        #bg {
+            position: fixed; inset: 0; z-index: -5;
+            background: var(--bg); overflow: hidden;
+        }
+        .bg-grid {
+            position: absolute; inset: 0;
+            background-image:
+                linear-gradient(rgba(0,242,255,0.035) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,242,255,0.035) 1px, transparent 1px);
+            background-size: 72px 72px; opacity: 0.45;
+        }
+        .bg-radial {
+            position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+            width: 120vw; height: 60vh;
+            background: radial-gradient(ellipse, rgba(0,242,255,0.05) 0%, transparent 65%);
+            pointer-events: none;
+        }
+        .bg-scan {
+            position: absolute; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(0,242,255,0.4), transparent);
+            animation: bgScan 12s linear infinite; pointer-events: none;
+        }
+        @keyframes bgScan { 0%{top:-1px;opacity:0} 5%{opacity:1} 95%{opacity:0.3} 100%{top:100%;opacity:0} }
+
+        /* ── NAV ── */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            height: 64px;
+            background: rgba(0,5,10,0.92); backdrop-filter: blur(24px);
+            border-bottom: 1px solid var(--border);
+            display: flex; align-items: center;
+        }
+        .nav-inner {
+            width: 100%; max-width: 1200px; margin: 0 auto;
+            padding: 0 var(--px);
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .nav-logo {
+            font-family: 'Orbitron'; font-size: 0.78rem; letter-spacing: 4px;
+            color: var(--cyan); text-decoration: none;
+            text-shadow: 0 0 16px rgba(0,242,255,0.4);
+            display: flex; align-items: center; gap: 12px;
+        }
+        .nav-logo img {
+            height: 36px; width: auto;
+            filter: drop-shadow(0 0 5px var(--cyan));
+        }
+        .nav-back {
+            font-family: 'Orbitron'; font-size: 0.52rem; letter-spacing: 3px;
+            color: rgba(255,255,255,0.4); text-decoration: none;
+            border: 1px solid var(--border); padding: 7px 16px;
+            clip-path: polygon(8% 0, 100% 0, 92% 100%, 0 100%);
+            transition: all 0.3s; white-space: nowrap;
+        }
+        .nav-back:hover { color: var(--cyan); border-color: var(--cyan); }
+
+        /* ── PAGE WRAPPER ── */
+        .page {
+            max-width: 860px; margin: 0 auto;
+            padding: 100px var(--px) 80px;
+        }
+
+        /* ── PAGE HEADER ── */
+        .page-header {
+            text-align: center;
+            margin-bottom: 56px;
+            position: relative;
+        }
+        .page-header-tag {
+            font-family: 'Share Tech Mono';
+            font-size: 0.58rem; letter-spacing: 5px;
+            color: var(--cyan); opacity: 0.55;
+            display: block; margin-bottom: 14px;
+        }
+        .page-header h1 {
+            font-family: 'Orbitron'; font-size: clamp(1.6rem, 5vw, 2.8rem);
+            font-weight: 700; letter-spacing: 6px;
+            background: linear-gradient(135deg, #fff 40%, var(--cyan) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; line-height: 1.1;
+        }
+        .page-header-line {
+            width: 100px; height: 1px; margin: 20px auto 0;
+            background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+            position: relative;
+        }
+        .page-header-line::before, .page-header-line::after {
+            content: ''; position: absolute; top: 50%; transform: translateY(-50%);
+            width: 5px; height: 5px; border-radius: 50%;
+            background: var(--cyan); box-shadow: 0 0 8px var(--cyan);
+        }
+        .page-header-line::before { left: 0; }
+        .page-header-line::after  { right: 0; }
+        .page-header-meta {
+            font-family: 'Share Tech Mono'; font-size: 0.55rem;
+            letter-spacing: 3px; color: rgba(255,255,255,0.28);
+            margin-top: 16px; display: block;
+        }
+
+        /* ── INTRO CARD ── */
+        .intro-card {
+            background: linear-gradient(135deg, rgba(0,242,255,0.06), rgba(0,242,255,0.02));
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--cyan);
+            padding: 22px 24px; margin-bottom: 40px;
+            position: relative; overflow: hidden;
+        }
+        .intro-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, var(--cyan), transparent);
+        }
+        .intro-card p {
+            font-size: clamp(0.88rem, 2.5vw, 0.98rem);
+            line-height: 1.75; color: rgba(255,255,255,0.72);
+            letter-spacing: 0.3px;
+        }
+
+        /* ── TOC ── */
+        .toc {
+            background: var(--card); border: 1px solid var(--border-dim);
+            padding: 24px 28px; margin-bottom: 48px;
+        }
+        .toc-title {
+            font-family: 'Orbitron'; font-size: 0.48rem; letter-spacing: 4px;
+            color: var(--cyan); opacity: 0.6; margin-bottom: 16px; display: block;
+        }
+        .toc-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+        .toc-list li { display: flex; align-items: center; gap: 10px; }
+        .toc-list a {
+            font-family: 'Rajdhani'; font-size: 0.92rem; font-weight: 500;
+            color: rgba(255,255,255,0.5); text-decoration: none;
+            letter-spacing: 0.5px; transition: color 0.3s;
+        }
+        .toc-list a:hover { color: var(--cyan); }
+        .toc-num {
+            font-family: 'Share Tech Mono'; font-size: 0.45rem;
+            color: rgba(0,242,255,0.4); letter-spacing: 1px; flex-shrink: 0;
+        }
+
+        /* ── SECTIONS ── */
+        .policy-section {
+            margin-bottom: 40px;
+            scroll-margin-top: 80px;
+        }
+        .section-header {
+            display: flex; align-items: center; gap: 14px;
+            margin-bottom: 20px; padding-bottom: 14px;
+            border-bottom: 1px solid var(--border-dim);
+        }
+        .section-num {
+            font-family: 'Share Tech Mono'; font-size: 0.5rem;
+            letter-spacing: 2px; color: var(--cyan); opacity: 0.55;
+            background: rgba(0,242,255,0.06); border: 1px solid var(--border);
+            padding: 4px 9px; flex-shrink: 0;
+        }
+        .section-title {
+            font-family: 'Orbitron'; font-size: clamp(0.72rem, 2.5vw, 0.88rem);
+            letter-spacing: 3px; color: #fff; font-weight: 700;
+        }
+
+        /* Sub-sections */
+        .subsection { margin-bottom: 20px; }
+        .subsection-title {
+            font-family: 'Orbitron'; font-size: 0.58rem; letter-spacing: 2.5px;
+            color: var(--cyan); opacity: 0.75; margin-bottom: 10px;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .subsection-title::before {
+            content: '◈'; font-size: 0.4rem; opacity: 0.6;
+        }
+        .policy-text {
+            font-size: clamp(0.88rem, 2.5vw, 0.96rem);
+            line-height: 1.8; color: rgba(255,255,255,0.62);
+            letter-spacing: 0.2px;
+        }
+        .policy-list {
+            list-style: none; margin-top: 10px;
+            display: flex; flex-direction: column; gap: 8px;
+        }
+        .policy-list li {
+            font-size: clamp(0.88rem, 2.5vw, 0.96rem);
+            line-height: 1.7; color: rgba(255,255,255,0.62);
+            letter-spacing: 0.2px;
+            padding-left: 18px; position: relative;
+        }
+        .policy-list li::before {
+            content: '—'; position: absolute; left: 0; color: var(--cyan); opacity: 0.6;
+        }
+
+        /* ── CONTACT CARD ── */
+        .contact-card {
+            background: var(--card); border: 1px solid var(--border);
+            border-top: 2px solid var(--cyan);
+            padding: 28px 32px; margin-top: 48px;
+            position: relative; overflow: hidden;
+        }
+        .contact-card::before {
+            content: ''; position: absolute; inset: 0;
+            background-image: radial-gradient(rgba(0,242,255,0.04) 1px, transparent 1px);
+            background-size: 22px 22px; pointer-events: none;
+        }
+        .contact-card-inner { position: relative; z-index: 1; }
+        .contact-label {
+            font-family: 'Orbitron'; font-size: 0.48rem; letter-spacing: 4px;
+            color: var(--cyan); opacity: 0.6; display: block; margin-bottom: 10px;
+        }
+        .contact-org {
+            font-family: 'Orbitron'; font-size: clamp(0.8rem, 2.5vw, 1rem);
+            letter-spacing: 3px; color: #fff; margin-bottom: 6px; font-weight: 700;
+        }
+        .contact-dept {
+            font-size: 0.92rem; color: rgba(255,255,255,0.55);
+            margin-bottom: 4px; line-height: 1.5;
+        }
+        .contact-email {
+            display: inline-flex; align-items: center; gap: 8px;
+            margin-top: 14px; padding: 9px 18px;
+            border: 1px solid var(--border);
+            color: var(--cyan); text-decoration: none;
+            font-family: 'Share Tech Mono'; font-size: 0.68rem;
+            letter-spacing: 1.5px; transition: all 0.3s;
+            background: rgba(0,242,255,0.04);
+        }
+        .contact-email:hover {
+            border-color: var(--cyan); background: rgba(0,242,255,0.1);
+            box-shadow: 0 0 16px rgba(0,242,255,0.15);
+        }
+        .contact-email-icon { font-size: 0.9rem; }
+
+        /* ── CONSENT BANNER ── */
+        .consent-banner {
+            background: rgba(0,242,255,0.04); border: 1px solid var(--border);
+            padding: 18px 22px; margin-top: 40px;
+            display: flex; align-items: flex-start; gap: 14px;
+        }
+        .consent-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 2px; }
+        .consent-text {
+            font-size: 0.85rem; color: rgba(255,255,255,0.45);
+            line-height: 1.65; letter-spacing: 0.2px;
+        }
+        .consent-text strong { color: rgba(255,255,255,0.72); }
+
+        /* ── FOOTER ── */
+        .page-footer {
+            border-top: 1px solid var(--border-dim);
+            padding-top: 28px; margin-top: 56px;
+            display: flex; align-items: center; justify-content: space-between;
+            flex-wrap: wrap; gap: 12px;
+        }
+        .footer-copy {
+            font-family: 'Share Tech Mono'; font-size: 0.52rem;
+            letter-spacing: 2px; color: rgba(255,255,255,0.25);
+        }
+        .footer-links-row { display: flex; gap: 18px; flex-wrap: wrap; }
+        .footer-links-row a {
+            font-family: 'Orbitron'; font-size: 0.42rem; letter-spacing: 2px;
+            color: rgba(255,255,255,0.3); text-decoration: none; transition: color 0.3s;
+        }
+        .footer-links-row a:hover { color: var(--cyan); }
+
+        /* ── SCROLL PROGRESS ── */
+        #scroll-bar {
+            position: fixed; top: 64px; left: 0; right: 0;
+            height: 2px; z-index: 999;
+            background: rgba(0,242,255,0.08);
+        }
+        #scroll-fill {
+            height: 100%; width: 0%;
+            background: linear-gradient(90deg, var(--cyan), rgba(0,242,255,0.5));
+            box-shadow: 0 0 8px rgba(0,242,255,0.5);
+            transition: width 0.1s linear;
+        }
+    </style>
+</head>
+<body>
+
+<div id="bg">
+    <div class="bg-grid"></div>
+    <div class="bg-radial"></div>
+    <div class="bg-scan"></div>
+</div>
+
+<!-- Scroll progress bar -->
+<div id="scroll-bar"><div id="scroll-fill"></div></div>
+
+<!-- NAV -->
+<nav>
+    <div class="nav-inner">
+        <a href="{{ url_for('home') }}" class="nav-logo">
+            <img src="{{ url_for('static', filename='logo1.png') }}" alt="Anchorage 2026"
+                 onerror="this.style.display='none';this.nextElementSibling.style.display='inline'">
+            <span style="display:none;">ANCHORAGE'26</span>
+        </a>
+        <a href="{{ url_for('home') }}" class="nav-back">← BACK TO HOME</a>
+    </div>
+</nav>
+
+<!-- PAGE -->
+<div class="page">
+
+    <!-- Header -->
+    <div class="page-header">
+        <span class="page-header-tag">◈ LEGAL DOCUMENTATION ◈</span>
+        <h1>TERMS &amp; CONDITIONS</h1>
+        <div class="page-header-line"></div>
+        <span class="page-header-meta">ANCHORAGE 2026 &nbsp;·&nbsp; DEPT. OF SHIP TECHNOLOGY &nbsp;·&nbsp; CUSAT</span>
+    </div>
+
+    <!-- Intro -->
+    <div class="intro-card">
+        <p>These Terms &amp; Conditions govern your registration for, and participation in, Anchorage 2026, organized by the Department of Ship Technology, Cochin University of Science and Technology (CUSAT). By registering for any event, purchasing a ticket, or otherwise accessing our website, you agree to be bound by the terms set out below.</p>
+    </div>
+
+    <!-- Table of Contents -->
+    <div class="toc">
+        <span class="toc-title">◈ &nbsp; TABLE OF CONTENTS</span>
+        <ol class="toc-list">
+            <li><span class="toc-num">01</span><a href="#t1">Acceptance of Terms</a></li>
+            <li><span class="toc-num">02</span><a href="#t2">Eligibility &amp; Registration</a></li>
+            <li><span class="toc-num">03</span><a href="#t3">Code of Conduct</a></li>
+            <li><span class="toc-num">04</span><a href="#t4">Fees, Payments &amp; Refunds</a></li>
+            <li><span class="toc-num">05</span><a href="#t5">Event Changes &amp; Cancellations</a></li>
+            <li><span class="toc-num">06</span><a href="#t6">Photography, Media &amp; Publicity</a></li>
+            <li><span class="toc-num">07</span><a href="#t7">Liability &amp; Disclaimer</a></li>
+            <li><span class="toc-num">08</span><a href="#t8">Intellectual Property</a></li>
+            <li><span class="toc-num">09</span><a href="#t9">Governing Law &amp; Jurisdiction</a></li>
+            <li><span class="toc-num">10</span><a href="#t10">Contact Us</a></li>
+        </ol>
+    </div>
+
+    <!-- T1 -->
+    <div class="policy-section" id="t1">
+        <div class="section-header">
+            <span class="section-num">01</span>
+            <span class="section-title">ACCEPTANCE OF TERMS</span>
+        </div>
+        <p class="policy-text">By accessing our website, creating an account, registering for any event, or completing a payment, you confirm that you have read, understood, and agree to be bound by these Terms &amp; Conditions, along with our Privacy Policy. If you do not agree with any part of these terms, please discontinue use of the website and refrain from registering for any event.</p>
+    </div>
+
+    <!-- T2 -->
+    <div class="policy-section" id="t2">
+        <div class="section-header">
+            <span class="section-num">02</span>
+            <span class="section-title">ELIGIBILITY &amp; REGISTRATION</span>
+        </div>
+        <div class="subsection">
+            <div class="subsection-title">Eligibility</div>
+            <p class="policy-text">Participation is open to the categories of attendees specified for each individual event (such as students, faculty, or the general public). The organizers reserve the right to verify eligibility and to deny or cancel registration where the stated criteria are not met.</p>
+        </div>
+        <div class="subsection">
+            <div class="subsection-title">Accuracy of Information</div>
+            <p class="policy-text">You are responsible for ensuring that the name, contact details, institution, and other information provided at the time of registration are accurate and current. The organizers are not liable for any issue arising from incorrect or outdated information supplied by a participant.</p>
+        </div>
+        <div class="subsection">
+            <div class="subsection-title">Confirmation</div>
+            <p class="policy-text">A registration is considered confirmed only once payment, where applicable, has been successfully processed and verified by the organizers. Submitting a form or initiating a payment does not, by itself, guarantee a seat or entry.</p>
+        </div>
+    </div>
+
+    <!-- T3 -->
+    <div class="policy-section" id="t3">
+        <div class="section-header">
+            <span class="section-num">03</span>
+            <span class="section-title">CODE OF CONDUCT</span>
+        </div>
+        <div class="subsection">
+            <div class="subsection-title">General Conduct</div>
+            <p class="policy-text">All participants, attendees, and visitors are expected to conduct themselves with courtesy and respect. The following will not be tolerated and may result in removal from the venue without refund:</p>
+            <ul class="policy-list">
+                <li>Harassment, ragging, bullying, or discrimination of any kind</li>
+                <li>Possession of prohibited items, including weapons, intoxicants, or banned substances</li>
+                <li>Damage to venue property, equipment, or the belongings of others</li>
+                <li>Disruption of scheduled events or interference with other participants</li>
+            </ul>
+        </div>
+        <div class="subsection">
+            <div class="subsection-title">Venue &amp; Campus Rules</div>
+            <p class="policy-text">Participants must comply with all instructions issued by organizers, volunteers, security personnel, and CUSAT campus authorities, as well as any venue-specific rules in force during the event.</p>
+        </div>
+    </div>
+
+    <!-- T4 -->
+    <div class="policy-section" id="t4">
+        <div class="section-header">
+            <span class="section-num">04</span>
+            <span class="section-title">FEES, PAYMENTS &amp; REFUNDS</span>
+        </div>
+        <div class="subsection">
+            <div class="subsection-title">Registration Fees</div>
+            <p class="policy-text">Applicable fees are displayed at the time of registration and may include a convenience or processing fee. All payments must be made through the official payment channels provided on the website.</p>
+        </div>
+        <div class="subsection">
+            <div class="subsection-title">Refund Policy</div>
+            <p class="policy-text">Registration fees are generally non-refundable and non-transferable, except where a refund is explicitly approved by the organizers — for instance, in the case of a payment error, duplicate transaction, or cancellation of an event by the organizers. Approved refunds may take a reasonable processing time to reflect in your account.</p>
+        </div>
+    </div>
+
+    <!-- T5 -->
+    <div class="policy-section" id="t5">
+        <div class="section-header">
+            <span class="section-num">05</span>
+            <span class="section-title">EVENT CHANGES &amp; CANCELLATIONS</span>
+        </div>
+        <div class="subsection">
+            <div class="subsection-title">Schedule &amp; Format Changes</div>
+            <p class="policy-text">The organizers reserve the right to modify the date, time, venue, format, or speaker/judging panel of any event, with reasonable prior notice communicated through the website, email, or other registered contact channels.</p>
+        </div>
+        <div class="subsection">
+            <div class="subsection-title">Force Majeure</div>
+            <p class="policy-text">The organizers shall not be held liable for any delay, modification, or cancellation of an event caused by circumstances beyond their reasonable control, including but not limited to natural disasters, extreme weather, government restrictions, strikes, technical or infrastructural failures, or public health emergencies.</p>
+        </div>
+    </div>
+
+    <!-- T6 -->
+    <div class="policy-section" id="t6">
+        <div class="section-header">
+            <span class="section-num">06</span>
+            <span class="section-title">PHOTOGRAPHY, MEDIA &amp; PUBLICITY</span>
+        </div>
+        <p class="policy-text">By attending or participating in Anchorage 2026, you consent to being photographed, filmed, or recorded, and you grant the organizers a non-exclusive, royalty-free right to use such photographs, video, or audio for promotional, archival, or reporting purposes across the website, social media, and other official channels, without separate compensation or notice.</p>
+    </div>
+
+    <!-- T7 -->
+    <div class="policy-section" id="t7">
+        <div class="section-header">
+            <span class="section-num">07</span>
+            <span class="section-title">LIABILITY &amp; DISCLAIMER</span>
+        </div>
+        <div class="subsection">
+            <div class="subsection-title">Personal Belongings</div>
+            <p class="policy-text">The organizers are not responsible for the loss, theft, or damage of any personal belongings brought onto the venue premises.</p>
+        </div>
+        <div class="subsection">
+            <div class="subsection-title">Health &amp; Safety</div>
+            <p class="policy-text">Participants attend and take part in all activities at their own risk. Except in cases of proven gross negligence on the part of the organizers, the organizers, CUSAT, and their volunteers and staff shall not be liable for any injury, illness, or loss arising during the event.</p>
+        </div>
+    </div>
+
+    <!-- T8 -->
+    <div class="policy-section" id="t8">
+        <div class="section-header">
+            <span class="section-num">08</span>
+            <span class="section-title">INTELLECTUAL PROPERTY</span>
+        </div>
+        <p class="policy-text">All branding, logos, designs, and content published on this website are the property of Anchorage 2026 and the Department of Ship Technology, CUSAT, and may not be reproduced or used without prior written permission. Participants retain ownership of any original work they create or submit, but grant the organizers a limited license to use such work for event-related and promotional purposes.</p>
+    </div>
+
+    <!-- T9 -->
+    <div class="policy-section" id="t9">
+        <div class="section-header">
+            <span class="section-num">09</span>
+            <span class="section-title">GOVERNING LAW &amp; JURISDICTION</span>
+        </div>
+        <p class="policy-text">These Terms &amp; Conditions are governed by the laws of India. Any disputes arising out of or in connection with these terms or your participation in Anchorage 2026 shall be subject to the exclusive jurisdiction of the courts at Ernakulam, Kerala.</p>
+    </div>
+
+    <!-- T10 -->
+    <div class="policy-section" id="t10">
+        <div class="section-header">
+            <span class="section-num">10</span>
+            <span class="section-title">CONTACT US</span>
+        </div>
+        <p class="policy-text">If you have any questions or concerns regarding these Terms &amp; Conditions, please reach out to us:</p>
+
+        <div class="contact-card" style="margin-top:20px;">
+            <div class="contact-card-inner">
+                <span class="contact-label">◈ OFFICIAL CONTACT</span>
+                <div class="contact-org">ANCHORAGE 2026</div>
+                <div class="contact-dept">Department of Ship Technology</div>
+                <div class="contact-dept">Cochin University of Science and Technology (CUSAT)</div>
+                <a href="mailto:info@anchoragecusat.com" class="contact-email">
+                    <span class="contact-email-icon">✉</span>
+                    info@anchoragecusat.com
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Consent banner -->
+    <div class="consent-banner">
+        <span class="consent-icon">⚠</span>
+        <p class="consent-text">By registering for or participating in Anchorage 2026, <strong>you acknowledge that you have read and agreed to the terms</strong> outlined in this Terms &amp; Conditions page. If you do not agree with any part of these terms, please discontinue your registration.</p>
+    </div>
+
+    <!-- Footer -->
+    <div class="page-footer">
+        <span class="footer-copy">© 2026 ANCHORAGE &nbsp;·&nbsp; DEPT. OF SHIP TECHNOLOGY, CUSAT</span>
+        <div class="footer-links-row">
+            <a href="{{ url_for('home') }}">HOME</a>
+            <a href="{{ url_for('events') }}">EVENTS</a>
+            <a href="{{ url_for('events') }}">REGISTER</a>
+            <a href="{{ url_for('privacy_policy') }}">PRIVACY POLICY</a>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // Scroll progress bar
+    window.addEventListener('scroll', () => {
+        const el   = document.documentElement;
+        const pct  = el.scrollTop / (el.scrollHeight - el.clientHeight) * 100;
+        document.getElementById('scroll-fill').style.width = pct + '%';
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | Ship's Store | Anchorage 2026</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap');
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --cyan: #00f2ff; --cyan-glass: rgba(0,242,255,0.06);
+            --ocean: #00050a; --ocean-card: #00111e;
+            --border: rgba(0,242,255,0.15); --border-hi: rgba(0,242,255,0.4);
+            --gold: #ffd166; --green: #06d6a0; --coral: #ff6b6b; --error: #ff4466;
+            --expo: cubic-bezier(0.19,1,0.22,1); --nav-h: 57.6px; --radius: 1.8px;
+        }
+        body { background: var(--ocean); color: #fff; font-family: 'Rajdhani', sans-serif; min-height: 100vh; overflow-x: hidden; font-size: 14.4px; }
+        #bg { position: fixed; inset: 0; z-index: -1; background: #000810; }
+        .grid-bg { position: absolute; inset: 0; background-image: linear-gradient(rgba(0,242,255,0.022) 1px,transparent 1px),linear-gradient(90deg,rgba(0,242,255,0.022) 1px,transparent 1px); background-size: 60px 60px; }
+        .glow { position: absolute; border-radius: 50%; filter: blur(110px); pointer-events: none; }
+        .g1 { width: 495px; height: 495px; background: rgba(0,80,120,0.13); top: -108px; right: -108px; }
+
+        nav { position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h); z-index: 999; background: rgba(0,5,10,0.97); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 16.2px; }
+        .nav-brand { font-family: 'Orbitron'; font-size: clamp(0.585rem, 2.5vw, 0.738rem); letter-spacing: 2.7px; color: var(--cyan); text-decoration: none; }
+        .nav-link { font-family: 'Orbitron'; font-size: 0.65rem; letter-spacing: 1.8px; text-decoration: none; color: rgba(255,255,255,0.75); padding: 7.2px 10.8px; }
+
+        .page-wrap { max-width: 560px; margin: 0 auto; padding: calc(var(--nav-h) + 36px) 14.4px 90px; }
+        .page-hero { text-align: center; margin-bottom: 24px; }
+        .page-tag { font-family: 'Share Tech Mono'; font-size: 0.68rem; letter-spacing: 2.7px; color: var(--cyan); opacity: 0.85; display: block; margin-bottom: 10.8px; }
+        .page-title { font-family: 'Orbitron'; font-size: clamp(1.2rem, 5.5vw, 1.7rem); font-weight: 900; letter-spacing: 3.2px; background: linear-gradient(135deg, #fff 30%, var(--cyan) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        .no-payment-note { background: rgba(255,209,102,0.06); border: 1px solid rgba(255,209,102,0.3); border-radius: 5px; padding: 14px 16px; margin-bottom: 16px; font-size: 0.82rem; color: var(--gold); line-height: 1.5; }
+
+        .card { background: var(--ocean-card); border: 1px solid var(--border); border-radius: 5px; padding: 20px; margin-bottom: 16px; }
+        .card-title { font-family: 'Orbitron'; font-size: 0.72rem; letter-spacing: 1.8px; color: var(--cyan); margin-bottom: 14px; }
+
+        .order-line { display: flex; justify-content: space-between; font-size: 0.85rem; padding: 6px 0; color: rgba(255,255,255,0.8); border-bottom: 1px solid rgba(255,255,255,0.06); }
+        .order-line:last-child { border-bottom: none; }
+        .order-total { display: flex; justify-content: space-between; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); font-family: 'Orbitron'; font-weight: 700; }
+        .order-total .value { color: var(--gold); font-size: 1.2rem; }
+
+        .field-row { margin-bottom: 14px; }
+        .field-row label { display: block; font-family: 'Share Tech Mono'; font-size: 0.68rem; letter-spacing: 1px; color: rgba(255,255,255,0.55); margin-bottom: 6px; }
+        .field-row input, .field-row select {
+            width: 100%; background: rgba(0,0,0,0.4); border: 1px solid var(--border); border-radius: 3px;
+            padding: 10px 12px; color: #fff; font-family: 'Rajdhani'; font-size: 0.92rem; outline: none; transition: border-color 0.2s;
+        }
+        .field-row select { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2300f2ff' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; }
+        .field-row select option { background: #00111e; color: #fff; }
+        .field-row input:focus, .field-row select:focus { border-color: var(--border-hi); background: rgba(0,242,255,0.03); }
+        .field-row input.mismatch { border-color: var(--coral); }
+        .field-hint { font-size: 0.68rem; color: rgba(255,255,255,0.4); margin-top: 4px; }
+        .field-hint.error { color: var(--coral); }
+        .field-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+        .submit-btn { display: block; width: 100%; margin-top: 6px; text-align: center; font-family: 'Orbitron'; font-size: 0.78rem; letter-spacing: 2px; padding: 14px; border: none; border-radius: 4px; background: var(--cyan); color: #001018; font-weight: 700; cursor: pointer; transition: all 0.25s; }
+        .submit-btn:hover:not(:disabled) { box-shadow: 0 0 24px rgba(0,242,255,0.35); transform: translateY(-1px); }
+        .submit-btn:disabled { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.35); cursor: not-allowed; }
+        .pay-note { text-align: center; font-size: 0.72rem; color: rgba(255,255,255,0.45); margin-top: 10px; }
+
+        .error-banner { background: rgba(255,68,102,0.08); border: 1px solid rgba(255,68,102,0.4); color: var(--coral); padding: 10px 14px; border-radius: 4px; font-size: 0.82rem; margin-bottom: 14px; display: none; }
+        .error-banner.show { display: block; }
+
+        .submit-overlay { display: none; position: fixed; inset: 0; background: rgba(0,5,10,0.9); z-index: 3000; align-items: center; justify-content: center; flex-direction: column; gap: 16px; text-align: center; padding: 20px; }
+        .submit-overlay.show { display: flex; }
+        .spinner { width: 36px; height: 36px; border: 3px solid var(--border); border-top-color: var(--cyan); border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+<div id="bg"><div class="grid-bg"></div><div class="glow g1"></div></div>
+
+<nav>
+    <a href="{{ url_for('home') }}" class="nav-brand">⚓ ANCHORAGE 2026</a>
+    <a href="{{ url_for('merch_cart') }}" class="nav-link">← BACK TO CART</a>
+</nav>
+
+<div class="page-wrap">
+    <div class="page-hero">
+        <span class="page-tag">◈ DISPATCH DETAILS</span>
+        <h1 class="page-title">CHECKOUT</h1>
+    </div>
+
+    <div class="no-payment-note">
+        <strong>No payment needed right now.</strong> We're first collecting orders from everyone
+        interested — once we've reviewed the total count, we'll confirm your order by email and
+        let you know how to complete payment. International orders are welcome; shipping costs
+        will be quoted separately before confirmation.
+    </div>
+
+    <div class="card">
+        <div class="card-title">ORDER SUMMARY</div>
+        {% for it in items %}
+        <div class="order-line">
+            <span>{{ it.name }}{% if it.size %} ({{ it.size }}){% endif %} × {{ it.quantity }}</span>
+            <span>₹{{ "%.0f"|format(it.line_total) }}</span>
+        </div>
+        {% endfor %}
+        <div class="order-total"><span>TOTAL (if confirmed)</span><span class="value">₹{{ "%.0f"|format(total) }}</span></div>
+    </div>
+
+    <div class="error-banner" id="errorBanner"></div>
+
+    <form id="checkoutForm">
+        <div class="card">
+            <div class="card-title">YOUR DETAILS</div>
+            <div class="field-row"><label>FULL NAME *</label><input type="text" name="name" required></div>
+            <div class="field-row"><label>EMAIL *</label><input type="email" name="email" required></div>
+            <div class="field-2col">
+                <div class="field-row">
+                    <label>PHONE *</label>
+                    <input type="tel" name="phone" id="phoneInput" required>
+                </div>
+                <div class="field-row">
+                    <label>CONFIRM PHONE *</label>
+                    <input type="tel" name="phone_confirm" id="phoneConfirmInput" required>
+                    <div class="field-hint" id="phoneHint"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">SHIPPING ADDRESS</div>
+            <div class="field-row">
+                <label>COUNTRY *</label>
+                <select name="country" id="countrySelect" required>
+                    <option value="">— Select country —</option>
+                    <option value="IN" selected>India</option>
+                    <option value="US">United States</option>
+                    <option value="GB">United Kingdom</option>
+                    <option value="AU">Australia</option>
+                    <option value="CA">Canada</option>
+                    <option value="SG">Singapore</option>
+                    <option value="AE">United Arab Emirates</option>
+                    <option value="DE">Germany</option>
+                    <option value="FR">France</option>
+                    <option value="NL">Netherlands</option>
+                    <option value="NZ">New Zealand</option>
+                    <option value="MY">Malaysia</option>
+                    <option value="LK">Sri Lanka</option>
+                    <option value="BD">Bangladesh</option>
+                    <option value="PK">Pakistan</option>
+                    <option value="NP">Nepal</option>
+                    <option value="JP">Japan</option>
+                    <option value="CN">China</option>
+                    <option value="KR">South Korea</option>
+                    <option value="ID">Indonesia</option>
+                    <option value="TH">Thailand</option>
+                    <option value="VN">Vietnam</option>
+                    <option value="PH">Philippines</option>
+                    <option value="IE">Ireland</option>
+                    <option value="IT">Italy</option>
+                    <option value="ES">Spain</option>
+                    <option value="PT">Portugal</option>
+                    <option value="CH">Switzerland</option>
+                    <option value="SE">Sweden</option>
+                    <option value="NO">Norway</option>
+                    <option value="DK">Denmark</option>
+                    <option value="FI">Finland</option>
+                    <option value="BE">Belgium</option>
+                    <option value="AT">Austria</option>
+                    <option value="PL">Poland</option>
+                    <option value="BR">Brazil</option>
+                    <option value="MX">Mexico</option>
+                    <option value="ZA">South Africa</option>
+                    <option value="SA">Saudi Arabia</option>
+                    <option value="QA">Qatar</option>
+                    <option value="KW">Kuwait</option>
+                    <option value="EG">Egypt</option>
+                    <option value="NG">Nigeria</option>
+                    <option value="KE">Kenya</option>
+                    <option value="OTHER">Other</option>
+                </select>
+            </div>
+            <div class="field-row"><label>ADDRESS LINE 1 *</label><input type="text" name="address_line1" required></div>
+            <div class="field-row"><label>ADDRESS LINE 2</label><input type="text" name="address_line2"></div>
+            <div class="field-row"><label>LANDMARK</label><input type="text" name="landmark" placeholder="e.g. near XYZ Hospital"></div>
+            <div class="field-2col">
+                <div class="field-row"><label>CITY *</label><input type="text" name="city" required></div>
+                <div class="field-row" id="stateRow"><label id="stateLabel">STATE / PROVINCE *</label><input type="text" name="state" id="stateInput" required></div>
+            </div>
+            <div class="field-row" id="pincodeRow">
+                <label id="pincodeLabel">POSTAL / PIN CODE *</label>
+                <input type="text" name="pincode" id="pincodeInput" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" required>
+                <div class="field-hint" id="pincodeHint">6-digit PIN code</div>
+            </div>
+        </div>
+
+        <button type="submit" class="submit-btn" id="submitBtn">PLACE ORDER</button>
+        <div class="pay-note">You'll get an email confirming we've received your order. We'll follow up separately once it's confirmed.</div>
+    </form>
+</div>
+
+<div class="submit-overlay" id="submitOverlay">
+    <div class="spinner"></div>
+    <div style="font-family:'Orbitron';font-size:0.75rem;letter-spacing:2px;color:var(--cyan)">PLACING YOUR ORDER…</div>
+</div>
+
+<script>
+// Country-specific address field logic
+const countrySelect = document.getElementById('countrySelect');
+const stateLabel = document.getElementById('stateLabel');
+const stateInput = document.getElementById('stateInput');
+const stateRow = document.getElementById('stateRow');
+const pincodeLabel = document.getElementById('pincodeLabel');
+const pincodeInput = document.getElementById('pincodeInput');
+const pincodeHint = document.getElementById('pincodeHint');
+const pincodeRow = document.getElementById('pincodeRow');
+
+const countryConfig = {
+    IN:    { stateLabel: 'STATE *',            postalLabel: 'PIN CODE *',     pattern: '[0-9]{6}',    maxlen: 6,  hint: '6-digit PIN code',      postalMode: 'numeric' },
+    US:    { stateLabel: 'STATE *',            postalLabel: 'ZIP CODE *',      pattern: '[0-9]{5}(-[0-9]{4})?', maxlen: 10, hint: '5-digit ZIP code', postalMode: 'numeric' },
+    GB:    { stateLabel: 'COUNTY / REGION',    postalLabel: 'POSTCODE *',      pattern: null,          maxlen: 8,  hint: 'e.g. SW1A 1AA',         postalMode: 'text',    stateRequired: false },
+    AU:    { stateLabel: 'STATE / TERRITORY *',postalLabel: 'POSTCODE *',      pattern: '[0-9]{4}',    maxlen: 4,  hint: '4-digit postcode',       postalMode: 'numeric' },
+    CA:    { stateLabel: 'PROVINCE *',         postalLabel: 'POSTAL CODE *',   pattern: null,          maxlen: 7,  hint: 'e.g. K1A 0A9',          postalMode: 'text' },
+    SG:    { stateLabel: 'DISTRICT',           postalLabel: 'POSTAL CODE *',   pattern: '[0-9]{6}',    maxlen: 6,  hint: '6-digit postal code',    postalMode: 'numeric', stateRequired: false },
+    AE:    { stateLabel: 'EMIRATE *',          postalLabel: 'PO BOX',          pattern: null,          maxlen: 10, hint: 'Optional PO Box',        postalMode: 'numeric', postalRequired: false },
+    DE:    { stateLabel: 'STATE *',            postalLabel: 'POSTLEITZAHL *',  pattern: '[0-9]{5}',    maxlen: 5,  hint: '5-digit PLZ',           postalMode: 'numeric' },
+    FR:    { stateLabel: 'RÉGION',             postalLabel: 'CODE POSTAL *',   pattern: '[0-9]{5}',    maxlen: 5,  hint: '5-digit code postal',    postalMode: 'numeric', stateRequired: false },
+    NL:    { stateLabel: 'PROVINCE',           postalLabel: 'POSTCODE *',      pattern: null,          maxlen: 7,  hint: 'e.g. 1234 AB',          postalMode: 'text',    stateRequired: false },
+    NZ:    { stateLabel: 'REGION',             postalLabel: 'POSTCODE *',      pattern: '[0-9]{4}',    maxlen: 4,  hint: '4-digit postcode',       postalMode: 'numeric', stateRequired: false },
+    MY:    { stateLabel: 'STATE *',            postalLabel: 'POSTCODE *',      pattern: '[0-9]{5}',    maxlen: 5,  hint: '5-digit postcode',       postalMode: 'numeric' },
+    LK:    { stateLabel: 'PROVINCE *',         postalLabel: 'POSTAL CODE *',   pattern: '[0-9]{5}',    maxlen: 5,  hint: '5-digit postal code',    postalMode: 'numeric' },
+    BD:    { stateLabel: 'DIVISION *',         postalLabel: 'POSTAL CODE *',   pattern: '[0-9]{4}',    maxlen: 4,  hint: '4-digit postal code',    postalMode: 'numeric' },
+    PK:    { stateLabel: 'PROVINCE *',         postalLabel: 'POSTAL CODE *',   pattern: '[0-9]{5}',    maxlen: 5,  hint: '5-digit postal code',    postalMode: 'numeric' },
+    NP:    { stateLabel: 'PROVINCE *',         postalLabel: 'POSTAL CODE *',   pattern: '[0-9]{5}',    maxlen: 5,  hint: '5-digit postal code',    postalMode: 'numeric' },
+    JP:    { stateLabel: 'PREFECTURE *',       postalLabel: 'POSTAL CODE *',   pattern: '[0-9]{3}-?[0-9]{4}', maxlen: 8, hint: 'e.g. 100-0001',    postalMode: 'text' },
+    CN:    { stateLabel: 'PROVINCE *',         postalLabel: 'POSTAL CODE *',   pattern: '[0-9]{6}',    maxlen: 6,  hint: '6-digit postal code',    postalMode: 'numeric' },
+    KR:    { stateLabel: 'PROVINCE *',         postalLabel: 'POSTAL CODE *',   pattern: '[0-9]{5}',    maxlen: 5,  hint: '5-digit postal code',    postalMode: 'numeric' },
+    ID:    { stateLabel: 'PROVINCE *',         postalLabel: 'POSTAL CODE *',   pattern: '[0-9]{5}',    maxlen: 5,  hint: '5-digit postal code',    postalMode: 'numeric' },
+    TH:    { stateLabel: 'PROVINCE *',         postalLabel: 'POSTAL CODE *',   pattern: '[0-9]{5}',    maxlen: 5,  hint: '5-digit postal code',    postalMode: 'numeric' },
+    VN:    { stateLabel: 'PROVINCE *',         postalLabel: 'POSTAL CODE',     pattern: '[0-9]{6}',    maxlen: 6,  hint: '6-digit postal code',    postalMode: 'numeric', postalRequired: false },
+    PH:    { stateLabel: 'PROVINCE *',         postalLabel: 'ZIP CODE *',      pattern: '[0-9]{4}',    maxlen: 4,  hint: '4-digit ZIP code',       postalMode: 'numeric' },
+    IE:    { stateLabel: 'COUNTY',             postalLabel: 'EIRCODE',         pattern: null,          maxlen: 8,  hint: 'e.g. D02 AF30',          postalMode: 'text',    stateRequired: false, postalRequired: false },
+    IT:    { stateLabel: 'PROVINCE *',         postalLabel: 'CAP *',           pattern: '[0-9]{5}',    maxlen: 5,  hint: '5-digit CAP code',       postalMode: 'numeric' },
+    ES:    { stateLabel: 'PROVINCE *',         postalLabel: 'CÓDIGO POSTAL *', pattern: '[0-9]{5}',    maxlen: 5,  hint: '5-digit postal code',    postalMode: 'numeric' },
+    PT:    { stateLabel: 'DISTRICT',           postalLabel: 'CÓDIGO POSTAL *', pattern: '[0-9]{4}-?[0-9]{3}', maxlen: 8, hint: 'e.g. 1000-001',   postalMode: 'text',    stateRequired: false },
+    CH:    { stateLabel: 'CANTON *',           postalLabel: 'POSTAL CODE *',   pattern: '[0-9]{4}',    maxlen: 4,  hint: '4-digit postal code',    postalMode: 'numeric' },
+    SE:    { stateLabel: 'COUNTY',             postalLabel: 'POSTAL CODE *',   pattern: '[0-9]{3} ?[0-9]{2}', maxlen: 6, hint: 'e.g. 111 22',      postalMode: 'text',    stateRequired: false },
+    NO:    { stateLabel: 'COUNTY',             postalLabel: 'POSTAL CODE *',   pattern: '[0-9]{4}',    maxlen: 4,  hint: '4-digit postal code',    postalMode: 'numeric', stateRequired: false },
+    DK:    { stateLabel: 'REGION',             postalLabel: 'POSTAL CODE *',   pattern: '[0-9]{4}',    maxlen: 4,  hint: '4-digit postal code',    postalMode: 'numeric', stateRequired: false },
+    FI:    { stateLabel: 'REGION',             postalLabel: 'POSTAL CODE *',   pattern: '[0-9]{5}',    maxlen: 5,  hint: '5-digit postal code',    postalMode: 'numeric', stateRequired: false },
+    BE:    { stateLabel: 'REGION',             postalLabel: 'POSTAL CODE *',   pattern: '[0-9]{4}',    maxlen: 4,  hint: '4-digit postal code',    postalMode: 'numeric', stateRequired: false },
+    AT:    { stateLabel: 'STATE *',            postalLabel: 'POSTLEITZAHL *',  pattern: '[0-9]{4}',    maxlen: 4,  hint: '4-digit postal code',    postalMode: 'numeric' },
+    PL:    { stateLabel: 'VOIVODESHIP *',      postalLabel: 'POSTAL CODE *',   pattern: '[0-9]{2}-?[0-9]{3}', maxlen: 6, hint: 'e.g. 00-001',      postalMode: 'text' },
+    BR:    { stateLabel: 'STATE *',            postalLabel: 'CEP *',           pattern: '[0-9]{5}-?[0-9]{3}', maxlen: 9, hint: 'e.g. 01310-100',   postalMode: 'text' },
+    MX:    { stateLabel: 'STATE *',            postalLabel: 'POSTAL CODE *',   pattern: '[0-9]{5}',    maxlen: 5,  hint: '5-digit postal code',    postalMode: 'numeric' },
+    ZA:    { stateLabel: 'PROVINCE *',         postalLabel: 'POSTAL CODE *',   pattern: '[0-9]{4}',    maxlen: 4,  hint: '4-digit postal code',    postalMode: 'numeric' },
+    SA:    { stateLabel: 'REGION *',           postalLabel: 'POSTAL CODE',     pattern: '[0-9]{5}',    maxlen: 5,  hint: '5-digit postal code',    postalMode: 'numeric', postalRequired: false },
+    QA:    { stateLabel: 'MUNICIPALITY',       postalLabel: 'PO BOX',          pattern: null,          maxlen: 10, hint: 'Optional PO Box',        postalMode: 'text',    stateRequired: false, postalRequired: false },
+    KW:    { stateLabel: 'GOVERNORATE *',      postalLabel: 'POSTAL CODE',     pattern: '[0-9]{5}',    maxlen: 5,  hint: '5-digit postal code',    postalMode: 'numeric', postalRequired: false },
+    EG:    { stateLabel: 'GOVERNORATE *',      postalLabel: 'POSTAL CODE',     pattern: '[0-9]{5}',    maxlen: 5,  hint: '5-digit postal code',    postalMode: 'numeric', postalRequired: false },
+    NG:    { stateLabel: 'STATE *',            postalLabel: 'POSTAL CODE',     pattern: '[0-9]{6}',    maxlen: 6,  hint: '6-digit postal code',    postalMode: 'numeric', postalRequired: false },
+    KE:    { stateLabel: 'COUNTY *',           postalLabel: 'POSTAL CODE *',   pattern: '[0-9]{5}',    maxlen: 5,  hint: '5-digit postal code',    postalMode: 'numeric' },
+    OTHER: { stateLabel: 'STATE / PROVINCE',   postalLabel: 'POSTAL CODE *',   pattern: null,          maxlen: 12, hint: 'Postal / ZIP code',     postalMode: 'text',    stateRequired: false },
+};
+
+function updateAddressFields() {
+    const cfg = countryConfig[countrySelect.value] || countryConfig['OTHER'];
+    stateLabel.textContent = cfg.stateLabel;
+    stateInput.required = cfg.stateRequired !== false;
+    pincodeLabel.textContent = cfg.postalLabel;
+    pincodeInput.pattern = cfg.pattern || '.*';
+    pincodeInput.maxLength = cfg.maxlen;
+    pincodeInput.setAttribute('inputmode', cfg.postalMode);
+    pincodeInput.required = cfg.postalRequired !== false;
+    pincodeHint.textContent = cfg.hint;
+    pincodeInput.value = '';
+}
+
+countrySelect.addEventListener('change', updateAddressFields);
+updateAddressFields(); // init
+
+const phoneInput = document.getElementById('phoneInput');
+const phoneConfirmInput = document.getElementById('phoneConfirmInput');
+const phoneHint = document.getElementById('phoneHint');
+
+function checkPhoneMatch() {
+    if (!phoneConfirmInput.value) {
+        phoneHint.textContent = '';
+        phoneConfirmInput.classList.remove('mismatch');
+        return true;
+    }
+    const match = phoneInput.value.trim() === phoneConfirmInput.value.trim();
+    phoneConfirmInput.classList.toggle('mismatch', !match);
+    phoneHint.textContent = match ? '✓ Matches' : "Doesn't match yet";
+    phoneHint.classList.toggle('error', !match);
+    return match;
+}
+phoneInput.addEventListener('input', checkPhoneMatch);
+phoneConfirmInput.addEventListener('input', checkPhoneMatch);
+
+document.getElementById('checkoutForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const errorBanner = document.getElementById('errorBanner');
+    errorBanner.classList.remove('show');
+
+    if (!checkPhoneMatch()) {
+        errorBanner.textContent = "Phone numbers don't match — please check and re-enter.";
+        errorBanner.classList.add('show');
+        errorBanner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+    }
+
+    const form = e.target;
+    const payload = Object.fromEntries(new FormData(form).entries());
+
+    document.getElementById('submitBtn').disabled = true;
+    document.getElementById('submitOverlay').classList.add('show');
+
+    try {
+        const res = await fetch('{{ url_for("merch_order_submit") }}', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (!res.ok || !data.success) {
+            throw new Error(data.error || 'Something went wrong. Please try again.');
+        }
+        window.location.href = `/merch-order-success/${data.order_code}`;
+    } catch (err) {
+        document.getElementById('submitOverlay').classList.remove('show');
+        document.getElementById('submitBtn').disabled = false;
+        errorBanner.textContent = err.message;
+        errorBanner.classList.add('show');
+        errorBanner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+});
+</script>
+
+</body>
+</html>

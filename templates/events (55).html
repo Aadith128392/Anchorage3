@@ -1,0 +1,1551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Events | Anchorage 2026</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+/* ═══════════════════════════════════════════════════════════
+   DESIGN TOKENS
+   Desktop base: 16px root. Scale targets a 1080p+ monitor.
+   Mobile override below bumps readable sizes up for fingers.
+═══════════════════════════════════════════════════════════ */
+:root{
+  /* palette */
+  --cyan:#00f2ff;
+  --cyan-dim:rgba(0,242,255,0.07);
+  --ocean:#00050a;
+  --ocean-mid:#000d15;
+  --ocean-card:#00111e;
+  --border:rgba(0,242,255,0.15);
+  --border-hi:rgba(0,242,255,0.4);
+  --gold:#ffd166;
+  --coral:#ff6b6b;
+  --green:#06d6a0;
+  --expo:cubic-bezier(0.19,1,0.22,1);
+
+  /* layout */
+  --nav-h:60px;
+  --daybar-h:52px;
+  --fbar-h:46px;
+
+  /* ── TYPE SCALE ──────────────────────────────────────────
+     Orbitron & Share Tech Mono render large — values here
+     are intentionally small to feel refined, not cramped.
+
+     label    rem    px @16   use
+     -------  -----  -------  ---------------------------------
+     --t-tag  .6rem  9.6px    type badges, mono meta, counters
+     --t-sm   .68rem 10.9px   sub-dates, gf-count, dot labels
+     --t-ui   .72rem 11.5px   nav links, filter btns, card btns
+     --t-body .78rem 12.5px   card name, prize line, modal body
+     --t-md   .88rem 14.1px   modal title min, section headers
+     --t-day  clamp  —        day section title (responsive)
+     --t-hero clamp  —        page H1 (responsive)
+  ── */
+  --t-tag:  .6rem;
+  --t-sm:   .68rem;
+  --t-ui:   .72rem;
+  --t-body: .78rem;
+  --t-md:   .88rem;
+  --t-day:  clamp(1.3rem,3.5vw,2rem);
+  --t-hero: clamp(2.4rem,8vw,5.2rem);
+
+  /* letter-spacing */
+  --lsp-tight:1px;
+  --lsp-mid:  2px;
+  --lsp-wide: 3.5px;
+  --lsp-xw:   5px;
+}
+
+/* Mobile ≤599px — smaller, tighter, premium -------------------- */
+@media(max-width:599px){
+  :root{
+    --t-tag:  .52rem;
+    --t-sm:   .58rem;
+    --t-ui:   .62rem;
+    --t-body: .68rem;
+    --t-md:   .78rem;
+    --t-day:  clamp(.95rem,5.5vw,1.25rem);
+    --t-hero: clamp(1.7rem,12vw,2.6rem);
+    --nav-h:   52px;
+    --fbar-h:  38px;
+    --lsp-mid: 1.5px;
+    --lsp-wide:2.5px;
+    --lsp-xw:  3.5px;
+  }
+  nav{padding:0 12px;gap:6px}
+  .nav-brand{font-size:.52rem;letter-spacing:2px;gap:5px}
+  .nav-brand img{height:22px}
+  .cart-btn{padding:5px 10px}
+  .nav-user{padding:5px 10px}
+  .global-filter-bar{padding:0 10px}
+  .gf-btn{padding:0 12px}
+  .gf-label{margin-right:8px;font-size:.46rem}
+  .page-hero{padding:calc(var(--nav-h) + 26px) 14px 16px}
+  .page-hero h1{letter-spacing:3px}
+  .hero-tag{letter-spacing:3px;margin-bottom:7px}
+  .page-hero p{margin-top:6px}
+  .days-container{padding:0 12px 80px}
+  .day-section{margin-top:30px}
+  .day-divider{margin:36px 0 0}
+  .day-hdr{gap:8px;margin-bottom:14px;padding-bottom:10px}
+  .day-num-badge{padding:3px 8px}
+  .day-title{letter-spacing:3px}
+  .day-count{display:none}
+  .carousel-wrap{padding:0 26px;margin-bottom:24px}
+  .carousel-stage{height:350px}
+  .c-slide{width:128px}
+  .c-slide[data-pos="1"]{transform:translate(calc(-50% + 118px),-50%) translateZ(-58px) scale(.78) rotateY(-12deg)}
+  .c-slide[data-pos="-1"]{transform:translate(calc(-50% - 118px),-50%) translateZ(-58px) scale(.78) rotateY(12deg)}
+  .c-slide[data-pos="2"],.c-slide[data-pos="-2"],
+  .c-slide[data-pos="3"],.c-slide[data-pos="-3"]{opacity:0;pointer-events:none}
+  .c-arrow{width:28px;height:28px;font-size:.7rem}
+  .slide-info{padding:6px 9px 4px}
+  .slide-name{font-size:clamp(.62rem,3.8vw,.78rem);margin-bottom:3px}
+  .slide-prize{font-size:.74rem;font-weight:700}
+  .slide-prize-ico{font-size:.82rem}
+  .slide-acts{padding:0 9px 8px;gap:4px}
+  .slide-btn-det,.slide-btn-cart{padding:8px 7px;font-size:clamp(.54rem,3vw,.64rem);letter-spacing:1px}
+  .carousel-foot{gap:8px;margin-top:10px}
+  .events-grid{gap:7px}
+  .type-filters{gap:3px;margin-bottom:10px}
+  .type-btn{padding:4px 8px;font-size:var(--t-tag);letter-spacing:1px}
+  .sub-lbl{margin-bottom:8px}
+  .ph-icon{font-size:1.2rem}
+  .ph-name{font-size:.36rem}
+  .slide-ph-icon{font-size:1.5rem}
+  .ev-body{padding:8px 8px 6px;gap:4px}
+  .ev-name{font-size:clamp(.62rem,3.8vw,.78rem);letter-spacing:1px}
+  .ev-prize{font-size:.6rem;font-weight:700}
+  .ev-prize-ico{font-size:.7rem}
+  .ev-free{font-size:var(--t-tag);padding:1px 5px}
+  .ev-type-tag{font-size:.42rem;padding:1px 5px;top:4px;left:4px}
+  .ev-footer{padding:7px 8px 9px;gap:4px}
+  .ev-det-btn{padding:8px 6px;font-size:clamp(.54rem,3vw,.66rem);letter-spacing:1px}
+  .ev-cart-btn{padding:8px 6px;font-size:clamp(.54rem,3vw,.66rem);letter-spacing:1px}
+  .ev-open-tag{font-size:var(--t-tag)}
+  #event-modal{padding:58px 14px 32px}
+  .modal-poster-wrap{max-width:160px;margin-bottom:16px}
+  .modal-poster-ph{font-size:2.8rem}
+  .modal-title{letter-spacing:1.8px;margin-bottom:14px}
+  .modal-meta-strip{margin-bottom:16px}
+  .modal-prize-banner{padding:11px 14px;gap:10px;margin-bottom:16px}
+  .modal-actions{flex-direction:column;align-items:stretch}
+  .modal-cart-btn{text-align:center;padding:14px 16px;font-size:.66rem}
+  .coming-soon{padding:36px 14px;gap:9px}
+  .cs-ico{font-size:1.5rem}
+  .cs-ttl{letter-spacing:3px}
+  .cart-fab{padding:8px 12px;font-size:var(--t-tag);bottom:12px;right:10px}
+  .fab-count{width:15px;height:15px;font-size:.52rem}
+  .toast{padding:7px 14px;font-size:var(--t-tag)}
+}
+
+html{scroll-behavior:smooth}
+body{background:var(--ocean);color:#fff;font-family:'Rajdhani',sans-serif;overflow-x:hidden;min-height:100vh}
+
+/* ── BACKGROUND ── */
+#bg{position:fixed;inset:0;z-index:-1;overflow:hidden;
+  background:radial-gradient(ellipse 140% 60% at 50% -10%,rgba(0,70,100,.28) 0%,var(--ocean) 65%)}
+.grid-bg{position:absolute;inset:0;
+  background-image:linear-gradient(rgba(0,242,255,.025) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(0,242,255,.025) 1px,transparent 1px);
+  background-size:50px 50px}
+.radar{position:absolute;top:50%;left:50%;width:130vw;height:130vw;border-radius:50%;
+  border:1px solid rgba(0,242,255,.04);transform:translate(-50%,-50%) scale(0);
+  animation:rping 12s infinite linear}
+@keyframes rping{to{transform:translate(-50%,-50%) scale(1.5);opacity:0}}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);z-index:999;
+  background:rgba(0,5,10,.96);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 20px;gap:8px;
+  animation:navDown .6s var(--expo) both}
+@keyframes navDown{from{transform:translateY(-100%);opacity:0}to{transform:none;opacity:1}}
+.nav-brand{font-family:'Orbitron';font-size:clamp(.55rem,1.8vw,.7rem);letter-spacing:3px;
+  color:var(--cyan);text-decoration:none;text-shadow:0 0 16px rgba(0,242,255,.4);
+  flex-shrink:0;display:flex;align-items:center;gap:8px}
+.nav-brand img{height:28px;width:auto;filter:drop-shadow(0 0 5px var(--cyan))}
+.nav-center{display:none}
+@media(min-width:700px){
+  .nav-center{display:flex;gap:24px}
+  .nav-center a{font-family:'Orbitron';font-size:var(--t-ui);letter-spacing:var(--lsp-mid);
+    text-decoration:none;color:rgba(255,255,255,.38);transition:color .3s}
+  .nav-center a:hover,.nav-center a.active{color:var(--cyan)}
+}
+.nav-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.cart-btn{position:relative;font-family:'Orbitron';font-size:var(--t-ui);letter-spacing:var(--lsp-mid);
+  color:var(--cyan);border:1px solid var(--border);padding:6px 14px;
+  text-decoration:none;clip-path:polygon(8% 0,100% 0,92% 100%,0 100%);
+  white-space:nowrap;transition:background .3s,border-color .3s}
+.cart-btn:hover{background:rgba(0,242,255,.08);border-color:var(--cyan)}
+.cart-badge{position:absolute;top:-6px;right:-6px;width:17px;height:17px;
+  background:var(--cyan);color:#000;border-radius:50%;
+  font-family:'Share Tech Mono';font-size:.6rem;font-weight:700;
+  display:none;align-items:center;justify-content:center}
+.cart-badge.show{display:flex;animation:pop .3s var(--expo)}
+@keyframes pop{from{transform:scale(0)}to{transform:scale(1)}}
+.nav-user{font-family:'Orbitron';font-size:var(--t-ui);letter-spacing:var(--lsp-mid);
+  color:var(--cyan);border:1px solid var(--cyan);padding:6px 14px;
+  text-decoration:none;clip-path:polygon(8% 0,100% 0,92% 100%,0 100%);
+  white-space:nowrap;transition:background .3s,color .3s}
+.nav-user:hover{background:var(--cyan);color:#000}
+
+/* ── GLOBAL FILTER BAR ── */
+.global-filter-bar{position:sticky;top:var(--nav-h);z-index:700;
+  background:rgba(0,5,10,.97);backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--border);padding:0 20px;
+  animation:barDown .5s .35s var(--expo) both}
+@media(min-width:1024px){.global-filter-bar,.days-container{padding-left:40px;padding-right:40px}}
+.global-filter-inner{max-width:1300px;margin:0 auto;
+  display:flex;align-items:center;justify-content:flex-start;overflow-x:auto;scrollbar-width:none;height:var(--fbar-h);
+  -webkit-overflow-scrolling:touch}
+@media(min-width:900px){.global-filter-inner{justify-content:center}}
+.global-filter-inner::-webkit-scrollbar{display:none}
+.gf-label{display:none}
+.gf-btn{font-family:'Orbitron';font-size:var(--t-ui);letter-spacing:var(--lsp-mid);
+  padding:0 18px;height:100%;
+  border:none;border-right:1px solid var(--border);
+  background:none;color:rgba(255,255,255,.3);
+  cursor:pointer;white-space:nowrap;flex-shrink:0;
+  position:relative;transition:color .3s,background .3s,transform .2s var(--expo);
+  display:flex;align-items:center;gap:6px}
+.gf-btn:first-of-type{border-left:1px solid var(--border)}
+.gf-btn::after{content:'';position:absolute;bottom:0;left:50%;
+  width:0;height:2px;background:var(--cyan);
+  transform:translateX(-50%);transition:width .4s var(--expo)}
+.gf-btn:hover{color:rgba(0,242,255,.7);background:rgba(0,242,255,.03);transform:translateY(-1px)}
+.gf-btn.active{color:var(--cyan);background:rgba(0,242,255,.05)}
+.gf-btn.active::after{width:80%}
+.gf-dot{width:4px;height:4px;border-radius:50%;background:var(--cyan);
+  opacity:0;box-shadow:0 0 5px var(--cyan);transition:opacity .3s;flex-shrink:0}
+.gf-btn.active .gf-dot{opacity:1}
+.gf-count{font-family:'Share Tech Mono';font-size:var(--t-tag);letter-spacing:.5px;
+  color:rgba(0,242,255,.45)}
+
+/* ── PAGE HERO ── */
+.page-hero{padding:calc(var(--nav-h) + 44px) 20px 28px;text-align:center}
+.hero-tag{font-family:'Share Tech Mono';font-size:var(--t-sm);letter-spacing:var(--lsp-xw);
+  color:var(--cyan);opacity:.85;margin-bottom:12px;display:block;
+  text-shadow:0 0 12px rgba(0,242,255,.5);
+  animation:tagDrop .7s var(--expo) both}
+@keyframes tagDrop{from{opacity:0;transform:translateY(-14px)}to{opacity:1;transform:none}}
+.page-hero h1{font-family:'Orbitron';font-size:var(--t-hero);font-weight:900;letter-spacing:6px;
+  color:var(--cyan);
+  text-shadow:0 0 28px rgba(0,242,255,.8),0 0 56px rgba(0,242,255,.4),0 0 90px rgba(0,242,255,.18);
+  animation:h1Rise .9s .18s var(--expo) both, hPulse 3s 1.2s ease-in-out infinite}
+@keyframes h1Rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+@keyframes hPulse{0%,100%{text-shadow:0 0 28px rgba(0,242,255,.8),0 0 56px rgba(0,242,255,.4),0 0 90px rgba(0,242,255,.18)}
+  50%{text-shadow:0 0 38px rgba(0,242,255,1),0 0 72px rgba(0,242,255,.6),0 0 120px rgba(0,242,255,.28)}}
+.page-hero p{margin-top:10px;font-size:var(--t-body);color:rgba(255,255,255,.48);letter-spacing:.8px;
+  max-width:480px;margin-inline:auto;line-height:1.65;
+  animation:subFade .8s .5s ease both}
+@keyframes subFade{from{opacity:0}to{opacity:1}}
+
+/* filter notice */
+.filter-notice{text-align:center;padding:10px 0 0;
+  font-family:'Share Tech Mono';font-size:var(--t-sm);letter-spacing:var(--lsp-wide);
+  color:rgba(0,242,255,.45);display:none}
+.filter-notice.show{display:block}
+.filter-notice span{color:var(--cyan)}
+
+/* ── DAYS CONTAINER ── */
+.days-container{max-width:1300px;margin:0 auto;padding:0 20px 100px}
+
+.day-section{margin-top:44px;padding-top:8px}
+.day-section.gf-hidden{display:none}
+
+.day-divider{display:flex;align-items:center;gap:12px;margin:56px 0 0}
+.day-divider.gf-hidden{display:none}
+.ddl{flex:1;height:1px;background:linear-gradient(to right,var(--border),transparent)}
+.ddr{flex:1;height:1px;background:linear-gradient(to left,var(--border),transparent)}
+.ddd{width:5px;height:5px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan)}
+
+/* ── DAY SECTION HEADER ── */
+.day-hdr{display:flex;align-items:center;gap:12px;
+  margin-bottom:24px;padding-bottom:14px;border-bottom:1px solid var(--border);flex-wrap:wrap}
+.day-num-badge{font-family:'Orbitron';font-size:var(--t-tag);letter-spacing:var(--lsp-wide);
+  border:1px solid var(--border-hi);color:var(--cyan);padding:5px 12px;
+  white-space:nowrap;background:rgba(0,242,255,.05)}
+.day-title-wrap{flex:1;min-width:0}
+.day-title{font-family:'Orbitron';font-size:var(--t-day);font-weight:900;letter-spacing:5px;
+  color:var(--cyan);text-shadow:0 0 18px rgba(0,242,255,.7),0 0 36px rgba(0,242,255,.3)}
+.day-date{font-family:'Share Tech Mono';font-size:var(--t-tag);letter-spacing:var(--lsp-mid);
+  color:rgba(0,242,255,.5);margin-top:2px}
+.day-count{font-family:'Share Tech Mono';font-size:var(--t-tag);letter-spacing:var(--lsp-mid);
+  color:rgba(255,255,255,.22)}
+
+/* ══════════════════════════════════════════════════════════
+   CAROUSEL
+   Stage has overflow:visible — the .carousel-wrap clips it
+   with padding + overflow:hidden so arrows stay visible.
+══════════════════════════════════════════════════════════ */
+.carousel-wrap{position:relative;margin-bottom:40px;padding:0 44px;overflow:hidden}
+@media(max-width:599px){.carousel-wrap{padding:0 32px}}
+
+.carousel-lbl{font-family:'Share Tech Mono';font-size:var(--t-tag);letter-spacing:var(--lsp-xw);
+  color:var(--cyan);opacity:.45;margin-bottom:14px;display:block}
+
+.carousel-stage{
+  position:relative;
+  height:520px;         /* desktop: tall enough for poster + info + 2 btns */
+  perspective:1200px;
+  display:flex;align-items:center;justify-content:center;
+  overflow:visible;
+}
+@media(max-width:599px){.carousel-stage{height:430px}}
+@media(min-width:600px) and (max-width:1023px){.carousel-stage{height:480px}}
+
+/* ── slide card ── */
+.c-slide{
+  position:absolute;top:50%;left:50%;
+  width:190px;
+  transform-origin:center;
+  transform:translate(-50%,-50%);
+  transition:all .6s cubic-bezier(.23,1,.32,1);
+  cursor:pointer;
+}
+@media(max-width:599px){.c-slide{width:148px}}
+@media(min-width:600px) and (max-width:1023px){.c-slide{width:170px}}
+
+.slide-inner{width:100%;position:relative;border:1px solid var(--border);
+  background:var(--ocean-mid);overflow:hidden;display:flex;flex-direction:column}
+
+/* poster area */
+.slide-poster-wrap{width:100%;aspect-ratio:9/16;position:relative;overflow:hidden;flex-shrink:0}
+.slide-poster{width:100%;height:100%;object-fit:cover;display:block}
+.slide-ph{width:100%;height:100%;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:8px;
+  background:linear-gradient(160deg,#001a2c 0%,#000d15 60%,#001520 100%);position:relative}
+.slide-ph::before{content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(45deg,transparent,transparent 18px,rgba(0,242,255,.01) 18px,rgba(0,242,255,.01) 19px)}
+.slide-ph-icon{font-size:1.9rem;position:relative;z-index:1;
+  filter:drop-shadow(0 0 12px var(--cyan));animation:floatY 3s ease-in-out infinite}
+.slide-ph-name{font-family:'Orbitron';font-size:var(--t-tag);letter-spacing:1px;
+  color:var(--cyan);text-align:center;padding:0 8px;position:relative;z-index:1;line-height:1.3}
+.slide-type-tag{position:absolute;top:7px;left:7px;z-index:2;
+  font-family:'Orbitron';font-size:var(--t-tag);letter-spacing:1.5px;
+  padding:2px 6px;background:rgba(0,5,10,.9);border:1px solid var(--border);color:var(--cyan)}
+
+/* info block — CENTRE SLIDE ONLY: name + prize */
+.slide-info{width:100%;padding:10px 12px 6px;
+  background:var(--ocean-mid);border-top:1px solid var(--border);display:none}
+.c-slide[data-pos="0"] .slide-info{display:block}
+
+.slide-name{font-family:'Orbitron';font-size:clamp(.72rem,2vw,.9rem);letter-spacing:1.5px;
+  color:#fff;margin-bottom:5px;line-height:1.3;font-weight:700}
+.slide-prize{font-family:'Orbitron';font-size:clamp(.78rem,2.1vw,.96rem);letter-spacing:.8px;font-weight:700;
+  color:var(--gold);display:flex;align-items:center;gap:6px;
+  text-shadow:0 0 16px rgba(255,209,102,.45);margin-top:1px}
+.slide-prize-ico{font-size:1rem}
+
+/* action row — CENTRE SLIDE ONLY: DETAILS + ADD TO CART */
+.slide-acts{display:none;flex-direction:column;gap:5px;
+  padding:0 12px 10px;background:var(--ocean-mid);width:100%}
+.c-slide[data-pos="0"] .slide-acts{display:flex}
+.c-slide:not([data-pos="0"]) .slide-info,
+.c-slide:not([data-pos="0"]) .slide-acts{display:none !important}
+
+.slide-btn-det{font-family:'Orbitron';font-size:clamp(.58rem,1.5vw,.72rem);letter-spacing:1.8px;
+  padding:10px 10px;border:1px solid var(--cyan);background:rgba(0,5,10,.85);
+  color:var(--cyan);cursor:pointer;width:100%;text-align:center;
+  clip-path:polygon(6% 0,100% 0,94% 100%,0 100%);transition:all .3s}
+.slide-btn-det:hover{background:var(--cyan);color:var(--ocean)}
+
+.slide-btn-cart{font-family:'Orbitron';font-size:clamp(.58rem,1.5vw,.72rem);letter-spacing:1.8px;
+  padding:9px 10px;border:1px solid var(--green);background:rgba(0,5,10,.85);
+  color:var(--green);cursor:pointer;width:100%;text-align:center;
+  clip-path:polygon(6% 0,100% 0,94% 100%,0 100%);transition:all .3s}
+.slide-btn-cart:hover,.slide-btn-cart.in-cart{background:rgba(6,214,160,.12);color:var(--green)}
+.slide-open-lbl{font-family:'Share Tech Mono';font-size:var(--t-tag);letter-spacing:1.5px;
+  color:rgba(255,255,255,.3);text-align:center;padding:5px 0}
+
+/* 3-D fan positions */
+.c-slide[data-pos="0"]{
+  transform:translate(-50%,-50%) translateZ(0) scale(1);
+  z-index:10;filter:brightness(1);
+  box-shadow:0 28px 64px rgba(0,0,0,.6),0 0 36px rgba(0,242,255,.1);
+  animation:slideIn .55s var(--expo) both}
+@keyframes slideIn{from{opacity:0;transform:translate(-50%,-50%) scale(.82) rotateY(12deg)}
+  to{opacity:1;transform:translate(-50%,-50%) translateZ(0) scale(1) rotateY(0)}}
+.c-slide[data-pos="1"]{transform:translate(calc(-50% + 200px),-50%) translateZ(-90px) scale(.82) rotateY(-15deg);z-index:8;filter:brightness(.58)}
+.c-slide[data-pos="-1"]{transform:translate(calc(-50% - 200px),-50%) translateZ(-90px) scale(.82) rotateY(15deg);z-index:8;filter:brightness(.58)}
+.c-slide[data-pos="2"]{transform:translate(calc(-50% + 348px),-50%) translateZ(-200px) scale(.65) rotateY(-26deg);z-index:6;filter:brightness(.32)}
+.c-slide[data-pos="-2"]{transform:translate(calc(-50% - 348px),-50%) translateZ(-200px) scale(.65) rotateY(26deg);z-index:6;filter:brightness(.32)}
+.c-slide[data-pos="3"],.c-slide[data-pos="-3"]{transform:translate(-50%,-50%) translateZ(-330px) scale(.44);z-index:1;filter:brightness(.1);opacity:.2}
+.c-slide[data-pos="far"]{transform:translate(-50%,-50%) translateZ(-480px) scale(.26);z-index:0;opacity:0;pointer-events:none}
+
+@media(max-width:480px){
+  .c-slide[data-pos="1"]{transform:translate(calc(-50% + 148px),-50%) translateZ(-70px) scale(.8) rotateY(-13deg)}
+  .c-slide[data-pos="-1"]{transform:translate(calc(-50% - 148px),-50%) translateZ(-70px) scale(.8) rotateY(13deg)}
+  .c-slide[data-pos="2"],.c-slide[data-pos="-2"],
+  .c-slide[data-pos="3"],.c-slide[data-pos="-3"]{opacity:0;pointer-events:none}
+}
+
+/* arrows — inside padded .carousel-wrap, so always visible */
+.c-arrow{position:absolute;top:50%;
+  transform:translateY(calc(-50% - 18px)); /* offset upward toward poster centre */
+  width:36px;height:36px;
+  border:1px solid var(--border);background:rgba(0,5,10,.92);
+  color:var(--cyan);font-size:.85rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .25s var(--expo);backdrop-filter:blur(10px);
+  clip-path:polygon(14% 0,100% 0,86% 100%,0 100%);z-index:30}
+.c-arrow:hover{background:rgba(0,242,255,.14);border-color:var(--cyan);
+  transform:translateY(calc(-50% - 18px)) scale(1.08)}
+.c-arrow.prev{left:2px}
+.c-arrow.next{right:2px}
+
+/* footer: dots + counter */
+.carousel-foot{display:flex;align-items:center;justify-content:center;
+  gap:12px;margin-top:14px;position:relative;z-index:20}
+.c-dots{display:flex;gap:5px}
+.c-dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.16);cursor:pointer;transition:all .3s}
+.c-dot.active{background:var(--cyan);box-shadow:0 0 5px var(--cyan);width:15px;border-radius:3px}
+.c-counter{font-family:'Share Tech Mono';font-size:var(--t-tag);letter-spacing:2px;color:rgba(255,255,255,.25)}
+.c-counter span{color:var(--cyan)}
+.c-empty{height:70px;display:flex;align-items:center;justify-content:center;
+  font-family:'Share Tech Mono';font-size:var(--t-sm);letter-spacing:3px;color:rgba(255,255,255,.15)}
+
+/* ══════════════════════════════════════════════════════════
+   EVENT CARDS GRID
+   Card shows: poster | name | prize | [DETAILS] [+ CART]
+   No description, no meta rows.
+══════════════════════════════════════════════════════════ */
+.events-sub{margin-top:8px}
+.sub-lbl{font-family:'Share Tech Mono';font-size:var(--t-tag);letter-spacing:var(--lsp-xw);
+  color:rgba(255,255,255,.22);margin-bottom:14px;display:block}
+
+.type-filters{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:18px}
+.type-btn{font-family:'Orbitron';font-size:var(--t-ui);letter-spacing:var(--lsp-mid);
+  padding:6px 12px;border:1px solid var(--border);background:transparent;
+  color:rgba(255,255,255,.38);cursor:pointer;transition:all .3s;white-space:nowrap;
+  position:relative;
+  animation:btnPop .4s var(--expo) both}
+@keyframes btnPop{from{opacity:0;transform:scale(.88) translateY(7px)}to{opacity:1;transform:none}}
+.type-btn:nth-child(1){animation-delay:.04s}
+.type-btn:nth-child(2){animation-delay:.1s}
+.type-btn:nth-child(3){animation-delay:.16s}
+.type-btn:nth-child(4){animation-delay:.22s}
+.type-btn:nth-child(5){animation-delay:.28s}
+.type-btn:hover,.type-btn.active{border-color:var(--cyan);color:var(--cyan);background:var(--cyan-dim)}
+.type-btn.active::after{content:'';position:absolute;bottom:-1px;left:50%;
+  width:55%;height:2px;background:var(--cyan);transform:translateX(-50%);border-radius:1px}
+
+/* grid layout */
+.events-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:11px;width:100%}
+@media(min-width:600px){.events-grid{gap:13px}}
+@media(min-width:768px){.events-grid{grid-template-columns:repeat(3,1fr);gap:15px}}
+@media(min-width:1100px){.events-grid{grid-template-columns:repeat(5,1fr);gap:16px}}
+
+/* card shell */
+.event-card{position:relative;background:var(--ocean-card);border:1px solid var(--border);
+  overflow:hidden;cursor:pointer;display:flex;flex-direction:column;
+  clip-path:polygon(0 0,calc(100% - 9px) 0,100% 9px,100% 100%,0 100%);
+  transition:border-color .3s,box-shadow .35s,transform .35s var(--expo);
+  animation:cardUp .5s var(--expo) both;animation-play-state:paused}
+.event-card.anim-ready{animation-play-state:running}
+@keyframes cardUp{from{opacity:0;transform:translateY(28px) scale(.96)}to{opacity:1;transform:none}}
+.event-card:hover{border-color:var(--border-hi);transform:translateY(-4px);
+  box-shadow:0 0 0 1px rgba(0,242,255,.07),0 14px 44px rgba(0,0,0,.5),0 0 28px rgba(0,242,255,.07)}
+
+/* corner cut accent */
+.event-card::before{content:'';position:absolute;top:0;right:0;z-index:3;
+  width:9px;height:9px;background:var(--cyan);
+  clip-path:polygon(0 0,100% 0,100% 100%);opacity:.65;transition:opacity .3s}
+.event-card:hover::before{opacity:1}
+
+/* scan line */
+.card-scan{position:absolute;top:-100%;left:0;width:100%;height:30%;pointer-events:none;z-index:4;
+  background:linear-gradient(to bottom,transparent,rgba(0,242,255,.025),transparent);
+  animation:scanMove 5s infinite linear}
+@keyframes scanMove{to{top:200%}}
+
+/* shimmer on hover */
+.event-card::after{content:'';position:absolute;top:0;left:0;width:38%;height:100%;
+  background:linear-gradient(108deg,transparent 28%,rgba(0,242,255,.05) 50%,transparent 72%);
+  transform:translateX(-100%);pointer-events:none;z-index:5}
+.event-card:hover::after{animation:shimmer .6s ease forwards}
+@keyframes shimmer{to{transform:translateX(280%)}}
+
+/* poster */
+.ev-poster{width:100%;aspect-ratio:9/16;overflow:hidden;position:relative;flex-shrink:0}
+.ev-poster img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .65s var(--expo)}
+.event-card:hover .ev-poster img{transform:scale(1.055)}
+.poster-ph{width:100%;height:100%;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:7px;position:relative;overflow:hidden}
+.type-competition .poster-ph{background:linear-gradient(160deg,#001a2c 0%,#000d15 45%,#001a1a 100%)}
+.type-workshop   .poster-ph{background:linear-gradient(160deg,#0d001a 0%,#000d15 45%,#001530 100%)}
+.type-exhibition .poster-ph{background:linear-gradient(160deg,#001a10 0%,#000d15 45%,#001a28 100%)}
+.type-session    .poster-ph{background:linear-gradient(160deg,#1a1000 0%,#0d0800 45%,#001015 100%)}
+.type-media      .poster-ph{background:linear-gradient(160deg,#1a0010 0%,#0d0015 45%,#0d0030 100%)}
+.type-creative   .poster-ph{background:linear-gradient(160deg,#001a18 0%,#00100d 45%,#001a10 100%)}
+.poster-ph::before{content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 26px,rgba(0,242,255,.035) 26px,rgba(0,242,255,.035) 27px),
+             repeating-linear-gradient(90deg,transparent,transparent 26px,rgba(0,242,255,.035) 26px,rgba(0,242,255,.035) 27px)}
+.ph-icon{font-size:clamp(1.4rem,3.5vw,2rem);position:relative;z-index:1;
+  filter:drop-shadow(0 0 10px currentColor);animation:floatY 3s ease-in-out infinite}
+.ph-name{font-family:'Orbitron';font-size:clamp(.4rem,1.1vw,.52rem);letter-spacing:1.2px;
+  color:rgba(255,255,255,.65);text-align:center;padding:0 7px;
+  position:relative;z-index:1;line-height:1.4;max-width:90%}
+.ev-type-tag{position:absolute;top:6px;left:6px;z-index:2;
+  font-family:'Orbitron';font-size:var(--t-tag);letter-spacing:1.2px;
+  padding:2px 6px;background:rgba(0,5,10,.9);border:1px solid var(--border);color:var(--cyan)}
+.poster-grad{position:absolute;bottom:0;left:0;right:0;height:38%;
+  background:linear-gradient(to top,rgba(0,13,21,.88) 0%,transparent 100%);
+  z-index:1;pointer-events:none}
+
+/* ── card body: NAME + PRIZE only ── */
+.ev-body{padding:10px 10px 8px;display:flex;flex-direction:column;gap:4px;flex:1}
+.ev-name{font-family:'Orbitron';font-size:clamp(.68rem,1.9vw,.87rem);letter-spacing:1.4px;
+  color:#fff;line-height:1.3;font-weight:700;
+  text-shadow:0 0 18px rgba(255,255,255,.12)}
+.ev-prize{font-family:'Orbitron';font-size:clamp(.62rem,1.7vw,.76rem);letter-spacing:.6px;font-weight:700;
+  color:var(--gold);display:flex;align-items:center;gap:5px;
+  text-shadow:0 0 12px rgba(255,209,102,.4)}
+.ev-prize-ico{font-size:.8rem}
+/* free / open badge */
+.ev-free{font-family:'Share Tech Mono';font-size:var(--t-tag);letter-spacing:1px;
+  color:var(--green);border:1px solid rgba(6,214,160,.3);
+  background:rgba(6,214,160,.06);padding:2px 6px;display:inline-block;width:fit-content}
+
+/* ── card footer: DETAILS + ADD TO CART ── */
+.ev-footer{display:flex;gap:5px;align-items:center;padding:9px 10px 11px;
+  border-top:1px solid rgba(0,242,255,.06)}
+.ev-det-btn{font-family:'Orbitron';font-size:clamp(.55rem,1.3vw,.68rem);letter-spacing:1.7px;
+  padding:8px 9px;border:1px solid var(--border);background:transparent;
+  color:rgba(255,255,255,.55);cursor:pointer;transition:all .28s;flex:1;text-align:center}
+.ev-det-btn:hover{border-color:var(--cyan);color:var(--cyan)}
+.ev-cart-btn{font-family:'Orbitron';font-size:clamp(.55rem,1.3vw,.68rem);letter-spacing:1.7px;
+  padding:8px 9px;border:1px solid var(--cyan);background:rgba(0,242,255,.06);
+  color:var(--cyan);cursor:pointer;transition:all .28s;flex:1.2;text-align:center;
+  clip-path:polygon(5% 0,100% 0,95% 100%,0 100%)}
+.ev-cart-btn:hover{background:var(--cyan);color:var(--ocean)}
+.ev-cart-btn.in-cart{border-color:var(--green);background:rgba(6,214,160,.1);color:var(--green)}
+.ev-cart-btn.registered,.slide-btn-cart.registered,.modal-cart-btn.registered{
+  border-color:var(--green)!important;background:rgba(6,214,160,.08)!important;
+  color:var(--green)!important;cursor:default!important;opacity:.8}
+.ev-cart-btn.pending,.slide-btn-cart.pending,.modal-cart-btn.pending{
+  border-color:var(--gold)!important;background:rgba(255,209,102,.08)!important;
+  color:var(--gold)!important;cursor:default!important;opacity:.85}
+.ev-open-tag{font-family:'Share Tech Mono';font-size:var(--t-tag);letter-spacing:1px;
+  color:rgba(255,255,255,.22);flex:1;text-align:center}
+.empty-state{font-family:'Share Tech Mono';font-size:var(--t-sm);letter-spacing:3px;
+  color:rgba(255,255,255,.15);padding:36px;text-align:center;
+  border:1px dashed rgba(255,255,255,.07);grid-column:1/-1}
+
+/* ── SOLD OUT ── */
+/* card-level overlay tint */
+.event-card.sold-out{opacity:.75}
+.event-card.sold-out .ev-poster::after{
+  content:'';position:absolute;inset:0;z-index:3;
+  background:repeating-linear-gradient(
+    -45deg,rgba(255,50,80,.06),rgba(255,50,80,.06) 8px,
+    transparent 8px,transparent 16px)}
+/* sold out badge in footer */
+.ev-soldout-btn{
+  font-family:'Orbitron';font-size:clamp(.54rem,1.3vw,.68rem);letter-spacing:1.8px;
+  padding:9px 10px;border:1px solid rgba(255,68,102,.5);
+  background:rgba(255,68,102,.08);color:var(--coral);
+  flex:1.2;text-align:center;cursor:default;
+  clip-path:polygon(5% 0,100% 0,95% 100%,0 100%)}
+/* poster sold-out ribbon */
+.soldout-ribbon{
+  position:absolute;top:0;left:0;right:0;z-index:4;
+  background:rgba(255,68,102,.88);
+  font-family:'Orbitron';font-size:var(--t-tag);letter-spacing:3px;
+  color:#fff;text-align:center;padding:5px 0;
+  clip-path:polygon(0 0,100% 0,100% 70%,50% 100%,0 70%)}
+/* poster pending ribbon */
+.pending-ribbon{
+  position:absolute;top:0;left:0;right:0;z-index:4;
+  background:rgba(255,209,102,.9);
+  font-family:'Orbitron';font-size:var(--t-tag);letter-spacing:3px;
+  color:#000;text-align:center;padding:5px 0;
+  clip-path:polygon(0 0,100% 0,100% 70%,50% 100%,0 70%)}
+/* carousel sold-out btn */
+.slide-btn-sold{
+  font-family:'Orbitron';font-size:clamp(.54rem,1.5vw,.68rem);letter-spacing:1.8px;
+  padding:9px 10px;border:1px solid rgba(255,68,102,.5);background:rgba(255,68,102,.08);
+  color:var(--coral);cursor:default;width:100%;text-align:center;
+  clip-path:polygon(6% 0,100% 0,94% 100%,0 100%)}
+/* modal sold-out block */
+.modal-soldout-banner{
+  display:flex;align-items:center;gap:14px;
+  padding:14px 18px;margin-bottom:0;
+  border:1px solid rgba(255,68,102,.4);border-left:3px solid var(--coral);
+  background:rgba(255,68,102,.06)}
+.modal-soldout-icon{font-size:1.3rem;flex-shrink:0}
+.modal-soldout-lbl{font-family:'Share Tech Mono';font-size:.58rem;letter-spacing:2px;
+  color:var(--coral);opacity:.7;margin-bottom:3px}
+.modal-soldout-val{font-family:'Orbitron';font-size:.82rem;color:var(--coral);
+  letter-spacing:1.5px;font-weight:700}
+/* modal pending block */
+.modal-pending-banner{
+  display:flex;align-items:center;gap:14px;
+  padding:14px 18px;margin-bottom:0;
+  border:1px solid rgba(255,209,102,.4);border-left:3px solid var(--gold);
+  background:rgba(255,209,102,.06)}
+.modal-pending-icon{font-size:1.3rem;flex-shrink:0}
+.modal-pending-lbl{font-family:'Share Tech Mono';font-size:.58rem;letter-spacing:2px;
+  color:var(--gold);opacity:.7;margin-bottom:3px}
+.modal-pending-val{font-family:'Orbitron';font-size:.82rem;color:var(--gold);
+  letter-spacing:1.5px;font-weight:700}
+
+/* ══════════════════════════════════════════════════════════
+   EVENT MODAL  — full detail view
+══════════════════════════════════════════════════════════ */
+#event-modal{position:fixed;inset:0;z-index:9999;
+  background:rgba(0,5,10,.97);backdrop-filter:blur(24px);
+  overflow-y:auto;padding:72px 20px 56px;opacity:0;pointer-events:none;transition:opacity .3s}
+#event-modal.open{opacity:1;pointer-events:all}
+#event-modal.open .modal-inner{animation:mRise .42s var(--expo) both}
+@keyframes mRise{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+
+.modal-close{position:fixed;top:14px;right:14px;
+  font-family:'Orbitron';font-size:.65rem;letter-spacing:2.5px;
+  background:rgba(0,5,10,.92);border:1px solid rgba(255,255,255,.18);
+  color:rgba(255,255,255,.45);padding:9px 18px;cursor:pointer;transition:all .3s;z-index:2}
+.modal-close:hover{border-color:var(--coral);color:var(--coral)}
+
+/* ── Two-column layout on desktop: poster left, info right ── */
+.modal-inner{
+  max-width:860px;margin:0 auto;
+  display:grid;
+  grid-template-columns:300px 1fr;
+  gap:40px;align-items:start;
+}
+@media(max-width:660px){
+  .modal-inner{grid-template-columns:1fr;gap:20px}
+}
+
+/* poster */
+.modal-poster-wrap{
+  width:100%;aspect-ratio:9/16;
+  overflow:hidden;border:1px solid var(--border-hi);
+  position:sticky;top:16px;
+}
+@media(max-width:660px){
+  .modal-poster-wrap{max-width:200px;margin:0 auto;position:static}
+}
+.modal-poster{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
+.modal-poster-ph{
+  width:100%;height:100%;display:flex;align-items:center;justify-content:center;
+  font-size:4.5rem;background:linear-gradient(135deg,#001520,#000d15)}
+
+/* right-side info panel */
+.modal-info{display:flex;flex-direction:column;gap:0}
+
+.modal-type-tag{
+  font-family:'Share Tech Mono';font-size:.64rem;letter-spacing:var(--lsp-xw);
+  color:var(--cyan);opacity:.70;display:block;margin-bottom:12px}
+
+.modal-title{
+  font-family:'Orbitron';
+  font-size:clamp(1.25rem,3.8vw,2rem);
+  font-weight:900;letter-spacing:3.5px;
+  margin-bottom:26px;line-height:1.15;color:#fff;
+  text-shadow:0 0 24px rgba(0,242,255,.35)}
+
+/* meta grid */
+.modal-meta-strip{
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:0;
+  border:1px solid var(--border);
+  margin-bottom:26px}
+.modal-meta-item{
+  display:flex;flex-direction:column;gap:7px;
+  padding:18px 20px;
+  border-right:1px solid var(--border);
+  border-bottom:1px solid var(--border)}
+.modal-meta-item:nth-child(even){border-right:none}
+.modal-meta-item:nth-last-child(-n+2){border-bottom:none}
+.modal-meta-lbl{
+  font-family:'Share Tech Mono';font-size:.62rem;letter-spacing:var(--lsp-mid);
+  color:rgba(0,242,255,.55);text-transform:uppercase}
+.modal-meta-val{
+  font-size:1.08rem;font-weight:700;color:#fff;
+  font-family:'Rajdhani';letter-spacing:.6px}
+
+/* prize banner */
+.modal-prize-banner{
+  background:rgba(255,209,102,.04);
+  border:1px solid rgba(255,209,102,.25);border-left:3px solid var(--gold);
+  padding:18px 22px;margin-bottom:26px;
+  display:flex;align-items:center;gap:16px;
+  animation:pShimmer 2.5s ease infinite}
+@keyframes pShimmer{0%,100%{background:rgba(255,209,102,.04)}50%{background:rgba(255,209,102,.09)}}
+.mp-icon{font-size:1.6rem;flex-shrink:0}
+.mp-lbl{font-family:'Share Tech Mono';font-size:.60rem;letter-spacing:var(--lsp-mid);
+  color:var(--gold);opacity:.65;margin-bottom:4px}
+.mp-val{font-family:'Orbitron';font-size:1.2rem;color:var(--gold);letter-spacing:2.5px;font-weight:700}
+
+/* sponsors strip — sits below the meta/prize block, above the about text */
+.sponsor-row{display:flex;flex-wrap:wrap;align-items:center;gap:12px}
+.sponsor-chip{
+  display:inline-flex;align-items:center;justify-content:center;
+  height:104px;min-width:104px;flex-shrink:0;box-sizing:border-box;
+  padding:14px;border-radius:16px;overflow:hidden;
+  background:rgba(255,255,255,.03);border:1px solid var(--border);
+  transition:all .35s var(--expo)}
+.sponsor-chip:hover{
+  border-color:var(--border-hi);background:rgba(0,242,255,.05);
+  transform:translateY(-3px);box-shadow:0 8px 20px rgba(0,242,255,.14)}
+.sponsor-chip img{
+  /* sizes itself off the file's own dimensions: 100x100 logos render square,
+     200x100 logos render twice as wide — the chip grows to match either */
+  max-height:70px;max-width:200px;width:auto;height:auto;object-fit:contain;display:block}
+.sponsor-fallback{
+  font-family:'Orbitron';font-size:.76rem;letter-spacing:1px;font-weight:600;
+  color:rgba(255,255,255,.42);text-transform:uppercase;
+  white-space:normal;text-align:center;line-height:1.3;
+  transition:color .35s}
+.sponsor-chip:hover .sponsor-fallback{color:var(--cyan);text-shadow:0 0 10px rgba(0,242,255,.5)}
+
+/* coordinators strip — stacked list, one per row */
+.modal-coordinators{display:flex;flex-direction:column;gap:10px}
+.coord-chip{
+  display:flex;align-items:center;gap:10px;
+  padding:12px 16px;
+  background:rgba(0,242,255,.04);
+  border:1px solid var(--border);
+  border-left:3px solid var(--cyan);
+  transition:all .3s var(--expo);
+  width:100%;box-sizing:border-box}
+.coord-chip:hover{
+  background:rgba(0,242,255,.08);
+  border-color:var(--border-hi);
+  border-left-color:var(--cyan);
+  transform:translateY(-2px);
+  box-shadow:0 6px 20px rgba(0,242,255,.1)}
+.coord-avatar{
+  width:34px;height:34px;border-radius:50%;
+  background:rgba(0,242,255,.1);
+  border:1px solid rgba(0,242,255,.3);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.9rem;flex-shrink:0}
+.coord-info{display:flex;align-items:center;flex-wrap:wrap;gap:4px 12px;min-width:0;flex:1}
+.coord-name{
+  font-family:'Orbitron';font-size:.66rem;letter-spacing:1.5px;
+  color:rgba(255,255,255,.55);font-weight:600;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  flex:0 1 auto;min-width:0}
+.coord-role{
+  font-family:'Share Tech Mono';font-size:.58rem;letter-spacing:1.5px;
+  color:rgba(0,242,255,.5)}
+.coord-phone{
+  font-family:'Share Tech Mono';font-size:.7rem;letter-spacing:.2px;
+  color:var(--ocean);font-weight:700;text-decoration:none;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.3;
+  display:inline-flex;align-items:center;gap:6px;
+  min-width:0;max-width:100%;flex:0 1 auto;
+  background:var(--gold);
+  padding:6px 12px;
+  border-radius:5px;
+  box-shadow:0 2px 10px rgba(255,209,102,.22);
+  transition:all .25s var(--expo);
+  -webkit-tap-highlight-color:rgba(255,209,102,.3)}
+.coord-phone .cp-ico{font-size:.78rem;flex-shrink:0}
+.coord-phone:hover{background:#fff;box-shadow:0 4px 16px rgba(255,209,102,.5);transform:translateY(-1px)}
+.coord-phone:active{transform:translateY(0);box-shadow:0 1px 6px rgba(255,209,102,.3)}
+@media(max-width:660px){
+  .coord-chip{padding:10px 12px}
+  .coord-info{flex-direction:column;align-items:flex-start;gap:6px}
+  .coord-name{font-size:.58rem;max-width:100%}
+  .coord-phone{font-size:.64rem;padding:7px 12px;width:100%;justify-content:center}
+  .coord-avatar{width:28px;height:28px;font-size:.78rem}
+}
+
+/* about + rules */
+.modal-sec{margin-bottom:26px}
+.modal-sec-ttl{
+  font-family:'Share Tech Mono';font-size:.66rem;letter-spacing:var(--lsp-wide);
+  color:var(--cyan);opacity:.85;margin-bottom:14px;font-weight:700;
+  padding-bottom:10px;border-bottom:1px solid var(--border-hi);
+  text-shadow:0 0 10px rgba(0,242,255,.35)}
+.modal-sec p{font-size:1rem;line-height:1.85;color:rgba(255,255,255,.78)}
+.modal-rules{list-style:none;display:flex;flex-direction:column;gap:12px}
+.modal-rules li{
+  font-size:1rem;color:rgba(255,255,255,.72);
+  padding-left:20px;position:relative;line-height:1.68}
+.modal-rules li::before{content:'›';position:absolute;left:0;color:var(--cyan);font-size:1.1rem}
+
+/* brochure link — prioritised CTA, sits below About the Event */
+.modal-brochure-link{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  margin-top:16px;width:100%;box-sizing:border-box;
+  font-family:'Orbitron';font-size:.82rem;font-weight:700;letter-spacing:var(--lsp-wide);
+  color:var(--ocean);border:1px solid var(--gold);border-radius:6px;
+  padding:15px 22px;text-decoration:none;
+  background:linear-gradient(135deg,#ffe08a,var(--gold));
+  box-shadow:0 4px 18px rgba(255,209,102,.35),0 0 0 1px rgba(255,209,102,.15) inset;
+  transition:transform .2s var(--expo),box-shadow .25s,background .25s;
+  animation:broPulse 2.6s ease-in-out infinite}
+.modal-brochure-link:hover{
+  background:linear-gradient(135deg,#fff0c2,#ffdd8f);
+  box-shadow:0 6px 26px rgba(255,209,102,.55);
+  transform:translateY(-2px)}
+.modal-brochure-link:active{transform:translateY(0)}
+@keyframes broPulse{
+  0%,100%{box-shadow:0 4px 18px rgba(255,209,102,.35),0 0 0 1px rgba(255,209,102,.15) inset}
+  50%{box-shadow:0 4px 26px rgba(255,209,102,.6),0 0 0 1px rgba(255,209,102,.25) inset}}
+@media(max-width:660px){
+  .modal-brochure-link{font-size:.72rem;padding:14px 16px}
+}
+
+/* actions row */
+.modal-actions{
+  display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+  margin-top:28px;padding-top:22px;border-top:1px solid var(--border)}
+.modal-cart-btn{
+  font-family:'Orbitron';font-size:.74rem;letter-spacing:2.5px;
+  padding:16px 32px;border:1px solid var(--cyan);background:rgba(0,242,255,.07);
+  color:var(--cyan);cursor:pointer;text-decoration:none;display:inline-block;
+  clip-path:polygon(5% 0,100% 0,95% 100%,0 100%);transition:all .3s}
+.modal-cart-btn:hover{background:var(--cyan);color:var(--ocean)}
+.modal-cart-btn.in-cart{border-color:var(--green);background:rgba(6,214,160,.1);color:var(--green)}
+.modal-open-tag{font-family:'Share Tech Mono';font-size:.66rem;letter-spacing:2.5px;color:rgba(255,255,255,.32)}
+.modal-fee-badge{
+  font-family:'Share Tech Mono';font-size:.74rem;letter-spacing:1.5px;font-weight:700;
+  padding:12px 20px;border:1.5px solid;border-left-width:3px}
+
+/* fee meta item gets a subtle glow so the figure reads as important at a glance */
+.modal-fee-item{position:relative;background:rgba(255,209,102,.05)}
+.modal-fee-val{font-size:1.15rem!important;font-weight:700!important;letter-spacing:.8px!important;
+  text-shadow:0 0 14px currentColor}
+
+@media(max-width:660px){
+  .modal-title{font-size:clamp(1.05rem,6vw,1.35rem);letter-spacing:2px;margin-bottom:18px}
+  .modal-meta-strip{grid-template-columns:repeat(2,1fr)}
+  .modal-meta-item{padding:13px 14px;gap:5px}
+  .modal-meta-lbl{font-size:.56rem}
+  .modal-meta-val{font-size:.92rem}
+  .modal-sec p,.modal-rules li{font-size:.88rem}
+  .modal-rules{gap:10px}
+  .modal-cart-btn{width:100%;text-align:center;padding:15px 20px;font-size:.68rem}
+  .modal-actions{flex-direction:column;align-items:stretch;gap:10px;margin-top:22px;padding-top:18px}
+  .modal-fee-badge{text-align:center;font-size:.68rem;padding:11px 14px}
+  .modal-fee-val{font-size:1rem!important}
+  .mp-val{font-size:1rem}
+  .mp-icon{font-size:1.4rem}
+  .modal-prize-banner{padding:14px 16px;gap:12px;margin-bottom:20px}
+  .modal-type-tag{font-size:.58rem}
+  .sponsor-row{gap:10px;justify-content:center}
+  .sponsor-chip{height:80px;min-width:80px;flex-shrink:0;padding:10px;border-radius:12px}
+  .sponsor-chip img{max-height:52px;max-width:150px;width:auto;height:auto}
+  .sponsor-fallback{font-size:.66rem}
+}
+
+/* ── COMING SOON ── */
+.coming-soon{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:14px;padding:64px 24px;border:1px dashed rgba(0,242,255,.15);
+  background:rgba(0,242,255,.02);margin-bottom:40px;position:relative;overflow:hidden}
+.coming-soon::before{content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(45deg,transparent,transparent 22px,rgba(0,242,255,.015) 22px,rgba(0,242,255,.015) 23px)}
+.cs-ico{font-size:2rem;filter:drop-shadow(0 0 12px rgba(0,242,255,.45));
+  animation:csPulse 2.4s ease-in-out infinite;position:relative;z-index:1}
+@keyframes csPulse{0%,100%{opacity:.55;transform:scale(1)}50%{opacity:1;transform:scale(1.08)}}
+.cs-ttl{font-family:'Orbitron';font-size:clamp(.95rem,2.8vw,1.5rem);font-weight:900;
+  letter-spacing:5px;color:var(--cyan);
+  text-shadow:0 0 20px rgba(0,242,255,.6),0 0 40px rgba(0,242,255,.28);position:relative;z-index:1}
+.cs-sub{font-family:'Share Tech Mono';font-size:var(--t-tag);letter-spacing:var(--lsp-wide);
+  color:rgba(0,242,255,.4);position:relative;z-index:1}
+
+/* ── CART FAB + TOAST ── */
+.cart-fab{display:none;position:fixed;bottom:16px;right:14px;z-index:900;
+  background:var(--cyan);color:#000;border:none;
+  font-family:'Orbitron';font-size:var(--t-ui);letter-spacing:2px;
+  padding:11px 16px;cursor:pointer;
+  clip-path:polygon(8% 0,100% 0,92% 100%,0 100%);
+  box-shadow:0 0 22px rgba(0,242,255,.32);text-decoration:none;white-space:nowrap}
+.cart-fab.show{display:flex;align-items:center;gap:7px;
+  animation:fabIn .4s var(--expo),floatY 3.5s 1s ease-in-out infinite}
+@keyframes fabIn{from{transform:translateY(58px) scale(.8);opacity:0}to{transform:none;opacity:1}}
+.fab-count{background:#000;color:var(--cyan);border-radius:50%;
+  width:18px;height:18px;display:flex;align-items:center;justify-content:center;
+  font-family:'Share Tech Mono';font-size:.6rem}
+.toast{position:fixed;bottom:76px;left:50%;transform:translateX(-50%) translateY(18px);
+  background:rgba(0,242,255,.08);border:1px solid var(--cyan);
+  font-family:'Share Tech Mono';font-size:var(--t-sm);letter-spacing:2.5px;
+  color:var(--cyan);padding:10px 22px;z-index:99999;opacity:0;transition:all .35s;
+  backdrop-filter:blur(10px);white-space:nowrap;max-width:92vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.added{border-color:var(--green);color:var(--green)}
+.toast.removed{border-color:var(--coral);color:var(--coral)}
+
+/* ── SHARED ANIMATIONS ── */
+@keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+</style>
+</head>
+<body>
+<div id="bg"><div class="grid-bg"></div><div class="radar"></div></div>
+
+<!-- NAV -->
+<nav>
+  <a href="{{ url_for('home') }}" class="nav-brand">
+    <img src="{{ url_for('static', filename='logo1.png') }}" alt="" onerror="this.style.display='none'">
+    ⚓ ANCHORAGE'26
+  </a>
+  <div class="nav-center">
+    <a href="{{ url_for('home') }}">HOME</a>
+    <a href="{{ url_for('events') }}" class="active">EVENTS</a>
+    <a href="{{ url_for('about') }}">ABOUT</a>
+  </div>
+  <div class="nav-right">
+    <a href="{{ url_for('cart') }}" class="cart-btn">
+      🛒 CART <span class="cart-badge" id="cartBadge">0</span>
+    </a>
+    {% if session.get('loggedin') %}
+      <a href="{{ url_for('logout') }}" class="nav-user">{{ session.get('user_name','').split(' ')[0] | upper }}</a>
+    {% else %}
+      <a href="{{ url_for('login') }}" class="nav-user">LOGIN</a>
+    {% endif %}
+  </div>
+</nav>
+
+<!-- GLOBAL FILTER BAR -->
+<div class="global-filter-bar" id="globalFilterBar">
+  <div class="global-filter-inner">
+    <span class="gf-label">// FILTER BY</span>
+    <button class="gf-btn active" data-gf="all" onclick="setGF('all',this)">
+      <span class="gf-dot"></span>ALL EVENTS
+    </button>
+    <button class="gf-btn" data-gf="workshop" onclick="setGF('workshop',this)">
+      <span class="gf-dot"></span>WORKSHOPS<span class="gf-count" id="gfc-workshop"></span>
+    </button>
+    <button class="gf-btn" data-gf="competition" onclick="setGF('competition',this)">
+      <span class="gf-dot"></span>COMPETITIONS<span class="gf-count" id="gfc-competition"></span>
+    </button>
+    <button class="gf-btn" data-gf="lecture" onclick="setGF('lecture',this)">
+      <span class="gf-dot"></span>LECTURES<span class="gf-count" id="gfc-lecture"></span>
+    </button>
+    <button class="gf-btn" data-gf="media" onclick="setGF('media',this)">
+      <span class="gf-dot"></span>MEDIA &amp; CREATIVE<span class="gf-count" id="gfc-media"></span>
+    </button>
+  </div>
+</div>
+
+<!-- HERO -->
+<header class="page-hero">
+  <span class="hero-tag">// ANCHORAGE 2026 · 10–12 OCTOBER</span>
+  <h1>EVENTS</h1>
+  <p>Three days. Competitions. Workshops. Exhibitions. Endless possibilities.</p>
+</header>
+
+<div class="filter-notice" id="filterNotice">SHOWING: <span id="filterLabel">ALL EVENTS</span></div>
+
+<!-- EVENTS -->
+<div class="days-container">
+
+  <section class="day-section" id="all-events">
+    <div class="events-sub">
+      <span class="sub-lbl">// <span id="gridCount">ALL EVENTS</span></span>
+      <div class="events-grid" id="grid-all"></div>
+    </div>
+  </section>
+
+</div>
+
+<!-- MODAL -->
+<div id="event-modal">
+  <button class="modal-close" id="modalClose">✕ CLOSE</button>
+  <div class="modal-inner" id="modalContent"></div>
+</div>
+
+<!-- CART FAB -->
+<a href="{{ url_for('cart') }}" class="cart-fab" id="cartFab">
+  🛒 VIEW CART <span class="fab-count" id="fabCount">0</span>
+</a>
+<div class="toast" id="toast"></div>
+
+<!-- ═══════════════════════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════════════════════ -->
+<script>
+const LOGGED_IN      = {{ 'true' if session.get('loggedin') else 'false' }};
+const LOGIN_URL      = "{{ url_for('login') }}";
+const REGISTERED_IDS = new Set({{ registered_event_ids | tojson | safe }});
+/* Event dbIds with a UPI payment still awaiting admin verification —
+   passed from Flask events() route as pending_event_ids. */
+const PENDING_IDS = new Set({{ pending_event_ids | tojson | safe }});
+/* Sold-out event dbIds — passed from Flask events() route.
+   In app.py events() add:
+     cursor.execute("SELECT id FROM events WHERE max_tickets IS NOT NULL AND tickets_sold >= max_tickets")
+     sold_out_ids = [r['id'] for r in cursor.fetchall()]
+   Then: render_template('events.html', ..., sold_out_ids=sold_out_ids)
+*/
+const SOLD_OUT_IDS = new Set({{ sold_out_ids | tojson | safe }});
+
+/* ── EVENTS DATA ── */
+const EVENTS = [
+ {
+    id:'paper-presentation', dbId:5, day:1, type:'competition',
+    name:'Naval Frontiers',
+    shortDesc:"A national-level paper presentation competition \u2014 present innovative research on maritime and allied engineering themes before a panel of experts at Anchorage '26.",
+    fullDesc:'Naval Frontiers provides a platform for students from diverse engineering and technology backgrounds to present innovative ideas, research findings, and technical solutions relevant to the maritime and industrial sectors. Participants from Ship Technology, Mechanical Engineering, Electrical & Electronics, Civil Engineering, Computer Science, Naval Architecture, Marine Engineering and allied disciplines are invited to present papers addressing emerging technologies, engineering challenges and innovative applications. The event spans three stages: Abstract Submission, Extended Abstract Submission, and a Final Presentation & Q&A at the Department of Ship Technology, CUSAT on 10 October 2026 (9 AM \u2013 1 PM).',
+    venue:'Department of Ship Technology', team:'Up to 4 Members',
+    fee:'paid', feeAmt:250, feeUnit:'Person', registration:true, icon:'\ud83d\udcc4', poster:'/static/images/paper.webp',
+    prize:'\u20b935,000',
+    brochure:'',
+    coordinators:[
+      {name:'Yadhukrishna M A', phone:'+91 88914 48543'},
+      {name:'Elva Edison',      phone:'+91 75929 04679'}
+    ],
+    sponsors:[],
+    rules:[
+      'Individual participation is allowed; maximum 4 members per team.',
+      'Registration fee is \u20b9250 per person in a team.',
+      'Only one paper / abstract may be submitted per team.',
+      'Open to undergraduate and postgraduate students, research scholars, and young professionals from Naval Architecture, Ship Technology, Marine, Mechanical, Electrical, Civil, Computer Science, AI, Data Science, Robotics, Environmental, and allied disciplines.',
+      'Participants may choose from the suggested themes or any innovative topic relevant to maritime, offshore, coastal, ocean, port, shipbuilding, or allied sectors.',
+      'The paper must include: abstract, technical concepts, feasibility analysis, innovative approach, and economic viability of the proposed solution.',
+      'All submissions must be in PDF format, demonstrating originality, technical depth, creativity, and real-world relevance in the context of maritime developments.',
+      'Only original work accepted. Papers with plagiarism similarity exceeding 15% will be disqualified.',
+      'All presentations must be delivered in English.',
+      'STAGE 1 \u2013 Abstract Submission (deadline 28 Aug): Submit 250\u2013300 word abstract as PDF, Times New Roman 12pt, 1.5-line spacing, IEEE citations. File: TeamName_PaperTitle_Institution.pdf. Include plagiarism report.',
+      'STAGE 2 \u2013 Extended Abstract (deadline 25 Sep): Selected teams submit a 2\u20133 page detailed paper (excluding references/figures), 1-inch margins, IEEE citations, numbered and captioned figures/tables.',
+      'STAGE 3 \u2013 Final Presentation & Q&A on 10 October 2026 at Dept. of Ship Technology. Final PPT must be submitted by 5 October.',
+      'Timeline: 15 Jun \u2013 Registrations & Abstract Submission open | 28 Aug \u2013 Both close | 7 Sep \u2013 Abstract results | 24 Sep \u2013 Extended Abstract due | 3 Oct \u2013 Extended Abstract results | 5 Oct \u2013 Final PPT due | 10 Oct \u2013 Final Presentation.',
+      'Prizes: 1st \u20b925,000 + Trophy & Certificate of Excellence | 2nd \u20b910,000 + Trophy & Certificate of Merit | 3rd \u20b95,000 + Certificate of Merit. All active registrants receive a Participation Certificate.',
+      'Tie-breakers resolved by judges; later-stage marks weighted more heavily (Stage 3 > Stage 2 > Stage 1).',
+      'Register and submit at www.anchoragecusat.com'
+    ]
+  },
+ {
+    id:'boat-wars', dbId:6, day:1, type:'competition',
+    name:'Hydro Clash',
+    shortDesc:'Engineer, navigate, and conquer — design an RC boat from scratch and compete across four real-world maritime mission rounds.',
+    fullDesc:'Boat Battle is a flagship maritime engineering challenge where participants design and build a remotely controlled boat entirely from scratch, then compete across four progressively challenging rounds. Each round tests a distinct aspect of vessel performance: speed and manoeuvrability, strategic navigation through checkpoints, towing a 1 kg payload, and precision cargo delivery using ping pong balls. Teams must use the same vessel throughout all rounds, demanding a balanced design capable of performing across diverse conditions.',
+    venue:'Department of Ship Technology', team:'2-3 Members',
+    fee:'paid', feeAmt:749, registration:true, icon:'⛵', poster:'/static/images/boatwars.webp',
+    prize:'₹50,000',
+    brochure:'https://drive.google.com/file/d/1en_RIIRS1En1sFxlVwKIBHsE6C59vQPh/view?usp=drivesdk',
+    coordinators:[
+      {name:'Devadath Uday PK', phone:'+91 9072393613'},
+      {name:'Rohith Santhosh',  phone:'+91 9947815190'}
+    ],
+    sponsors:[
+      {name:'Sponsor', logo:'/static/images/GRSE.jpg'}
+    ],
+    rules:[
+      'Each team shall consist of exactly 3 members.',
+      'Registration fee is ₹749 per team.',
+      'Every participant must carry their university ID card.',
+      'Only one boat model is permitted per team; the same boat must be used for all four rounds.',
+      'Boats must be designed and built from scratch — readymade boats or commercially available hulls are strictly prohibited.',
+      'Boats may be constructed using any suitable material and must use a wireless control system (RC, RF, Bluetooth, or Wi-Fi).',
+      'Models with sharp edges, exposed blades, or hazardous protrusions will not be allowed.',
+      'Boats cannot be charged during the event.',
+      'Boat dimensions: Length 30 cm ± 5 cm, Breadth 15 cm ± 5 cm. Pool: 12 ft × 12 ft × 1 ft.',
+      'Round 1 – Manoeuvring Challenge (25 pts): navigate the course in the shortest time. Penalty: +5 sec per barricade hit.',
+      'Round 2 – Strategic Navigation Challenge (25 pts): navigate a complex course collecting checkpoints. Scored on checkpoints + time. Penalty: +5 sec per barricade hit. May be used as an elimination round.',
+      'Round 3 – Tugging Challenge (25 pts): tow a 1 kg floating payload through the course. Penalties: +5 sec (boat hits barricade), +7 sec (load hits barricade). Hook and tow rope provided; boats must have a towing attachment point (preferably at aft).',
+      'Round 4 – Harbour Logistics Challenge (20 pts): transport 4 ping pong balls (40 mm diameter) one at a time to the designated location. Max time: 5 minutes. Cargo hold walls must not exceed 1 cm height. Penalty: +5 sec per barricade hit. If a ball falls in water, return to start and collect a replacement — timer keeps running.',
+      'Any unfair practices or serious rule violations may lead to disqualification.',
+      'The decision of the organizing team is final in all matters regarding scoring, penalties, and rule interpretation.',
+      
+    ]
+  },
+ /* {
+    id:'IMO', dbId:26, day:1, type:'competition',
+    name:'IMO Chamber',
+    shortDesc:'IMO. TBD.',
+    fullDesc:'A competitive event where participants design and test boat models, evaluating their maneuverability, stability, and overall performance. Teams bring pre-built boats and compete in head-to-head challenges.',
+    venue:'Photonics Seminar Hall', team:'Solo',
+    fee:'paid', feeAmt:1, registration:true, icon:'⛵', poster:'/static/images/imo.webp',
+    prize:'',
+    brochure:'',
+    coordinators:[
+      {name:'Coordinator Epsilon', phone:'+91 98000 00005'},
+      {name:'Coordinator Zeta',    phone:'+91 98000 00006'}
+    ],
+    sponsors:[
+      {name:'Sponsor One', logo:'/static/images/sponsors/sponsor1.png'},
+      {name:'Sponsor Two', logo:'/static/images/sponsors/sponsor2.png'}
+    ],
+    rules:[
+      'Boat must be designed and built by the team.',
+      'Max dimensions: 60cm × 30cm × 30cm.',
+      'Battery-operated or wind-powered only.',
+      'Each team gets 2 attempts — best attempt counts.',
+      'Team size: exactly 2 members.'
+    ]
+  },*/
+/*  {
+    id:'CEO', dbId:27, day:2, type:'competition',
+    name:'Command Deck',
+    shortDesc:'CEO. TBD.',
+    fullDesc:'A competitive event where participants design and test boat models, evaluating their maneuverability, stability, and overall performance. Teams bring pre-built boats and compete in head-to-head challenges.',
+    venue:'Seminar Complex', team:'Solo',
+    fee:'paid', feeAmt:1, registration:true, icon:'🎓', poster:'/static/images/ceo.webp',
+    prize:'',
+    brochure:'',
+    coordinators:[
+      {name:'Coordinator Eta',   phone:'+91 98000 00007'},
+      {name:'Coordinator Theta', phone:'+91 98000 00008'}
+    ],
+    sponsors:[
+      {name:'Sponsor One', logo:'/static/images/sponsors/sponsor1.png'},
+      {name:'Sponsor Two', logo:'/static/images/sponsors/sponsor2.png'}
+    ],
+    rules:[
+      'Boat must be designed and built by the team.',
+      'Max dimensions: 60cm × 30cm × 30cm.',
+      'Battery-operated or wind-powered only.',
+      'Each team gets 2 attempts — best attempt counts.',
+      'Team size: exactly 2 members.'
+    ]
+  },*/
+ {
+    id:'reel-making', dbId:28, day:0, type:'media',
+    name:'VisionEd',
+    shortDesc:'Script, shoot, and edit an original educational short film on a maritime theme.',
+    fullDesc:'A national-level videography competition where teams produce a 5\u20137 minute educational short film. Entries are judged on concept, visual composition, editing quality, sound design, originality, and overall impact.',
+    venue:'Online', team:'Team (Team Leader + Members)',
+    fee:'paid', feeAmt:99, feeUnit:'Person', registration:true, icon:'🎬', poster:'/static/images/reelmaking.webp',
+    prize:'50,000',
+    brochure:'https://drive.google.com/file/d/1ET58pDNzcbL6WP22qi_vqXIe0fA1sT6p/view?usp=drive_link',
+    coordinators:[
+      {name:'Akshay Raj', phone:'+91 90486 09835'},
+      {name:'Hrishi K',   phone:'+91 97459 25022'}
+    ],
+    sponsors:[
+      {name:'Sponsor One', logo:'/static/images/ariesenergy.png'},
+  
+    ],
+    rules:[
+      'Open nationwide; each college may submit a maximum of 3 videos, each with a designated Team Leader.',
+      'Video must be 5\u20137 minutes long, in MP4 format, minimum Full HD (1080p), 16:9 aspect ratio, and under 400 MB.',
+      'The college name and Team Leader\u2019s name must be displayed in the video.',
+      'Any recording device is allowed (professional camera, smartphone, camcorder, drone, etc.); content may be live-action, animated, AI-generated, or a mix.',
+      'Content must be educational, informative, and relevant to learning or awareness.',
+      'English is preferred; non-English videos require English subtitles.',
+      'Entries must be entirely original; disclose any AI tools used, and obtain rights for any copyrighted music or third-party assets.',
+      'No offensive, discriminatory, political, religious, or promotional/branded content, and no logos of any kind.',
+      'The submission deadline will be announced by the organizers; late, incomplete, or incorrectly formatted entries will not be accepted.',
+      'Judged on educational value, accuracy of information, creativity & storytelling, innovation, production quality, and audience engagement; judges\u2019 decision is final.'
+    ]
+  },
+ /* {
+    id:'photography', dbId:29, day:0, type:'media',
+    name:'Voyage in Frames',
+    shortDesc:'Capture the beauty and story of the announced theme through your lens in this national photography contest.',
+    fullDesc:'A solo photography competition celebrating visual storytelling. Participants submit original images based on a theme announced ahead of the event, judged on creativity, composition, technical quality, and storytelling.',
+    venue:'Online', team:'Solo',
+    fee:'paid', feeAmt:99, registration:true, icon:'📸', poster:'/static/images/photography.webp',
+    prize:'₹25,000',
+    brochure:'https://drive.google.com/file/d/1ZuxbXOCsiusoBCAbtF7ZwzxL0iCOW8gj/view?usp=drivesdk',
+    coordinators:[
+      {name:'Deepak K',   phone:'+91 88914 86930'},
+      {name:'John Paul K',phone:'+91 90743 30577'}
+    ],
+    sponsors:[
+      {name:'Sponsor One', logo:'/static/images/indywood.webp'},
+    ],
+    rules:[
+      'Open to all; photos may be taken on any professional camera, DSLR, or mobile phone, submitted individually only.',
+      'The official theme will be announced on 1 September 2026 via the participants\u2019 WhatsApp group.',
+      'Entries must be the original work of the participant, who must hold all rights to the image; AI-generated or others\u2019 photos lead to disqualification.',
+      'Submit as JPEG/JPG or PNG, minimum 2000px on the longer side, under 15 MB, with no watermarks, signatures, logos, or borders.',
+      'Basic editing (cropping, exposure correction) is allowed; composites, AI-added elements, and heavy manipulation are not.',
+      'Photos must be captured safely and legally, with consent obtained from any identifiable individuals.',
+      'Entries open 1 September \u2013 1 October 2026; maximum 2 entries per participant (the 2nd entry requires an additional registration fee).',
+      'Each submission needs the participant\u2019s name, institution name, photograph title, and a caption (max 50 words).',
+      'Judged on theme relevance, creativity & originality, composition & visual impact, technical quality, and storytelling; judges\u2019 decision is final.'
+    ]
+  },*/
+/*  {
+    id:'debate', dbId:15, day:2, type:'competition',
+    name:'Turning Tides',
+    shortDesc:'Four-member teams clash over a motion in a fast-paced battle of arguments and rebuttals.',
+    fullDesc:'A structured debate where four-member teams argue for or against a motion across opening statements, main arguments, rebuttals, and a judges\u2019 Q&A round. Judged on argument strength, rebuttal skill, structure, delivery, and use of evidence.',
+    venue:'Department of Ship Technology', team:'4 Members',
+    fee:'paid', feeAmt:100, registration:true, icon:'\ud83d\udde3\ufe0f', poster:'/static/images/debate.webp',
+    prize:'\u20b925,000',
+    brochure:'',
+    coordinators:[
+      {name:'Coordinator Nu', phone:'+91 98000 00013'},
+      {name:'Coordinator Xi', phone:'+91 98000 00014'}
+    ],
+    sponsors:[
+      {name:'Sponsor One', logo:'/static/images/sponsors/sponsor1.png'},
+      {name:'Sponsor Two', logo:'/static/images/sponsors/sponsor2.png'}
+    ],
+    rules:[
+      'Each team shall consist of exactly 4 participants.',
+      'Teams will be assigned or choose either the For or Against side of the motion.',
+      'Each speaker is given 3 minutes to present arguments; speaking order must be maintained throughout.',
+      'Arguments should be backed by relevant facts, examples, and logical reasoning.',
+      'Rebuttals are encouraged, but speakers must stay respectful \u2014 no personal attacks or offensive language.',
+      'Interruptions, teammate prompting, or audience participation during the debate are not permitted.',
+      'A warning bell rings 1 minute before time is up; a final bell marks the end of the speech.',
+      'Exceeding the time limit may result in a deduction of marks.',
+      'Mobile phones and electronic devices may not be used while speaking unless explicitly permitted.',
+      'The judges\u2019 decision is final and binding.',
+      'Format: Opening Statement (1:30) \u2192 Main Arguments (2:00) \u2192 Rebuttal & Closing (1:30) \u2192 Judges\u2019 Q&A \u2014 5 minutes of speaking time per team, plus judges\u2019 interaction.'
+    ]
+  },*/
+/*  {
+    id:'quiz', dbId:16, day:2, type:'competition',
+    name:'nautiq',
+    shortDesc:'A four-round national quiz testing general knowledge, current affairs, and maritime history.',
+    fullDesc:'nautiq is a national-level quiz competition blending general knowledge and current affairs with rounds on maritime history, naval milestones, and ocean geography, scaling from moderate to high difficulty across a preliminary round and finals.',
+    venue:'Department of Ship Technology', team:'1\u20132 Members',
+    fee:'paid', feeAmt:149, registration:true, icon:'\u2753', poster:'/static/images/nautiq.webp',
+    prize:'\u20b925,000',
+    brochure:'',
+    coordinators:[
+      {name:'Parthan G',   phone:'+91 85903 01285'},
+      {name:'Devika S',    phone:'+91 85475 28481'},
+      {name:'Navaneeth A', phone:'+91 79076 05727'}
+    ],
+    sponsors:[
+      {name:'Sponsor One', logo:'/static/images/sponsors/sponsor1.png'},
+      {name:'Sponsor Two', logo:'/static/images/sponsors/sponsor2.png'}
+    ],
+    rules:[
+      'Teams of up to 2 members are allowed, cross-college teams permitted; individual participation is also allowed.',
+      'Registration fee is \u20b9149 per person; spot registration is available, though advance registration is encouraged.',
+      'Writing sheets will be provided \u2014 bring your own pens. Electronic devices and reference materials are strictly prohibited.',
+      'Preliminary round: 20 questions (some starred), no negative marking, 45 minutes total; the top 6 teams qualify for the finals.',
+      'Qualification ties are broken first by starred-question score, then by tie-breaker questions.',
+      'Finals: 6 rounds of 6 questions each, one of which is dedicated to Maritime Knowledge; roughly 2 hours total.',
+      'The Quiz Master\u2019s decision is final and binding in all matters relating to the quiz.'
+    ]
+  },*/
+/*  {
+    id:'treasure-hunt', dbId:21, day:3, type:'competition',
+    name:'The Lost Voyage',
+    shortDesc:'A campus-wide treasure hunt of navigation puzzles, riddles, and elimination rounds against the clock.',
+    fullDesc:'A flagship maritime strategy and navigation challenge across 5 progressively demanding rounds \u2014 from riddles and sequential clues to a checklist scavenger round and a final quiz \u2014 testing deduction, teamwork, and time management across real campus missions.',
+    venue:'Department of Ship Technology (HQ)', team:'2\u20134 Members',
+    fee:'paid', feeAmt:99, registration:true, icon:'🪙', poster:'/static/images/treasurehunt.webp',
+    prize:'\u20b925,000',
+    brochure:'',
+    coordinators:[
+      {name:'Anandu K',         phone:'+91 80893 17655'},
+      {name:'Chris Mathew',     phone:'+91 97471 89108'},
+      {name:'Adithya Chandran', phone:'+91 73064 11377'}
+    ],
+    sponsors:[
+      {name:'Sponsor One', logo:'/static/images/sponsors/sponsor1.png'},
+      {name:'Sponsor Two', logo:'/static/images/sponsors/sponsor2.png'}
+    ],
+    rules:[
+      'Each team must have 2\u20134 members; rosters are locked once registered \u2014 no substitutions allowed.',
+      'All participants must carry a valid school/college ID card; spot registration opens 30 minutes before the event starts.',
+      'Team members must stay together at all times and solve clues strictly in sequence.',
+      'Electronic gadgets are strictly prohibited, as is discussing clues with anyone outside your team.',
+      'Participants must travel on foot only \u2014 no vehicles once the hunt begins.',
+      'Round 1 (Anchor Drop): solve an opening riddle to advance; no time limit.',
+      'Round 2 (Uncharted Waters): solve 2 sequential clues to advance; no time limit.',
+      'Round 3 (The Perfect Storm): solve 2 difficult clues within 30 minutes or be eliminated; ties broken by an on-the-spot tiebreaker.',
+      'Round 4 (The Pirates\u2019 Plunder): complete a checklist of tasks/objects \u2014 the first 5 teams to finish advance to the final.',
+      'Round 5 (The Final Reckoning): a final quiz/riddle decides the winner by time taken or points earned.',
+      'Fair play is mandatory; cheating or rule violations lead to immediate disqualification. The organizing committee\u2019s decision is final.'
+    ]
+  },*/
+ 
+   {
+    id:'campus-ambassador', dbId:30, day:0, type:'competition',
+    name:'The Voyage Corps ',
+    shortDesc:'Be the vital link between your college and Anchorage\u201926 \u2014 drive outreach, amplify on social media, and lead registration drives from your campus.',
+    fullDesc:'The Voyage Corps Campus Ambassador Programme puts you at the helm of Anchorage\u201926 on your own campus \u2014 representing your institution, building a community of participants back home, and driving registrations across the fest\u2019s full event line-up, all while building leadership, networking, and event-management experience.',
+    venue:'Online / Pan-India (Campus-based)', team:'Solo',
+    fee:'paid', feeAmt:99, registration:true, icon:'\u2693', poster:'/static/images/campusambassador.webp',
+    prize:'\u20b915,000',
+    brochure:'https://drive.google.com/file/d/1n94TtVW4HcGW8g1MvkVKYTVzExlgMovj/view?usp=drivesdk',
+    coordinators:[
+      {name:'Kenaz',           phone:'+91 79075 27177'},
+      {name:'Deva Naarayan V',  phone:'+91 81389 48912'}
+    ],
+    
+    rules:[
+      'Open to all college students across India with strong communication skills and an active social media presence.',
+      'Programme duration: 30\u201360 days from onboarding.',
+      'Core responsibilities: campus outreach as the primary point of contact for Anchorage\u201926, social media amplification of posters/reels/announcements, and driving registrations for sub-events at your college.',
+      'Points are earned via social media engagement, unique-referral-code registrations, and approved campus promotional activities (bonus points for pre-approved promo events or flash mobs).',
+      'Professional decorum is mandatory \u2014 misrepresentation, spamming, or false information leads to immediate disqualification.',
+      'The Anchorage\u201926 organizing committee\u2019s decision on point allocation and final winners is binding.',
+      '1st Prize: \u20b910,000 cash + Certificate of Excellence + Trophy. 2nd Prize: \u20b95,000 cash + Certificate of Excellence . All ambassadors who complete their milestones receive a Certificate of Completion from the Dept. of Ship Technology, CUSAT.'
+    ]
+  },
+];
+
+/* ── STATE ── */
+/* ── CART ── */
+const getCart   = ()=>{ try{ return JSON.parse(localStorage.getItem('anch_cart')||'[]') }catch{ return [] } };
+const saveCart  = c => localStorage.setItem('anch_cart',JSON.stringify(c));
+const isInCart  = id => getCart().some(i=>i.id===id);
+const isReg     = id => { const e=EVENTS.find(ev=>ev.id===id); return e ? REGISTERED_IDS.has(e.dbId) : false; };
+const isPending = id => { const e=EVENTS.find(ev=>ev.id===id); return e ? PENDING_IDS.has(e.dbId) : false; };
+const isSoldOut = id => { const e=EVENTS.find(ev=>ev.id===id); return e ? SOLD_OUT_IDS.has(e.dbId) : false; };
+
+function toggleCart(id,e){
+  if(e) e.stopPropagation();
+  if(!LOGGED_IN){ showToast('◈ LOGIN TO ADD EVENTS','removed'); setTimeout(()=>location.href=LOGIN_URL,900); return; }
+  const ev=EVENTS.find(ev=>ev.id===id); if(!ev) return;
+  if(isSoldOut(id)){ showToast('◈ REGISTRATIONS CLOSED — SOLD OUT','removed'); return; }
+  if(isReg(id)){ showToast('◈ ALREADY REGISTERED','removed'); return; }
+  if(isPending(id)){ showToast('◈ PAYMENT PENDING VERIFICATION','removed'); return; }
+  if(isInCart(id)){
+    saveCart(getCart().filter(i=>i.id!==id));
+    refreshAll(); updateModalBtn(id); updateCartUI();
+    showToast('◈ REMOVED FROM CART','removed');
+    fetch('/api/cart/remove/'+ev.dbId,{method:'POST'}).catch(()=>{});
+  } else {
+    const c=getCart(); c.push({id:ev.id,dbId:ev.dbId,name:ev.name}); saveCart(c);
+    refreshAll(); updateModalBtn(id); updateCartUI();
+    showToast('◈ ADDED TO CART','added');
+    fetch('/add-to-cart/'+ev.dbId,{method:'POST'}).catch(()=>{});
+  }
+}
+
+function updateCartUI(){
+  const n=getCart().length;
+  const badge=document.getElementById('cartBadge');
+  const fab=document.getElementById('cartFab');
+  badge.textContent=n; badge.classList.toggle('show',n>0);
+  fab.classList.toggle('show',n>0);
+  const fc=document.getElementById('fabCount'); if(fc) fc.textContent=n;
+}
+
+function updateModalBtn(id){
+  const btn=document.getElementById('modalCartBtn'); if(!btn) return;
+  if(isReg(id)){ btn.textContent='✓ REGISTERED'; btn.className='modal-cart-btn registered'; btn.onclick=null; return; }
+  if(isPending(id)){ btn.textContent='⏳ PENDING VERIFICATION'; btn.className='modal-cart-btn pending'; btn.onclick=null; return; }
+  const ic=isInCart(id);
+  btn.textContent=ic?'✓ IN CART':'+ ADD TO CART';
+  btn.className='modal-cart-btn'+(ic?' in-cart':'');
+}
+
+/* ── EVENT CARD: name + prize + 2 buttons only ── */
+function renderCard(ev){
+  const ic=isInCart(ev.id), ir=isReg(ev.id), ip=isPending(ev.id), so=isSoldOut(ev.id);
+  const hp=ev.poster&&ev.poster.trim()!=='';
+
+  /* prize line or free/open badge */
+  let prizeBlock='';
+  if(ev.prize){
+    prizeBlock=`<div class="ev-prize"><span class="ev-prize-ico">🏆</span>${ev.prize}</div>`;
+  } else if(ev.fee==='free'){
+    prizeBlock=`<span class="ev-free">FREE ENTRY</span>`;
+  }
+
+  /* footer right — priority: sold out > registered > pending > cart/open */
+  let footerRight;
+  if(so){
+    footerRight=`<button class="ev-soldout-btn" disabled>⊘ SOLD OUT</button>`;
+  } else if(!ev.registration){
+    footerRight=`<span class="ev-open-tag">OPEN TO ALL</span>`;
+  } else if(ir){
+    footerRight=`<button class="ev-cart-btn registered" disabled>✓ REGISTERED</button>`;
+  } else if(ip){
+    footerRight=`<button class="ev-cart-btn pending" disabled>⏳ PENDING</button>`;
+  } else {
+    footerRight=`<button class="ev-cart-btn ${ic?'in-cart':''}"
+         onclick="event.stopPropagation();toggleCart('${ev.id}',event)">
+         ${ic?'✓ IN CART':'+ CART'}
+       </button>`;
+  }
+
+  return `<div class="event-card type-${ev.type}${so?' sold-out':''}" onclick="openModal('${ev.id}')">
+    <div class="card-scan"></div>
+    <div class="ev-poster">
+      ${hp?`<img src="${ev.poster}" alt="${ev.name}">`
+          :`<div class="poster-ph"><div class="ph-icon">${ev.icon}</div><div class="ph-name">${ev.name}</div></div>`}
+      <div class="poster-grad"></div>
+      <span class="ev-type-tag">${ev.type.toUpperCase()}</span>
+      ${so?`<div class="soldout-ribbon">SOLD OUT</div>`:(ip?`<div class="pending-ribbon">PENDING</div>`:'')}
+    </div>
+    <div class="ev-body">
+      <div class="ev-name">${ev.name}</div>
+      ${prizeBlock}
+    </div>
+    <div class="ev-footer">
+      <button class="ev-det-btn" onclick="event.stopPropagation();openModal('${ev.id}')">DETAILS</button>
+      ${footerRight}
+    </div>
+  </div>`;
+}
+
+function renderAllGrid(){
+  const types=GF_MAP[activeGF];
+  const evs=types?EVENTS.filter(e=>types.includes(e.type)):EVENTS;
+  const grid=document.getElementById('grid-all'); if(!grid) return;
+  grid.innerHTML=evs.length?evs.map(renderCard).join(''):`<div class="empty-state">// NO EVENTS MATCH FILTER //</div>`;
+  const lmap={all:'ALL EVENTS',workshop:'WORKSHOPS',competition:'COMPETITIONS',lecture:'LECTURES',media:'MEDIA & CREATIVE'};
+  const lbl=document.getElementById('gridCount'); if(lbl) lbl.textContent=(lmap[activeGF]||'ALL EVENTS')+' — '+evs.length;
+  setTimeout(()=>animCards(grid),30);
+}
+function refreshAll(){ renderAllGrid(); }
+
+/* ── MODAL ── */
+function openModal(id){
+  const ev=EVENTS.find(e=>e.id===id); if(!ev) return;
+  const hp=ev.poster&&ev.poster.trim()!=='';
+  const ic=isInCart(id), ir=isReg(id), ip=isPending(id), so=isSoldOut(id);
+  const feeBadge=ev.fee==='free'
+    ?`<span class="modal-fee-badge" style="color:var(--green);border-color:rgba(6,214,160,.3);background:rgba(6,214,160,.06)">FREE ENTRY</span>`
+    :`<span class="modal-fee-badge" style="color:var(--gold);border-color:rgba(255,209,102,.3);background:rgba(255,209,102,.06)">₹${ev.feeAmt} / ${ev.feeUnit||'REGISTRATION'}</span>`;
+  const dateMap={0:'ONLINE',1:'10 OCT · SAT',2:'11 OCT · SUN',3:'12 OCT · MON'};
+  const prizeBanner=ev.prize
+    ?`<div class="modal-prize-banner"><div class="mp-icon">🏆</div><div><div class="mp-lbl">// PRIZE POOL</div><div class="mp-val">${ev.prize}</div></div></div>`:'';
+  const brochureBlock=(ev.brochure&&ev.brochure.trim()!=='')
+    ?`<a class="modal-brochure-link" href="${ev.brochure}" target="_blank" rel="noopener noreferrer">📄 VIEW BROCHURE</a>`:'';
+  const coordinatorsBlock=(ev.coordinators&&ev.coordinators.length)
+    ?`<div class="modal-sec">
+        <div class="modal-sec-ttl">// EVENT COORDINATORS</div>
+        <div class="modal-coordinators">
+          ${ev.coordinators.map(c=>`
+            <div class="coord-chip">
+              <div class="coord-avatar">👤</div>
+              <div class="coord-info">
+                <div class="coord-name">${c.name}</div>
+                ${c.phone
+                  ?`<a class="coord-phone" href="tel:${c.phone.replace(/\s+/g,'')}"><span class="cp-ico">📞</span>${c.phone}</a>`
+                  :`<div class="coord-role">EVENT COORDINATOR</div>`}
+              </div>
+            </div>`).join('')}
+        </div>
+      </div>`:'';
+  const sponsorsBlock=(ev.sponsors&&ev.sponsors.length)
+    ?`<div class="modal-sec">
+        <div class="modal-sec-ttl">// EVENT SPONSORS</div>
+        <div class="sponsor-row">
+          ${ev.sponsors.map(s=>`<div class="sponsor-chip" title="${s.name}">${
+            s.logo
+              ?`<img src="${s.logo}" alt="${s.name}" onerror="this.outerHTML='<span class=&quot;sponsor-fallback&quot;>${s.name}</span>'">`
+              :`<span class="sponsor-fallback">${s.name}</span>`
+          }</div>`).join('')}
+        </div>
+      </div>`:'';
+  let actionArea;
+  if(so){
+    actionArea=`<div class="modal-soldout-banner">
+      <div class="modal-soldout-icon">⊘</div>
+      <div>
+        <div class="modal-soldout-lbl">// REGISTRATIONS CLOSED</div>
+        <div class="modal-soldout-val">SOLD OUT</div>
+      </div>
+    </div>`;
+  } else if(!ev.registration){
+    actionArea=`<span class="modal-open-tag">OPEN TO ALL — NO REGISTRATION REQUIRED</span>`;
+  } else if(ir){
+    actionArea=`<button id="modalCartBtn" class="modal-cart-btn registered" disabled>✓ REGISTERED</button>`;
+  } else if(ip){
+    actionArea=`<div class="modal-pending-banner">
+      <div class="modal-pending-icon">⏳</div>
+      <div>
+        <div class="modal-pending-lbl">// PAYMENT SUBMITTED</div>
+        <div class="modal-pending-val">PENDING VERIFICATION</div>
+      </div>
+    </div>`;
+  } else {
+    actionArea=`<button id="modalCartBtn" class="modal-cart-btn ${ic?'in-cart':''}"
+         onclick="toggleCart('${id}',null);updateModalBtn('${id}')">
+         ${ic?'✓ IN CART':'+ ADD TO CART'}
+       </button>`;
+  }
+
+  document.getElementById('modalContent').innerHTML=`
+    <div class="modal-poster-wrap">
+      ${hp?`<img src="${ev.poster}" class="modal-poster" alt="${ev.name}">`:`<div class="modal-poster-ph">${ev.icon}</div>`}
+    </div>
+    <div class="modal-info">
+      <span class="modal-type-tag">// ${ev.type.toUpperCase()} · ${ev.day===0?'ONLINE':'DAY '+ev.day}</span>
+      <h2 class="modal-title">${ev.name}</h2>
+      <div class="modal-meta-strip">
+        <div class="modal-meta-item"><span class="modal-meta-lbl">VENUE</span><span class="modal-meta-val">${ev.venue}</span></div>
+        <div class="modal-meta-item"><span class="modal-meta-lbl">TEAM SIZE</span><span class="modal-meta-val">${ev.team}</span></div>
+        <div class="modal-meta-item modal-fee-item"><span class="modal-meta-lbl">FEE</span><span class="modal-meta-val modal-fee-val" style="color:${ev.fee==='free'?'var(--green)':'var(--gold)'}">${ev.fee==='free'?'FREE':'₹'+ev.feeAmt+' / '+(ev.feeUnit||'REGISTRATION')}</span></div>
+        <div class="modal-meta-item"><span class="modal-meta-lbl">DATE</span><span class="modal-meta-val">${dateMap[ev.day]}</span></div>
+      </div>
+      ${prizeBanner}
+      ${sponsorsBlock}
+      ${coordinatorsBlock}
+      <div class="modal-sec"><div class="modal-sec-ttl">// ABOUT THE EVENT</div><p>${ev.fullDesc}</p>
+        ${brochureBlock}
+      </div>
+      <div class="modal-sec"><div class="modal-sec-ttl">// RULES &amp; GUIDELINES</div>
+        <ul class="modal-rules">${ev.rules.map(r=>`<li>${r}</li>`).join('')}</ul>
+      </div>
+      <div class="modal-actions">${actionArea} ${feeBadge}</div>
+    </div>`;
+
+  const m=document.getElementById('event-modal');
+  m.classList.add('open'); m.scrollTop=0; document.body.style.overflow='hidden';
+}
+function closeModal(){ document.getElementById('event-modal').classList.remove('open'); document.body.style.overflow=''; }
+
+/* ── TOAST ── */
+function showToast(msg,type=''){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.className='toast show '+type;
+  setTimeout(()=>t.className='toast',2600);
+}
+
+/* ── GLOBAL FILTER ── */
+const GF_MAP={all:null,workshop:['workshop'],competition:['competition'],lecture:['session'],media:['media','creative']};
+let activeGF='all';
+
+function setGF(cat,btn){
+  activeGF=cat;
+  document.querySelectorAll('.gf-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const notice=document.getElementById('filterNotice');
+  const lbl=document.getElementById('filterLabel');
+  const lmap={all:'ALL EVENTS',workshop:'WORKSHOPS',competition:'COMPETITIONS',lecture:'LECTURES',media:'MEDIA &amp; CREATIVE'};
+  cat==='all'?notice.classList.remove('show'):(notice.classList.add('show'),lbl.textContent=lmap[cat]||cat.toUpperCase());
+  applyGF();
+  const url=new URL(location); cat==='all'?url.searchParams.delete('category'):url.searchParams.set('category',cat);
+  history.replaceState(null,'',url);
+}
+
+function applyGF(){
+  renderAllGrid();
+}
+
+function updateGFCounts(){
+  ['workshop','competition','lecture','media'].forEach(cat=>{
+    const types=GF_MAP[cat];
+    const n=types?EVENTS.filter(e=>types.includes(e.type)).length:EVENTS.length;
+    const el=document.getElementById('gfc-'+cat); if(el) el.textContent='('+n+')';
+  });
+}
+
+/* ── CARD ANIMATIONS ── */
+function animCards(container){
+  const cards=container.querySelectorAll('.event-card');
+  cards.forEach((c,i)=>{ c.classList.remove('anim-ready'); c.style.animationDelay=(i*.065)+'s'; });
+  container.offsetHeight;
+  cards.forEach(c=>c.classList.add('anim-ready'));
+}
+
+const cardObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ animCards(e.target); cardObs.unobserve(e.target); } });
+},{threshold:.07,rootMargin:'0px 0px -36px 0px'});
+
+/* ── INIT ── */
+document.addEventListener('DOMContentLoaded',()=>{
+  renderAllGrid();
+  updateCartUI();
+  updateGFCounts();
+  document.querySelectorAll('.events-grid').forEach(g=>cardObs.observe(g));
+
+  document.getElementById('modalClose').addEventListener('click',closeModal);
+  document.getElementById('event-modal').addEventListener('click',function(e){ if(e.target===this) closeModal(); });
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeModal(); });
+
+  const p=new URLSearchParams(location.search);
+  const cp=p.get('category'); if(cp&&GF_MAP.hasOwnProperty(cp)&&cp!=='all'){ const gb=document.querySelector(`.gf-btn[data-gf="${cp}"]`); if(gb) setTimeout(()=>setGF(cp,gb),150); }
+  const ep=p.get('event'); if(ep) setTimeout(()=>openModal(ep),300);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Placed | Ship's Store | Anchorage 2026</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap');
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --cyan: #00f2ff; --ocean: #00050a; --ocean-card: #00111e;
+            --border: rgba(0,242,255,0.15); --border-hi: rgba(0,242,255,0.4);
+            --gold: #ffd166; --green: #06d6a0;
+        }
+        body { background: var(--ocean); color: #fff; font-family: 'Rajdhani', sans-serif; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .success-card { max-width: 440px; width: 100%; background: var(--ocean-card); border: 1px solid var(--border-hi); border-radius: 8px; padding: 36px 28px; text-align: center; }
+        .check-icon { width: 60px; height: 60px; border-radius: 50%; background: rgba(6,214,160,0.1); border: 2px solid var(--green); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; color: var(--green); margin: 0 auto 18px; }
+        .success-title { font-family: 'Orbitron'; font-size: 1.2rem; letter-spacing: 1.5px; margin-bottom: 8px; }
+        .success-sub { color: rgba(255,255,255,0.6); font-size: 0.85rem; margin-bottom: 20px; line-height: 1.5; }
+        .order-code { font-family: 'Share Tech Mono'; font-size: 1.1rem; color: var(--gold); background: rgba(255,209,102,0.06); border: 1px solid rgba(255,209,102,0.3); padding: 10px 18px; border-radius: 4px; display: inline-block; margin-bottom: 20px; letter-spacing: 1px; }
+        .item-list { text-align: left; margin-bottom: 20px; }
+        .item-row { display: flex; justify-content: space-between; font-size: 0.82rem; padding: 6px 0; color: rgba(255,255,255,0.75); border-bottom: 1px solid rgba(255,255,255,0.06); }
+        .status-note { font-size: 0.78rem; color: rgba(255,255,255,0.5); line-height: 1.6; margin-bottom: 24px; }
+        .status-note strong { color: var(--gold); }
+        .home-link { display: inline-block; font-family: 'Orbitron'; font-size: 0.7rem; letter-spacing: 1.8px; color: var(--cyan); text-decoration: none; border: 1px solid var(--border); padding: 10px 22px; border-radius: 4px; }
+        .home-link:hover { border-color: var(--border-hi); }
+    </style>
+</head>
+<body>
+
+<div class="success-card">
+    <div class="check-icon">✓</div>
+    <div class="success-title">ORDER PLACED</div>
+    <div class="success-sub">Thanks, {{ order.name }} — we've received your order.</div>
+    <div class="order-code">{{ order.order_code }}</div>
+
+    <div class="item-list">
+        {% for it in items %}
+        <div class="item-row">
+            <span>{{ it.product_name }}{% if it.size %} ({{ it.size }}){% endif %} × {{ it.quantity }}</span>
+            <span>₹{{ "%.0f"|format(it.unit_price * it.quantity) }}</span>
+        </div>
+        {% endfor %}
+        <div class="item-row" style="border-bottom:none;font-weight:700;color:#fff">
+            <span>TOTAL</span><span>₹{{ "%.0f"|format(order.total_amount) }}</span>
+        </div>
+    </div>
+
+    <div class="status-note">
+        <strong style="color:var(--gold)">No payment is needed right now.(Delivery Charges Will be added later)</strong> We're first collecting
+        orders from everyone interested — once we've reviewed the total count, we'll confirm your
+        order by email and let you know how to complete payment. We'll ship to the address you
+        provided. A copy of this is on its way to <strong>{{ order.email }}</strong>.
+    </div>
+
+    <a href="{{ url_for('merch_shop') }}" class="home-link">← BACK TO STORE</a>
+</div>
+
+</body>
+</html>
